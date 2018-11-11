@@ -69,8 +69,8 @@ public class Population {
 	public void time(double dt) {
 		for (int i = 0; i < population.size(); ++i) {
 			Individual ind = population.get(i);
-			ind.setHealth(ind.getHealth() - dt);
 			((Circle) group.getChildren().get(i)).setOpacity(ind.getHealth() / ind.getMaxHealth());
+			ind.decrementHealth(dt);
 		}
 	}
 
@@ -102,7 +102,7 @@ public class Population {
 			for (Individual pr : prey.getPopulation()) {
 				if (Math.abs(ind.getPos().x - pr.getPos().x) < pr.getSize()
 						&& Math.abs(ind.getPos().y - pr.getPos().y) < pr.getSize()) {
-					ind.setHealth(ind.getHealth() + ind.getAddHealth());
+					ind.incrementHealth();
 					rNode.add(prey.getGroup().getChildren().get(index));
 					rInd.add(pr);
 				}

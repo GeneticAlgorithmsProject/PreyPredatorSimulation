@@ -2,6 +2,7 @@ package model;
 
 import java.util.Random;
 
+import application.Simulation;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.Vector2d;
@@ -12,7 +13,7 @@ public class Individual {
 
 	protected int age;
 	protected double health, maxHealth;
-	protected double addHealth = 20;
+	protected double addHealth;
 	protected double speed;
 
 	protected Vector2d dirFood;
@@ -23,10 +24,11 @@ public class Individual {
 	protected Color color;
 
 	public Individual() {
-		size = 10 + rnd.nextInt(10);
+		size = 5 + rnd.nextInt(5);
 		age = 0;
-		health = 100;
+		health = 1;
 		maxHealth = health;
+		addHealth = 20 / 100;
 		pos = new Vector2d();
 		circle = new Circle(pos.x, pos.y, size);
 		color = new Color(0, 1, 0, 1);
@@ -35,18 +37,37 @@ public class Individual {
 
 	public Individual(double x, double y) {
 		Random rnd = new Random();
-		size = 10 + rnd.nextInt(10);
+		size = 5 + rnd.nextInt(5);
 		age = 0;
-		health = 100;
+		health = 1;
 		maxHealth = health;
+		addHealth = 20 / 100;
 		pos = new Vector2d(x, y);
 		circle = new Circle(pos.x, pos.y, size);
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
 	}
+	
+	public void update(double dt) {
+		circle.setCenterX(pos.x);
+		circle.setCenterY(pos.y);
+		circle.setFill(color);
+		circle.setEffect(Simulation.lighting);
+		circle.setRadius(size);
+		circle.setOpacity(health / maxHealth);
+		decrementHealth(dt);
+	}
 
 	public void move() {
 
+	}
+
+	public void decrementHealth(double dt) {
+		health -= addHealth/10;
+	}
+
+	public void incrementHealth() {
+		health += addHealth;
 	}
 
 	public Vector2d getPos() {

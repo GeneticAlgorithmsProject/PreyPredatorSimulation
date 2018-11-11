@@ -23,16 +23,13 @@ public class LayoutController {
 	private double width;
 	private double height;
 
-	private Light.Spot light;
-	private Lighting lighting;
-
 	private Group foodGroup, preyGroup, predatorsGroup;
 
 	private Simulation simulation;
 
 	@FXML
 	public void initialize() {
-		initLighting();
+	
 	}
 
 	@FXML
@@ -87,7 +84,7 @@ public class LayoutController {
 	}
 
 	public void draw() {
-		simulation.draw(lighting);
+		simulation.draw(Simulation.lighting);
 		foodGroup = simulation.getFood().getGroup();
 		preyGroup = simulation.getPreys().getGroup();
 		predatorsGroup = simulation.getPredators().getGroup();
@@ -102,19 +99,5 @@ public class LayoutController {
 
 	public void init() {
 		this.simulation.init();
-	}
-
-	public void initLighting() {
-		light = new Light.Spot();
-		light.setX(0);
-		light.setY(0);
-		light.setZ(100);
-		light.setPointsAtX(width);
-		light.setPointsAtY(height);
-		light.setPointsAtZ(-50);
-		light.setSpecularExponent(5.);
-		lighting = new Lighting();
-		lighting.setLight(light);
-		lighting.setSurfaceScale(1.);
 	}
 }

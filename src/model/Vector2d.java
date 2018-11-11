@@ -27,10 +27,20 @@ public class Vector2d {
 		x *= a;
 		y *= a;
 	}
-	
+
 	public void div(double a) {
 		x /= a;
 		y /= a;
+	}
+	
+	public double length() {
+		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+	}
+
+	public void norm() {
+		double len = length();
+		x /= len;
+		y /= len;
 	}
 
 	public Vector2d multV(double a) {
@@ -50,23 +60,31 @@ public class Vector2d {
 		}
 	}
 
-	static public Vector2d add(Vector2d v1, Vector2d v2) {
+	public static Vector2d add(Vector2d v1, Vector2d v2) {
 		return new Vector2d(v1.x + v1.x, v1.y + v2.y);
 	}
 
-	static public double dist(Vector2d v1, Vector2d v2) {
+	public static double dist(Vector2d v1, Vector2d v2) {
 		return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2));
 	}
 
-	static public double dirX(Vector2d v1, Vector2d v2) {
+	public static double dirX(Vector2d v1, Vector2d v2) {
 		return (v1.x - v2.x) / Math.abs(v1.x - v2.x);
 	}
 
-	static public double dirY(Vector2d v1, Vector2d v2) {
+	public static double dirY(Vector2d v1, Vector2d v2) {
 		return (v1.y - v2.y) / Math.abs(v1.y - v2.y);
 	}
-	
-	static public Vector2d normedDiff(Vector2d v1, Vector2d v2) {
-		return new Vector2d(dirX(v1,v2), dirY(v1,v2));
+
+	public static Vector2d normedDiff(Vector2d v1, Vector2d v2) {
+		return new Vector2d(dirX(v1, v2), dirY(v1, v2));
+	}
+
+	public static Vector2d PerpendicularClockwise(Vector2d v) {
+		return new Vector2d(v.y, -v.x);
+	}
+
+	public static Vector2d PerpendicularCounterClockwise(Vector2d v) {
+		return new Vector2d(-v.y, v.x);
 	}
 }
