@@ -1,5 +1,6 @@
 package model;
 
+import application.Simulation;
 import javafx.scene.paint.Color;
 
 public class Predator extends Individual{
@@ -9,7 +10,7 @@ public class Predator extends Individual{
 	public Predator() {
 		super();
 		dirFood = new Vector2d();
-		speed = 1.;
+		speed = 1./Simulation.DT;
 		color = new Color(1, 0, 0, 1);	
 		gene = new Gene();
 	}
@@ -17,7 +18,7 @@ public class Predator extends Individual{
 	public Predator(double x, double y) {
 		super(x, y);
 		dirFood = new Vector2d();
-		speed = 1.;
+		speed = 1./Simulation.DT;
 		color = new Color(1, 0, 0, 1);	
 		gene = new Gene();
 	}

@@ -14,19 +14,16 @@ public class Food extends Population{
 	}
 	
 	@Override
-	public void update() {
+	public void update(double dt) {
+		for (Individual ind : population)
+			ind.update(dt);		
+	
 		if(population.size() < count) {
 			double x = rnd.nextDouble()*width;
 			double y = rnd.nextDouble()*height;
 			Individual ind = new Individual(x,y);
 			population.add(ind);
-			group.getChildren().add(ind.getCircle());
 		}	
 	}
 	
-	@Override
-	public void time(double dt) {
-		
-	}
-
 }

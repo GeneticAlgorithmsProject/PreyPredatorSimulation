@@ -3,12 +3,10 @@ package view;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Pane;
+import model.Individual;
 import application.Simulation;
 
 public class LayoutController {
@@ -20,25 +18,15 @@ public class LayoutController {
 	@FXML
 	private Canvas canvas;
 
-	private double width;
-	private double height;
-
-	private Group foodGroup, preyGroup, predatorsGroup;
-
 	private Simulation simulation;
 
 	@FXML
 	public void initialize() {
-	
+
 	}
 
 	@FXML
 	private void handleButtonAction(ActionEvent event) {
-		width = pane.getWidth();
-		height = pane.getHeight();
-//		GeneticAlgorithm gA = new GeneticAlgorithm(2, 1.5, 0.01);
-//		System.out.println("Population:");
-//		gA.createNewGeneration(prey);
 		simulation = new Simulation(pane);
 		simulation.init();
 		animate();
@@ -47,7 +35,6 @@ public class LayoutController {
 	public void animate() {
 		new AnimationTimer() {
 			long startTime = -1;
-			double dt = 0.01;
 
 			private void check() {
 				if (simulation.pause()) {
@@ -60,12 +47,14 @@ public class LayoutController {
 				if (startTime == -1) {
 					startTime = now;
 				}
+				long deltaNanos = now - startTime;
+				startTime = now;
+				double dt = deltaNanos / 1.0e9;
 //				double time = (now - startTime) / 1E9d;
 				check();
 				reset();
 				move();
-				time(dt);
-				update();
+				update(dt);
 				draw();
 			}
 		}.start();
@@ -79,22 +68,18 @@ public class LayoutController {
 		simulation.move();
 	}
 
-	public void update() {
-		simulation.update();
+	public void update(double dt) {
+		simulation.update(dt);
 	}
 
 	public void draw() {
-		simulation.draw(Simulation.lighting);
-		foodGroup = simulation.getFood().getGroup();
-		preyGroup = simulation.getPreys().getGroup();
-		predatorsGroup = simulation.getPredators().getGroup();
-		pane.getChildren().addAll(foodGroup);
-		pane.getChildren().addAll(preyGroup);
-		pane.getChildren().addAll(predatorsGroup);
-	}
+		for (Individual ind : simulation.getFood().getPopulation())
+			pane.getChildren().add(ind.getCircle());
+		for (Individual ind : simulation.getPredators().getPopulation())
+			pane.getChildren().add(ind.getCircle());
+		for (Individual ind : simulation.getPreys().getPopulation())
+			pane.getChildren().add(ind.getCircle());
 
-	public void time(double dt) {
-		simulation.time(dt);
 	}
 
 	public void init() {

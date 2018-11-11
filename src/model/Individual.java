@@ -28,7 +28,7 @@ public class Individual {
 		age = 0;
 		health = 1;
 		maxHealth = health;
-		addHealth = 20 / 100;
+		addHealth = 0.0001;
 		pos = new Vector2d();
 		circle = new Circle(pos.x, pos.y, size);
 		color = new Color(0, 1, 0, 1);
@@ -39,9 +39,9 @@ public class Individual {
 		Random rnd = new Random();
 		size = 5 + rnd.nextInt(5);
 		age = 0;
-		health = 1;
+		health = 1.;
 		maxHealth = health;
-		addHealth = 20 / 100;
+		addHealth = 0.0001;
 		pos = new Vector2d(x, y);
 		circle = new Circle(pos.x, pos.y, size);
 		color = new Color(0, 1, 0, 1);
@@ -63,7 +63,7 @@ public class Individual {
 	}
 
 	public void decrementHealth(double dt) {
-		health -= addHealth/10;
+		health -= addHealth;
 	}
 
 	public void incrementHealth() {

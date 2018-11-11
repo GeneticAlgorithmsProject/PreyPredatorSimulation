@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Random;
-
 public class Gene {
 
 	private double dirEscapeMult;
@@ -9,14 +7,12 @@ public class Gene {
 	private double dirFoodMult;
 	private double noiseA;
 	private double noiseF;
-	private Random rnd;
-
+	
 	public Gene() {
-		rnd = new Random();
 		dirFoodMult = 1.;
-		dirEscapeMult = 0.01;
-		noiseA = 1.;
-		noiseF = 1.;
+		dirEscapeMult = 0.001;
+		noiseA = 10;
+		noiseF = 0.01;
 	}
 
 	public double getDirEscapeMult() {

@@ -27,7 +27,7 @@ public class Prey extends Individual {
 	public Prey(double x, double y) {
 		super(x, y);
 		dirEscape = new Vector2d();
-		speed = 1.;
+		speed = 1./Simulation.DT;
 		color = new Color(0, 0, 1, 1);
 		gene = new Gene();
 		fDir = 1.;
@@ -52,7 +52,7 @@ public class Prey extends Individual {
 		if(Math.abs(fA) >= gene.getNoiseA()) {
 			fDir *= -1;
 		}
-		fA += fDir*gene.getNoiseA()/gene.getNoiseF();
+		fA += fDir*gene.getNoiseA()*gene.getNoiseF();
 		v.add(v_t);
 	}
 

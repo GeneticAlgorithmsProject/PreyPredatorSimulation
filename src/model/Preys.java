@@ -15,7 +15,6 @@ public class Preys extends Population{
 		for (int i = 0; i < count; ++i) {
 			Individual ind = new Prey(width * rnd.nextDouble(), height * rnd.nextDouble());
 			population.add(ind);
-			group.getChildren().add(ind.getCircle());
 		}
 	}
 	
@@ -28,7 +27,9 @@ public class Preys extends Population{
 	}
 	
 	@Override
-	public void update() {
+	public void update(double dt) {
+		for (Individual ind : population)
+			ind.update(dt);		
 		eat();
 		death();
 	}
@@ -52,6 +53,5 @@ public class Preys extends Population{
 			}
 			ind.setDirEscape(new Vector2d(dirX, dirY));
 		}
-	}
-	
+	}	
 }

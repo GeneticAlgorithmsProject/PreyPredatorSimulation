@@ -18,7 +18,7 @@ public class Simulation {
 	private Light.Spot light;
 	public static Lighting lighting;
 
-	public static double DT = 0.01;
+	public static double DT = 10;
 	public static double width, height;
 
 	public Simulation(Pane pane) {
@@ -54,22 +54,10 @@ public class Simulation {
 		preys.move();
 	}
 
-	public void time(double dt) {
-		food.time(dt);
-		preys.time(dt);
-		predators.time(dt);
-	}
-
-	public void update() {
-		food.update();
-		preys.update();
-		predators.update();
-	}
-
-	public void draw(Lighting lighting) {
-		food.draw(lighting);
-		preys.draw(lighting);
-		predators.draw(lighting);
+	public void update(double dt) {
+		food.update(dt);
+		preys.update(dt);
+		predators.update(dt);
 	}
 
 	public boolean pause() {

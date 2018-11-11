@@ -13,7 +13,6 @@ public class Predators extends Population{
 		for (int i = 0; i < count; ++i) {
 			Individual ind = new Predator(width * rnd.nextDouble(), height * rnd.nextDouble());
 			population.add(ind);
-			group.getChildren().add(ind.getCircle());
 		}
 	}
 	
@@ -25,7 +24,9 @@ public class Predators extends Population{
 	}
 	
 	@Override
-	public void update() {
+	public void update(double dt) {
+		for (Individual ind : population)
+			ind.update(dt);		
 		eat();
 		death();
 	}
