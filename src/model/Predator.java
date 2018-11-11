@@ -24,8 +24,8 @@ public class Predator extends Individual{
 
 	@Override
 	public void move() {
-		dirFood.Mult(gene.getDirFoodMult());
-		dirFood.Mult(speed);
-		pos.Add(dirFood);
+		dirFood.mult(gene.getDirFoodMult());
+		dirFood.mult(speed);
+		pos.add(dirFood);
 	}
 }

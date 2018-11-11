@@ -28,11 +28,11 @@ public class Prey extends Individual {
 
 	@Override
 	public void move() {
-		dirEscape.Mult(gene.getDirEscapeMult());
-		dirFood.Mult(gene.getDirFoodMult());
-		Vector2d dir = Vector2d.Add(dirFood, dirEscape);
-		dir.Mult(speed);
-		pos.Add(dir);
+		dirEscape.mult(gene.getDirEscapeMult());
+		dirFood.mult(gene.getDirFoodMult());
+		Vector2d dir = Vector2d.add(dirFood, dirEscape);
+		dir.mult(speed);
+		pos.add(dir);
 	}
 
 	public Vector2d getDirEscape() {

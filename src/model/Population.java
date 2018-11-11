@@ -80,7 +80,7 @@ public class Population {
 			int index = 0;
 			for (int i = 0; i < prey.getPopulation().size(); ++i) {
 				Individual pr = prey.getPopulation().get(i);
-				double dist = ind.distance(pr.getPos().x, pr.getPos().y);
+				double dist = Vector2d.dist(ind.getPos(), pr.getPos());
 				if (dist < minDistance) {
 					minDistance = dist;
 					index = i;
@@ -90,9 +90,7 @@ public class Population {
 				return;
 			
 			Individual pr = prey.getPopulation().get(index);
-			double dirX = (pr.getPos().x - ind.getPos().x) / Math.abs(ind.getPos().x - pr.getPos().x);
-			double dirY = (pr.getPos().y - ind.getPos().y) / Math.abs(ind.getPos().y - pr.getPos().y);
-			ind.setDirFood(new Vector2d(dirX, dirY));
+			ind.setDirFood(Vector2d.normedDiff(pr.getPos(), ind.getPos()));
 		}
 	}
 
@@ -116,7 +114,7 @@ public class Population {
 
 	protected void boundaryConditions() {
 		for (Individual ind : population)
-			ind.getPos().Fit(0, 0, width, height);
+			ind.getPos().fit(0, 0, width, height);
 	}
 
 	protected void moveInds() {

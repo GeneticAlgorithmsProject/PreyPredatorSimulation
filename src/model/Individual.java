@@ -43,15 +43,10 @@ public class Individual {
 		circle = new Circle(pos.x, pos.y, size);
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
-
 	}
 
 	public void move() {
 
-	}
-
-	public double distance(double x, double y) {
-		return Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2));
 	}
 
 	public Vector2d getPos() {
