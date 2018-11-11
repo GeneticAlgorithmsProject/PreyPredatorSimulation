@@ -1,62 +1,62 @@
 package model;
 
-import java.util.List;
-import java.util.LinkedList;
-
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
-public class Prey extends Population{
+public class Prey extends Individual {
 
-	Population adversary;
-	
-	public Prey(int count, Pane pane) {
-		super(count, pane);
-		color = new Color(0,0,1,1);
+	private Vector2d dirEscape;
+
+	private double speed;
+
+	private Gene gene;
+
+	public Prey() {
+		super();
+		dirEscape = new Vector2d();
+		speed = 1.;
+		color = new Color(0, 0, 1, 1);
+		gene = new Gene();
 	}
-	
+
+	public Prey(double x, double y) {
+		super(x, y);
+		dirEscape = new Vector2d();
+		speed = 1.;
+		color = new Color(0, 0, 1, 1);
+		gene = new Gene();
+	}
+
 	@Override
 	public void move() {
-		findFood();
-		calculatePredatorsField();
-		boundaryConditions();
-		moveInds();
-	}
-	
-	@Override
-	public void update() {
-		eat();
-		death();
-	}
-	
-	@Override
-	public void setColor() {
-		for(Node n : group.getChildren()) {
-			Circle c = (Circle)n;
-			c.setFill(color);
-		}
+		dirEscape.Mult(gene.getDirEscapeMult());
+		dirFood.Mult(gene.getDirFoodMult());
+		Vector2d dir = Vector2d.Add(dirFood, dirEscape);
+		dir.Mult(speed);
+		pos.Add(dir);
 	}
 
-	@Override
-	public void setAdversary(Population adversary) {
-		this.adversary = adversary;
+	public Vector2d getDirEscape() {
+		return dirEscape;
 	}
-	
-	private void calculatePredatorsField() {
-		for(Individual ind : population) {
-			double dirX = ind.getDirX();
-			double dirY = ind.getDirY();
-			int size = adversary.getPopulation().size();
-			for (int i = 0; i < size; ++i) {
-				Individual adv = adversary.getPopulation().get(i);
-				dirX -= (adv.getX() - ind.getX())/Math.abs(adv.getX()-ind.getX())/size;
-				dirY -= (adv.getY() - ind.getY())/Math.abs(adv.getY()-ind.getY())/size;
-			}
-			ind.setDirX(dirX);
-			ind.setDirY(dirY);
-		}
+
+	public void setDirEscape(Vector2d dirEscape) {
+		this.dirEscape = dirEscape;
 	}
-	
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public Gene getGene() {
+		return gene;
+	}
+
+	public void setGene(Gene gene) {
+		this.gene = gene;
+	}
+
 }

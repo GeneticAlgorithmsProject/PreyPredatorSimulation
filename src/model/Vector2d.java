@@ -45,4 +45,8 @@ public class Vector2d {
 		}
 	}
 	
+	static Vector2d Add(Vector2d v1, Vector2d v2) {
+		return new Vector2d(v1.x+v1.x,v1.y+v2.y);
+	}
+	
 }

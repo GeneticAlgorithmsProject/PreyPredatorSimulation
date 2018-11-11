@@ -4,8 +4,8 @@ import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Pane;
 import model.Food;
 import model.Population;
-import model.Predator;
-import model.Prey;
+import model.Predators;
+import model.Preys;
 
 public class Simulation {
 
@@ -23,8 +23,8 @@ public class Simulation {
 	
 	public void init() {
 		food = new Food(foodCount, pane);
-		preys = new Prey(preyCount, pane);	
-		predators = new Predator(predatorCount,pane);
+		preys = new Preys(preyCount, pane);	
+		predators = new Predators(predatorCount,pane);
 		
 		food.init();
 		

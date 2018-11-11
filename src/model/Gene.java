@@ -1,42 +1,54 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Gene {
 
-	protected int numOfSpCo = 10;
-	protected int numOfNoCo = 2;
-	protected double noCoA = 2;
-	protected List<Double> speedCoefficients;
-	protected List<Double> noiseCoefficients;
+	private double dirEscapeMult;
 
-	protected List<List<Double>> gene;
-		
+	private double dirFoodMult;
+	private double noiseA;
+	private double noiseF;
 	private Random rnd;
 
 	public Gene() {
 		rnd = new Random();
-		noiseCoefficients = new ArrayList<>(numOfNoCo);
-		for(int i = 0; i < numOfNoCo; ++i)
-			noiseCoefficients.add(rnd.nextDouble());
-
-		speedCoefficients = new ArrayList<>(numOfSpCo);
-		for(int i = 0; i < numOfSpCo; ++i)
-			speedCoefficients.add(rnd.nextDouble());
-		
-		gene = new ArrayList<>();
-		gene.add(speedCoefficients);
-		gene.add(noiseCoefficients);
-	}
-	
-	public List<List<Double>> getGene() {
-		return gene;
+		dirFoodMult = 1.;
+		dirEscapeMult = 0.01;
+		noiseA = 1.;
+		noiseF = 1.;
 	}
 
-	public void setGene(List<List<Double>> gene) {
-		this.gene = gene;
+	public double getDirEscapeMult() {
+		return dirEscapeMult;
+	}
+
+	public void setDirEscapeMult(double dirEscapeMult) {
+		this.dirEscapeMult = dirEscapeMult;
+	}
+
+	public double getDirFoodMult() {
+		return dirFoodMult;
+	}
+
+	public void setDirFoodMult(double dirFoodMult) {
+		this.dirFoodMult = dirFoodMult;
+	}
+
+	public double getNoiseA() {
+		return noiseA;
+	}
+
+	public void setNoiseA(double noiseA) {
+		this.noiseA = noiseA;
+	}
+
+	public double getNoiseF() {
+		return noiseF;
+	}
+
+	public void setNoiseF(double noiseF) {
+		this.noiseF = noiseF;
 	}
 
 }

@@ -1,36 +1,31 @@
 package model;
 
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
-public class Predator extends Population{
+public class Predator extends Individual{
 
-	public Predator(int count, Pane pane) {
-		super(count,pane);
+	private Gene gene;
+
+	public Predator() {
+		super();
+		dirFood = new Vector2d();
+		speed = 1.;
 		color = new Color(1, 0, 0, 1);	
+		gene = new Gene();
 	}
-	
+
+	public Predator(double x, double y) {
+		super(x, y);
+		dirFood = new Vector2d();
+		speed = 1.;
+		color = new Color(1, 0, 0, 1);	
+		gene = new Gene();
+	}
+
 	@Override
 	public void move() {
-		findFood();
-		boundaryConditions();
-		moveInds();		
+		dirFood.Mult(gene.getDirFoodMult());
+		dirFood.Mult(speed);
+		pos.Add(dirFood);
 	}
-	
-	@Override
-	public void update() {
-		eat();
-		death();
-	}
-	
-	@Override
-	public void setColor() {
-		for(Node n : group.getChildren()) {
-			Circle c = (Circle)n;
-			c.setFill(color);
-		}
-	}
-
 }

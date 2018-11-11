@@ -1,83 +1,65 @@
 package model;
 
-import model.Gene;
-
 import java.util.Random;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.Vector2d;
 
-public class Individual extends Gene {
-	private double x, y;
-	private double size;
-	private double dirX, dirY;
+public class Individual {
+	protected Vector2d pos;
+	protected double size;
 
-	private Vector2d<Double> dirE;
-	private Vector2d<Double> dirF;
-	
-	private double speed;
+	protected int age;
+	protected double health, maxHealth;
+	protected double addHealth = 20;
+	protected double speed;
 
-	private int age;
-	private double health, maxHealth;
-	private double addHealth = 20;
-	
-	private Circle circle;
-	
+	protected Vector2d dirFood;
+
+	protected Random rnd = new Random();
+
+	protected Circle circle;
+	protected Color color;
+
 	public Individual() {
-		Random rnd = new Random();
-		x = 0;
-		y = 0;
 		size = 10 + rnd.nextInt(10);
 		age = 0;
 		health = 100;
 		maxHealth = health;
-		dirX = 0;
-		dirY = 0;
-		dirE = new Vector2d<>(0.,0.);
-		dirF = new Vector2d<>(0.,0.);
-		speed = 1. / size;
-		circle = new Circle(x,y,size);
+		pos = new Vector2d();
+		circle = new Circle(pos.x, pos.y, size);
+		color = new Color(0, 1, 0, 1);
+		dirFood = new Vector2d();
 	}
 
 	public Individual(double x, double y) {
 		Random rnd = new Random();
-		this.x = x;
-		this.y = y;
 		size = 10 + rnd.nextInt(10);
 		age = 0;
 		health = 100;
 		maxHealth = health;
-		dirX = 0;
-		dirY = 0;
-		speed = 1./ size;
-		circle = new Circle(x,y,size);
+		pos = new Vector2d(x, y);
+		circle = new Circle(pos.x, pos.y, size);
+		color = new Color(0, 1, 0, 1);
+		dirFood = new Vector2d();
+
 	}
-	
+
 	public void move() {
-//		dirX *= noiseCoefficients.get(0);
-//		dirY *=  noiseCoefficients.get(1);
-		x += dirX * speed;
-		y += dirY * speed;
+
 	}
 
 	public double distance(double x, double y) {
-		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
+		return Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2));
 	}
 
-	public double getX() {
-		return x;
+	public Vector2d getPos() {
+		return pos;
 	}
 
-	public void setX(double x) {
-		this.x = x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public void setY(double y) {
-		this.y = y;
+	public void setPos(Vector2d pos) {
+		this.pos = pos;
 	}
 
 	public double getSize() {
@@ -120,27 +102,27 @@ public class Individual extends Gene {
 		this.addHealth = addHealth;
 	}
 
-	public double getDirX() {
-		return dirX;
-	}
-
-	public void setDirX(double dirX) {
-		this.dirX = dirX;
-	}
-
-	public double getDirY() {
-		return dirY;
-	}
-
-	public void setDirY(double dirY) {
-		this.dirY = dirY;
-	}
-
 	public Circle getCircle() {
 		return circle;
 	}
 
 	public void setCircle(Circle circle) {
 		this.circle = circle;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public Vector2d getDirFood() {
+		return dirFood;
+	}
+
+	public void setDirFood(Vector2d dirFood) {
+		this.dirFood = dirFood;
 	}
 }
