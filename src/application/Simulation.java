@@ -1,9 +1,11 @@
 package application;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Pane;
 import model.Food;
+import model.Individual;
 import model.Population;
 import model.Predators;
 import model.Preys;
@@ -44,8 +46,46 @@ public class Simulation {
 		predators.init();
 		predators.setPrey(preys);
 	}
+	
+	public void animate() {
+		new AnimationTimer() {
+			long startTime = -1;
+
+			private void check() {
+				if (pause()) {
+					this.stop();
+				}
+			}
+
+			@Override
+			public void handle(long now) {
+				if (startTime == -1) {
+					startTime = now;
+				}
+				long deltaNanos = now - startTime;
+				startTime = now;
+				double dt = deltaNanos / 1.0e9;
+//				double time = (now - startTime) / 1E9d;
+				check();
+				reset();
+				move(dt);
+				update(dt);
+				draw();
+			}
+		}.start();
+	}
 
 	public void reset() {
+		this.pane.getChildren().clear();
+	}
+
+	public void draw() {
+		for (Individual ind : food.getPopulation())
+			pane.getChildren().add(ind.getCircle());
+		for (Individual ind : preys.getPopulation())
+			pane.getChildren().add(ind.getCircle());
+		for (Individual ind : predators.getPopulation())
+			pane.getChildren().add(ind.getCircle());
 
 	}
 
