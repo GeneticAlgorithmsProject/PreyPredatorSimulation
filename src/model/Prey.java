@@ -37,12 +37,14 @@ public class Prey extends Individual {
 		dirFood.mult(gene.getDirFoodMult());
 		Vector2d dir = Vector2d.add(dirFood, dirEscape);
 		dir.norm();
-		oscillate(dir);
+		
+		if(Vector2d.dist(pos, prey.getPos()) > gene.getNoiseR())
+			oscillate(dir, dt);
 		dir.mult(speed);
 		pos.add(dir);
 	}
 
-	private void oscillate(Vector2d v) {
+	private void oscillate(Vector2d v, double dt) {
 		Vector2d v_t = Vector2d.PerpendicularClockwise(v);
 		v_t.norm();
 		v_t.mult(fA);

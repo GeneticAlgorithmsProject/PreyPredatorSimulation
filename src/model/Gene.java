@@ -9,14 +9,16 @@ public class Gene {
 	private double dirFoodMult;
 	private double noiseA;
 	private double noiseF;
+	private double noiseR;
 	private double size;
 
 	public Gene() {
 		Random rnd = new Random();
 		dirFoodMult = 1.;
 		dirEscapeMult = 0.001;
-		noiseA = (1 + rnd.nextDouble()) * 10;
+		noiseA = (1 + rnd.nextDouble()) * 5;
 		noiseF = (1 + rnd.nextDouble()) * 0.01;
+		noiseR = (1 + rnd.nextDouble()) * 30;
 		size = (1 + rnd.nextDouble()) * 5;
 	}
 
@@ -50,6 +52,14 @@ public class Gene {
 
 	public void setNoiseF(double noiseF) {
 		this.noiseF = noiseF;
+	}
+
+	public double getNoiseR() {
+		return noiseR;
+	}
+
+	public void setNoiseR(double noiseR) {
+		this.noiseR = noiseR;
 	}
 
 	public double getSize() {
