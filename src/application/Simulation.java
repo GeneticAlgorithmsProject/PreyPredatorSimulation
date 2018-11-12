@@ -49,9 +49,9 @@ public class Simulation {
 
 	}
 
-	public void move() {
-		predators.move();
-		preys.move();
+	public void move(double dt) {
+		predators.move(dt);
+		preys.move(dt);
 	}
 
 	public void update(double dt) {

@@ -7,6 +7,7 @@ import java.util.Random;
 import javafx.scene.layout.Pane;
 
 import model.Individual;
+import utils.Vector2d;
 
 public class Population {
 
@@ -39,8 +40,9 @@ public class Population {
 			population.get(i).setPos(new Vector2d(rnd.nextDouble() * width,rnd.nextDouble() * height));
 	}
 
-	public void move() {
-	
+	public void move(double dt) {
+		for (Individual ind : population)
+			ind.move(dt);		
 	}
 
 	public void update(double dt) {
@@ -49,7 +51,7 @@ public class Population {
 		eat();		
 	}
 
-	protected void findFood() {
+	protected void findPrey() {
 		for (Individual ind : population) {
 			double minDistance = Double.MAX_VALUE;
 			int index = 0;
@@ -62,10 +64,8 @@ public class Population {
 				}
 			}
 			if (prey.getPopulation().size() < 1)
-				return;
-			
-			Individual pr = prey.getPopulation().get(index);
-			ind.setDirFood(Vector2d.normedDiff(pr.getPos(), ind.getPos()));
+				return;	
+			ind.setPrey(prey.getPopulation().get(index));
 		}
 	}
 
@@ -73,8 +73,8 @@ public class Population {
 		for (Individual ind : population) {
 			List<Individual> rInd = new LinkedList<>();
 			for (Individual pr : prey.getPopulation()) {
-				if (Math.abs(ind.getPos().x - pr.getPos().x) < pr.getSize()
-						&& Math.abs(ind.getPos().y - pr.getPos().y) < pr.getSize()) {
+				if (Math.abs(ind.getPos().x - pr.getPos().x) < pr.getGene().getSize()
+						&& Math.abs(ind.getPos().y - pr.getPos().y) < pr.getGene().getSize()) {
 					ind.incrementHealth();
 					rInd.add(pr);
 				}
@@ -88,9 +88,9 @@ public class Population {
 			ind.getPos().fit(0, 0, width, height);
 	}
 
-	protected void moveInds() {
+	protected void moveInds(double dt) {
 		for (Individual ind : population)
-			ind.move();
+			ind.move(dt);
 	}
 
 	protected void death() {

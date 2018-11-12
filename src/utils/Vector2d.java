@@ -1,4 +1,4 @@
-package model;
+package utils;
 
 public class Vector2d {
 

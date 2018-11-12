@@ -53,7 +53,7 @@ public class LayoutController {
 //				double time = (now - startTime) / 1E9d;
 				check();
 				reset();
-				move();
+				move(dt);
 				update(dt);
 				draw();
 			}
@@ -64,8 +64,8 @@ public class LayoutController {
 		this.pane.getChildren().clear();
 	}
 
-	public void move() {
-		simulation.move();
+	public void move(double dt) {
+		simulation.move(dt);
 	}
 
 	public void update(double dt) {

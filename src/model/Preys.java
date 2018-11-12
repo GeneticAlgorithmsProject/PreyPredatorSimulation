@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.layout.Pane;
+import utils.Vector2d;
 
 public class Preys extends Population{
 
@@ -19,11 +20,11 @@ public class Preys extends Population{
 	}
 	
 	@Override
-	public void move() {
-		findFood();
+	public void move(double dt) {
+		findPrey();
 		calculatePredatorsField();
 		boundaryConditions();
-		moveInds();
+		moveInds(dt);
 	}
 	
 	@Override

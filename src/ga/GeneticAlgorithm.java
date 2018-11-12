@@ -1,4 +1,4 @@
-package model;
+package ga;
 
 import model.Individual;
 

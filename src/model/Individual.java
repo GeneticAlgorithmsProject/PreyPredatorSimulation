@@ -5,11 +5,10 @@ import java.util.Random;
 import application.Simulation;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import model.Vector2d;
+import utils.Vector2d;
 
 public class Individual {
 	protected Vector2d pos;
-	protected double size;
 
 	protected int age;
 	protected double health, maxHealth;
@@ -23,43 +22,46 @@ public class Individual {
 	protected Circle circle;
 	protected Color color;
 
+	protected Gene gene;
+
+	protected Individual prey;
+
 	public Individual() {
-		size = 5 + rnd.nextInt(5);
+		gene = new Gene();
 		age = 0;
 		health = 1;
 		maxHealth = health;
 		addHealth = 0.0001;
 		pos = new Vector2d();
-		circle = new Circle(pos.x, pos.y, size);
+		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
 	}
 
 	public Individual(double x, double y) {
-		Random rnd = new Random();
-		size = 5 + rnd.nextInt(5);
+		gene = new Gene();
 		age = 0;
 		health = 1.;
 		maxHealth = health;
 		addHealth = 0.0001;
 		pos = new Vector2d(x, y);
-		circle = new Circle(pos.x, pos.y, size);
+		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
 	}
-	
+
 	public void update(double dt) {
 		circle.setCenterX(pos.x);
 		circle.setCenterY(pos.y);
 		circle.setFill(color);
 		circle.setEffect(Simulation.lighting);
-		circle.setRadius(size);
+		circle.setRadius(gene.getSize());
 		circle.setOpacity(health / maxHealth);
 		decrementHealth(dt);
 	}
 
-	public void move() {
-
+	public void move(double dt) {
+		
 	}
 
 	public void decrementHealth(double dt) {
@@ -76,14 +78,6 @@ public class Individual {
 
 	public void setPos(Vector2d pos) {
 		this.pos = pos;
-	}
-
-	public double getSize() {
-		return size;
-	}
-
-	public void setSize(double size) {
-		this.size = size;
 	}
 
 	public int getAge() {
@@ -141,4 +135,21 @@ public class Individual {
 	public void setDirFood(Vector2d dirFood) {
 		this.dirFood = dirFood;
 	}
+
+	public Gene getGene() {
+		return gene;
+	}
+
+	public void setGene(Gene gene) {
+		this.gene = gene;
+	}
+
+	public Individual getPrey() {
+		return prey;
+	}
+
+	public void setPrey(Individual prey) {
+		this.prey = prey;
+	}
+
 }

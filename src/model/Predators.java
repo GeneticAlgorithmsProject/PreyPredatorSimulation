@@ -17,10 +17,10 @@ public class Predators extends Population{
 	}
 	
 	@Override
-	public void move() {
-		findFood();
+	public void move(double dt) {
+		findPrey();
 		boundaryConditions();
-		moveInds();		
+		moveInds(dt);		
 	}
 	
 	@Override

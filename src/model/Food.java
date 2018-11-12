@@ -9,7 +9,7 @@ public class Food extends Population{
 	}
 	
 	@Override
-	public void move() {
+	public void move(double dt) {
 		
 	}
 	
