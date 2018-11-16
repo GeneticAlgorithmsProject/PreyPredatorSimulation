@@ -10,7 +10,7 @@ import utils.Vector2d;
 public class Individual {
 	protected Vector2d pos;
 
-	protected int age;
+	protected double age;
 	protected double health, maxHealth;
 	protected double addHealth;
 	protected double speed;
@@ -28,8 +28,8 @@ public class Individual {
 
 	public Individual() {
 		gene = new Gene();
-		age = 0;
-		health = 1;
+		age = 0.;
+		health = 1.;
 		maxHealth = health;
 		addHealth = 0.0001;
 		pos = new Vector2d();
@@ -40,7 +40,7 @@ public class Individual {
 
 	public Individual(double x, double y) {
 		gene = new Gene();
-		age = 0;
+		age = 0.;
 		health = 1.;
 		maxHealth = health;
 		addHealth = 0.0001;
@@ -58,6 +58,7 @@ public class Individual {
 		circle.setRadius(gene.getSize());
 		circle.setOpacity(health / maxHealth);
 		decrementHealth(dt);
+		age += dt;
 	}
 
 	public void move(double dt) {
@@ -80,20 +81,12 @@ public class Individual {
 		this.pos = pos;
 	}
 
-	public int getAge() {
+	public double getAge() {
 		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
 	}
 
 	public double getHealth() {
 		return health;
-	}
-
-	public void setHealth(double health) {
-		this.health = health;
 	}
 
 	public double getMaxHealth() {
@@ -104,28 +97,12 @@ public class Individual {
 		this.maxHealth = maxHealth;
 	}
 
-	public double getAddHealth() {
-		return addHealth;
-	}
-
-	public void setAddHealth(double addHealth) {
-		this.addHealth = addHealth;
-	}
-
 	public Circle getCircle() {
 		return circle;
 	}
 
 	public void setCircle(Circle circle) {
 		this.circle = circle;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	public Vector2d getDirFood() {

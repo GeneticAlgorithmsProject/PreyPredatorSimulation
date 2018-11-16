@@ -49,14 +49,14 @@ public class Vector2d {
 
 	public void fit(double x1, double y1, double x2, double y2) {
 		if (x > x2) {
-			x = x2;
-		} else if (x < x1) {
 			x = x1;
+		} else if (x < x1) {
+			x = x2;
 		}
 		if (y > y2) {
-			y = y2;
-		} else if (y < y1) {
 			y = y1;
+		} else if (y < y1) {
+			y = y2;
 		}
 	}
 

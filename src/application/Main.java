@@ -4,13 +4,14 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 	private Stage primaryStage;
 	private FXMLLoader layoutLoader;
-	private VBox layout;
+	private AnchorPane layout;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -23,7 +24,7 @@ public class Main extends Application {
 		try {
 			layoutLoader = new FXMLLoader();
 			layoutLoader.setLocation(Main.class.getResource("Layout.fxml"));
-			layout = (VBox) layoutLoader.load();
+			layout = (AnchorPane) layoutLoader.load();
 			Scene scene = new Scene(layout);
 			primaryStage.setScene(scene);
 			primaryStage.show();

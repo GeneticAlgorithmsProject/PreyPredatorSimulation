@@ -103,6 +103,22 @@ public class Population {
 		}
 		population.removeAll(rInd);
 	}
+	
+	public double getAverageAge() {
+		double averageAge = 0;
+		for(Individual ind : population) {
+			averageAge += ind.getAge();
+		}
+		return averageAge/population.size();
+	}
+	
+	public double getMaxAge() {
+		double maxAge = 0;
+		for(Individual ind : population)
+			if(ind.getAge() > maxAge)
+				maxAge = ind.getAge();
+		return maxAge;
+	}
 
 	public void setPrey(Population prey) {
 		this.prey = prey;

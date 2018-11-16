@@ -1,6 +1,10 @@
 package application;
 
 import javafx.animation.AnimationTimer;
+import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Pane;
@@ -23,13 +27,54 @@ public class Simulation {
 	public static double DT = 10;
 	public static double width, height;
 
-	public Simulation(Pane pane) {
+	private TextField timer;
+
+	private LineChart<Number, Number> preyChart;
+	private XYChart.Series<Number, Number> preyBest;
+	private XYChart.Series<Number, Number> preyAverage;
+
+	private LineChart<Number, Number> predatorChart;
+	private XYChart.Series<Number, Number> predatorBest;
+	private XYChart.Series<Number, Number> predatorAverage;
+
+	private int generation;
+	private double generationTime = 3.;
+	private double generationTimeCount = 0;
+
+	public Simulation(Pane pane, LineChart<Number, Number> preyChart, LineChart<Number, Number> predatorChart,
+			TextField timer) {
 		this.pane = pane;
+		this.preyChart = preyChart;
+		this.predatorChart = predatorChart;
+		this.timer = timer;
 		width = pane.getWidth();
 		height = pane.getHeight();
 		foodCount = 10;
 		preyCount = 5;
 		predatorCount = 2;
+
+		generation = 0;
+		generationTime = 3.;
+		generationTimeCount = 0;
+
+		preyBest = new XYChart.Series<>();
+		preyBest.setName("best");
+		preyAverage = new XYChart.Series<>();
+		preyAverage.setName("average");
+
+		predatorBest = new XYChart.Series<>();
+		predatorBest.setName("best");
+		predatorAverage = new XYChart.Series<>();
+		predatorAverage.setName("average");
+
+		preyChart.getData().clear();
+		preyChart.getData().add(preyBest);
+		preyChart.getData().add(preyAverage);
+
+		predatorChart.getData().clear();
+		predatorChart.getData().add(predatorBest);
+		predatorChart.getData().add(predatorAverage);
+
 	}
 
 	public void init() {
@@ -46,10 +91,10 @@ public class Simulation {
 		predators.init();
 		predators.setPrey(preys);
 	}
-	
+
 	public void animate() {
 		new AnimationTimer() {
-			long startTime = -1;
+			long startTime = -1, currTime = -1;
 
 			private void check() {
 				if (pause()) {
@@ -61,51 +106,73 @@ public class Simulation {
 			public void handle(long now) {
 				if (startTime == -1) {
 					startTime = now;
+					currTime = now;
 				}
-				long deltaNanos = now - startTime;
-				startTime = now;
+				long deltaNanos = now - currTime;
+				currTime = now;
 				double dt = deltaNanos / 1.0e9;
-//				double time = (now - startTime) / 1E9d;
 				check();
 				reset();
 				move(dt);
 				update(dt);
 				draw();
+				double time = (now - startTime) / 1.0e9;
+				addData(dt);
+				timer(time);
 			}
 		}.start();
 	}
 
-	public void reset() {
+	private void timer(double time) {
+		timer.setText(String.valueOf(time));
+	}
+
+	private void addData(double dt) {
+		if (generationTimeCount < generationTime) {
+			generationTimeCount += dt;
+			return;
+		}
+
+		preyBest.getData().add(new XYChart.Data<Number, Number>(generation, preys.getMaxAge()));
+		preyAverage.getData().add(new XYChart.Data<Number, Number>(generation, preys.getAverageAge()));
+
+		predatorBest.getData().add(new XYChart.Data<Number, Number>(generation, predators.getMaxAge()));
+		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation, predators.getAverageAge()));
+
+		generation++;
+		generationTimeCount = 0.;
+	}
+
+	private void reset() {
 		this.pane.getChildren().clear();
 	}
 
-	public void draw() {
+	private void draw() {
 		for (Individual ind : food.getPopulation())
 			pane.getChildren().add(ind.getCircle());
 		for (Individual ind : preys.getPopulation())
 			pane.getChildren().add(ind.getCircle());
 		for (Individual ind : predators.getPopulation())
 			pane.getChildren().add(ind.getCircle());
-
 	}
 
-	public void move(double dt) {
+	private void move(double dt) {
 		predators.move(dt);
 		preys.move(dt);
 	}
 
-	public void update(double dt) {
+	private void update(double dt) {
 		food.update(dt);
 		preys.update(dt);
 		predators.update(dt);
 	}
 
-	public boolean pause() {
+	private boolean pause() {
 		return food.getPopulation().size() < 1 || preys.getPopulation().size() < 1
 				|| predators.getPopulation().size() < 1;
 	}
 
-	public void initLighting() {
+	private void initLighting() {
 		light = new Light.Spot();
 		light.setX(0);
 		light.setY(0);
