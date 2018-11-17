@@ -1,8 +1,9 @@
-package model;
+package model.individual;
 
 import java.util.Random;
 
 import application.Simulation;
+import ga.Gene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import utils.Vector2d;

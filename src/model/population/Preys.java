@@ -1,6 +1,8 @@
-package model;
+package model.population;
 
 import javafx.scene.layout.Pane;
+import model.individual.Individual;
+import model.individual.Prey;
 import utils.Vector2d;
 
 public class Preys extends Population{

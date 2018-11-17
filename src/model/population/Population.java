@@ -1,4 +1,4 @@
-package model;
+package model.population;
 
 import java.util.List;
 import java.util.Collections;
@@ -6,8 +6,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import javafx.scene.layout.Pane;
-
-import model.Individual;
+import model.individual.Individual;
 import utils.Vector2d;
 
 public class Population {
@@ -16,8 +15,6 @@ public class Population {
 	protected List<Individual> dead;
 	protected Population adversary;
 	protected Population prey;
-	
-	protected Random rnd;
 
 	protected int count;
 	protected double width, height;
@@ -26,11 +23,10 @@ public class Population {
 
 	public Population(int count, Pane pane) {
 		population = new LinkedList<>();
-		rnd = new Random();
+		dead = new LinkedList<>();
 		this.count = count;
 		width = pane.getWidth();
 		height = pane.getHeight();
-		dead = new LinkedList<>();
 		name = "Default";
 	}
 
@@ -40,6 +36,7 @@ public class Population {
 	}
 
 	public void initPositions() {
+		Random rnd = new Random();
 		for (int i = 0; i < count; ++i)
 			population.get(i).setPos(new Vector2d(rnd.nextDouble() * width, rnd.nextDouble() * height));
 	}
@@ -53,9 +50,9 @@ public class Population {
 		for (Individual ind : population)
 			ind.update(dt);
 	}
-	
+
 	public void updateSpecial(double dt) {
-		
+
 	}
 
 	public double getAverageAge() {
@@ -68,7 +65,7 @@ public class Population {
 	public double getMaxAge() {
 		double maxAge = 0;
 		for (Individual ind : population)
-			if(ind.getAge() > maxAge)
+			if (ind.getAge() > maxAge)
 				maxAge = ind.getAge();
 		return maxAge;
 	}
@@ -114,7 +111,7 @@ public class Population {
 	public void joinIndLists() {
 		population.addAll(dead);
 	}
-	
+
 	protected void boundaryConditions() {
 		for (Individual ind : population)
 			ind.getPos().fit(0, 0, width, height);

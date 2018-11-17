@@ -1,6 +1,7 @@
-package model;
+package model.individual;
 
 import application.Simulation;
+import ga.GenePrey;
 import javafx.scene.paint.Color;
 import utils.Vector2d;
 
@@ -13,6 +14,7 @@ public class Prey extends Individual {
 
 	public Prey() {
 		super();
+		gene = new GenePrey();
 		dirEscape = new Vector2d();
 		speed = 1. / Simulation.DT;
 		color = new Color(0, 0, 1, 1);
@@ -22,6 +24,7 @@ public class Prey extends Individual {
 
 	public Prey(double x, double y) {
 		super(x, y);
+		gene = new GenePrey();
 		dirEscape = new Vector2d();
 		speed = 1. / Simulation.DT;
 		color = new Color(0, 0, 1, 1);
@@ -31,6 +34,7 @@ public class Prey extends Individual {
 	
 	public Prey(double R) {
 		super(R);
+		gene = new GenePrey();
 		dirEscape = new Vector2d();
 		speed = 1. / Simulation.DT;
 		color = new Color(0, 0, 1, 1);

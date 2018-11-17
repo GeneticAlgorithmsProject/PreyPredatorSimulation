@@ -1,4 +1,4 @@
-package model;
+package model.individual;
 
 import application.Simulation;
 import javafx.scene.paint.Color;
@@ -31,7 +31,6 @@ public class Predator extends Individual{
 	public void move(double dt) {
 		dirFood = Vector2d.normedDiff(prey.getPos(), pos);
 		
-		dirFood.mult(gene.getDirFoodMult());
 		dirFood.mult(speed);
 		pos.add(dirFood);
 	}

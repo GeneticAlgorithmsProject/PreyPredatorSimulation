@@ -8,11 +8,11 @@ import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import model.Food;
-import model.Individual;
-import model.Population;
-import model.Predators;
-import model.Preys;
+import model.individual.Individual;
+import model.population.Food;
+import model.population.Population;
+import model.population.Predators;
+import model.population.Preys;
 
 public class Simulation {
 

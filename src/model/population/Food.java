@@ -1,6 +1,7 @@
-package model;
+package model.population;
 
 import javafx.scene.layout.Pane;
+import model.individual.Individual;
 
 public class Food extends Population{
 	
