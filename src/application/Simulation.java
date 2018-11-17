@@ -104,8 +104,7 @@ public class Simulation {
 				if (pause()) {
 					startTime = now;
 					timer.setText(String.valueOf(0));
-					predators.setLifespan(time);
-					preys.setLifespan(time);
+					join();
 					addData();
 					init();
 					//GA
@@ -116,6 +115,7 @@ public class Simulation {
 			public void handle(long now) {
 				if (startTime == -1) {
 					startTime = now;
+					currTime = now;
 				}
 				long deltaNanos = now - currTime;
 				currTime = now;
@@ -141,6 +141,11 @@ public class Simulation {
 		predatorBest.getData().add(new XYChart.Data<Number, Number>(generation, predators.getMaxAge()));
 		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation, predators.getAverageAge()));
 		generation++;
+	}
+	
+	private void join() {
+		predators.joinIndLists();
+		preys.joinIndLists();
 	}
 
 	private void reset() {

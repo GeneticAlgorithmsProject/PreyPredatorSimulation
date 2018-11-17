@@ -13,11 +13,10 @@ import utils.Vector2d;
 public class Population {
 
 	protected List<Individual> population;
+	protected List<Individual> dead;
 	protected Population adversary;
 	protected Population prey;
-
-	protected List<Double> lifespan;
-
+	
 	protected Random rnd;
 
 	protected int count;
@@ -31,7 +30,7 @@ public class Population {
 		this.count = count;
 		width = pane.getWidth();
 		height = pane.getHeight();
-		lifespan = new LinkedList<>();
+		dead = new LinkedList<>();
 		name = "Default";
 	}
 
@@ -61,13 +60,17 @@ public class Population {
 
 	public double getAverageAge() {
 		double averageAge = 0;
-		for (Double a : lifespan)
-			averageAge += a;
+		for (Individual ind : population)
+			averageAge += ind.getAge();
 		return averageAge / population.size();
 	}
 
 	public double getMaxAge() {
-		return Collections.max(lifespan);
+		double maxAge = 0;
+		for (Individual ind : population)
+			if(ind.getAge() > maxAge)
+				maxAge = ind.getAge();
+		return maxAge;
 	}
 
 	protected void findPrey() {
@@ -98,24 +101,20 @@ public class Population {
 				}
 	}
 
-	public void setLifespan(double time) {
-		for (int i = 0; i < population.size(); i++) {
-			lifespan.add(time);
-		}
-	}
-
 	protected void death() {
-		List<Individual> rInd = new LinkedList<>();
 		for (int i = 0; i < population.size(); ++i) {
 			Individual ind = population.get(i);
 			if (ind.isDead()) {
-				lifespan.add(ind.getAge());
-				rInd.add(ind);
+				dead.add(ind);
 			}
 		}
-		population.removeAll(rInd);
+		population.removeAll(dead);
 	}
 
+	public void joinIndLists() {
+		population.addAll(dead);
+	}
+	
 	protected void boundaryConditions() {
 		for (Individual ind : population)
 			ind.getPos().fit(0, 0, width, height);
