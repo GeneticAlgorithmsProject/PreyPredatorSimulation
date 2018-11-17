@@ -14,8 +14,6 @@ public class Individual {
 	protected double health, maxHealth;
 	protected double addHealth;
 	protected double speed;
-	
-	protected boolean visible;
 
 	protected Vector2d dirFood;
 
@@ -38,7 +36,6 @@ public class Individual {
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
-		visible = true;
 	}
 
 	public Individual(double x, double y) {
@@ -51,7 +48,6 @@ public class Individual {
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
-		visible = true;
 	}
 	
 	public Individual(double R) {
@@ -64,7 +60,6 @@ public class Individual {
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
-		visible = true;
 	}
 
 	public void update(double dt) {
@@ -111,7 +106,6 @@ public class Individual {
 	}
 	
 	public void death() {
-		visible = false;
 		health = 0;
 	}
 	
@@ -157,14 +151,6 @@ public class Individual {
 
 	public void setPrey(Individual prey) {
 		this.prey = prey;
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
 	}
 
 }
