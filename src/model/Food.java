@@ -6,18 +6,16 @@ public class Food extends Population{
 	
 	public Food(int count, Pane pane) {
 		super(count,pane);
+		name = "Food";
 	}
 	
 	@Override
 	public void move(double dt) {
 		
 	}
-	
+		
 	@Override
-	public void update(double dt) {
-		for (Individual ind : population)
-			ind.update(dt);		
-	
+	public void updateSpecial(double dt) {
 		if(population.size() < count) {
 			population.add(new Individual(Math.min(width, height)));
 		}	

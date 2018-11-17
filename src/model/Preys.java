@@ -9,6 +9,7 @@ public class Preys extends Population{
 	
 	public Preys(int count, Pane pane) {
 		super(count, pane);
+		name = "Prey";
 	}
 	
 	@Override
@@ -26,9 +27,7 @@ public class Preys extends Population{
 	}
 	
 	@Override
-	public void update(double dt) {
-		for (Individual ind : population)
-			ind.update(dt);		
+	public void updateSpecial(double dt) {
 		eat();
 		death();
 	}

@@ -45,7 +45,7 @@ public class LayoutController {
 		axisX.setLabel("Generation");
 		axisX.setAutoRanging(true);
 		axisX.setAnimated(true);
-		axisX.setForceZeroInRange(false);
+		axisX.setForceZeroInRange(true);
 		
 		NumberAxis axisY = (NumberAxis)preyChart.getYAxis();	
 		axisY.setAutoRanging(true);
@@ -56,7 +56,7 @@ public class LayoutController {
 		axisX.setLabel("Generation");
 		axisX.setAutoRanging(true);
 		axisX.setAnimated(true);
-		axisX.setForceZeroInRange(false);
+		axisX.setForceZeroInRange(true);
 		
 		axisY = (NumberAxis)predatorChart.getYAxis();	
 		axisY.setAutoRanging(true);

@@ -1,7 +1,6 @@
 package application;
 
 import javafx.animation.AnimationTimer;
-import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
@@ -40,9 +39,7 @@ public class Simulation {
 	private XYChart.Series<Number, Number> predatorAverage;
 
 	private int generation;
-	private double generationTime = 3.;
-	private double generationTimeCount = 0;
-
+	
 	public Simulation(Pane pane, LineChart<Number, Number> preyChart, LineChart<Number, Number> predatorChart,
 			TextField timer) {
 		this.pane = pane;
@@ -53,12 +50,10 @@ public class Simulation {
 		height = pane.getHeight();
 		foodCount = 50;
 		preyCount = 20;
-		predatorCount = 5;
+		predatorCount = 25;
 
 		generation = 0;
-		generationTime = 3.;
-		generationTimeCount = 0;
-
+		
 		preyBest = new XYChart.Series<>();
 		preyBest.setName("best");
 		preyAverage = new XYChart.Series<>();
@@ -103,10 +98,17 @@ public class Simulation {
 	public void animate() {
 		new AnimationTimer() {
 			long startTime = -1, currTime = -1;
+			double time = -1;
 
-			private void check() {
+			private void check(long now) {
 				if (pause()) {
-					this.stop();
+					startTime = now;
+					timer.setText(String.valueOf(0));
+					predators.setLifespan(time);
+					preys.setLifespan(time);
+					addData();
+					init();
+					//GA
 				}
 			}
 
@@ -114,18 +116,16 @@ public class Simulation {
 			public void handle(long now) {
 				if (startTime == -1) {
 					startTime = now;
-					currTime = now;
 				}
 				long deltaNanos = now - currTime;
 				currTime = now;
 				double dt = deltaNanos / 1.0e9;
-				check();
+				check(now);
 				reset();
 				move(dt);
 				update(dt);
 				draw();
-				addData(dt);
-				double time = (now - startTime) / 1.0e9;
+				time = (now - startTime) / 1.0e9;
 				timer(time);
 			}
 		}.start();
@@ -135,20 +135,12 @@ public class Simulation {
 		timer.setText(String.valueOf(time));
 	}
 
-	private void addData(double dt) {
-		if (generationTimeCount < generationTime) {
-			generationTimeCount += dt;
-			return;
-		}
-
+	private void addData() {
 		preyBest.getData().add(new XYChart.Data<Number, Number>(generation, preys.getMaxAge()));
 		preyAverage.getData().add(new XYChart.Data<Number, Number>(generation, preys.getAverageAge()));
-
 		predatorBest.getData().add(new XYChart.Data<Number, Number>(generation, predators.getMaxAge()));
 		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation, predators.getAverageAge()));
-
 		generation++;
-		generationTimeCount = 0.;
 	}
 
 	private void reset() {
@@ -180,6 +172,9 @@ public class Simulation {
 		food.update(dt);
 		preys.update(dt);
 		predators.update(dt);
+		food.updateSpecial(dt);
+		preys.updateSpecial(dt);
+		predators.updateSpecial(dt);
 	}
 
 	private boolean pause() {

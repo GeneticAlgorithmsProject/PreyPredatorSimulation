@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -15,10 +16,14 @@ public class Population {
 	protected Population adversary;
 	protected Population prey;
 
+	protected List<Double> lifespan;
+
 	protected Random rnd;
 
 	protected int count;
 	protected double width, height;
+
+	protected String name;
 
 	public Population(int count, Pane pane) {
 		population = new LinkedList<>();
@@ -26,29 +31,43 @@ public class Population {
 		this.count = count;
 		width = pane.getWidth();
 		height = pane.getHeight();
+		lifespan = new LinkedList<>();
+		name = "Default";
 	}
 
 	public void init() {
-		for (int i = 0; i < count; ++i) {
-			Individual ind = new Individual(Math.max(width, height));
-			population.add(ind);
-		}
+		for (int i = 0; i < count; ++i)
+			population.add(new Individual(Math.min(width, height)));
 	}
 
 	public void initPositions() {
-		for (int i = 0; i < count; ++i) 
-			population.get(i).setPos(new Vector2d(rnd.nextDouble() * width,rnd.nextDouble() * height));
+		for (int i = 0; i < count; ++i)
+			population.get(i).setPos(new Vector2d(rnd.nextDouble() * width, rnd.nextDouble() * height));
 	}
 
 	public void move(double dt) {
 		for (Individual ind : population)
-			ind.move(dt);		
+			ind.move(dt);
 	}
 
 	public void update(double dt) {
 		for (Individual ind : population)
-			ind.update(dt);		
-		eat();		
+			ind.update(dt);
+	}
+	
+	public void updateSpecial(double dt) {
+		
+	}
+
+	public double getAverageAge() {
+		double averageAge = 0;
+		for (Double a : lifespan)
+			averageAge += a;
+		return averageAge / population.size();
+	}
+
+	public double getMaxAge() {
+		return Collections.max(lifespan);
 	}
 
 	protected void findPrey() {
@@ -64,23 +83,37 @@ public class Population {
 				}
 			}
 			if (prey.getPopulation().size() < 1)
-				return;	
+				return;
 			ind.setPrey(prey.getPopulation().get(index));
 		}
 	}
 
 	protected void eat() {
-		for (Individual ind : population) {
-			List<Individual> rInd = new LinkedList<>();
-			for (Individual pr : prey.getPopulation()) {
+		for (Individual ind : population)
+			for (Individual pr : prey.getPopulation())
 				if (Math.abs(ind.getPos().x - pr.getPos().x) < pr.getGene().getSize()
 						&& Math.abs(ind.getPos().y - pr.getPos().y) < pr.getGene().getSize()) {
 					ind.incrementHealth();
-					rInd.add(pr);
+					pr.death();
 				}
-			}
-			prey.getPopulation().removeAll(rInd);
+	}
+
+	public void setLifespan(double time) {
+		for (int i = 0; i < population.size(); i++) {
+			lifespan.add(time);
 		}
+	}
+
+	protected void death() {
+		List<Individual> rInd = new LinkedList<>();
+		for (int i = 0; i < population.size(); ++i) {
+			Individual ind = population.get(i);
+			if (ind.isDead()) {
+				lifespan.add(ind.getAge());
+				rInd.add(ind);
+			}
+		}
+		population.removeAll(rInd);
 	}
 
 	protected void boundaryConditions() {
@@ -91,33 +124,6 @@ public class Population {
 	protected void moveInds(double dt) {
 		for (Individual ind : population)
 			ind.move(dt);
-	}
-
-	protected void death() {
-		List<Individual> rInd = new LinkedList<>();
-		for (int i = 0; i < population.size(); ++i) {
-			Individual ind = population.get(i);
-			if (ind.getHealth() <= 0) {
-				rInd.add(ind);
-			}
-		}
-		population.removeAll(rInd);
-	}
-	
-	public double getAverageAge() {
-		double averageAge = 0;
-		for(Individual ind : population) {
-			averageAge += ind.getAge();
-		}
-		return averageAge/population.size();
-	}
-	
-	public double getMaxAge() {
-		double maxAge = 0;
-		for(Individual ind : population)
-			if(ind.getAge() > maxAge)
-				maxAge = ind.getAge();
-		return maxAge;
 	}
 
 	public void setPrey(Population prey) {
