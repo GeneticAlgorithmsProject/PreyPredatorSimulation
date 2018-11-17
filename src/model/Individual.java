@@ -70,6 +70,8 @@ public class Individual {
 		circle.setRadius(gene.getSize());
 		circle.setOpacity(health / maxHealth);
 		decrementHealth(dt);
+		if(isDead())
+			return;
 		age += dt;
 	}
 
