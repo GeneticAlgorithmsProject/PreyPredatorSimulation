@@ -10,10 +10,8 @@ public class Predators extends Population{
 	
 	@Override
 	public void init() {
-		for (int i = 0; i < count; ++i) {
-			Individual ind = new Predator(width * rnd.nextDouble(), height * rnd.nextDouble());
-			population.add(ind);
-		}
+		for (int i = 0; i < count; ++i) 
+			population.add(new Predator(Math.min(width, height)));
 	}
 	
 	@Override

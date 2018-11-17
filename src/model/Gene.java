@@ -15,11 +15,11 @@ public class Gene {
 	public Gene() {
 		Random rnd = new Random();
 		dirFoodMult = 1.;
-		dirEscapeMult = 0.001;
+		dirEscapeMult = 10;
 		noiseA = (1 + rnd.nextDouble()) * 5;
 		noiseF = (1 + rnd.nextDouble()) * 0.01;
 		noiseR = (1 + rnd.nextDouble()) * 30;
-		size = (1 + rnd.nextDouble()) * 5;
+		size = (1 + rnd.nextDouble()) * 2;
 	}
 
 	public double getDirEscapeMult() {

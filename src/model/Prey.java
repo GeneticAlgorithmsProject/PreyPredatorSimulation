@@ -28,6 +28,15 @@ public class Prey extends Individual {
 		fDir = 1.;
 		fA = 0.;
 	}
+	
+	public Prey(double R) {
+		super(R);
+		dirEscape = new Vector2d();
+		speed = 1. / Simulation.DT;
+		color = new Color(0, 0, 1, 1);
+		fDir = 1.;
+		fA = 0.;	
+	}
 
 	@Override
 	public void move(double dt) {

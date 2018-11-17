@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Random;
+
 public class Vector2d {
 
 	public double x, y;
@@ -12,6 +14,14 @@ public class Vector2d {
 	public Vector2d(double x, double y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Vector2d(double R) {
+		Random rnd = new Random();
+		double a = rnd.nextDouble() * 2 * Math.PI;
+		double r = R/2 * Math.sqrt(rnd.nextDouble());
+		x = r * Math.cos(a) + R/2;
+		y = r * Math.sin(a) + R/2;	
 	}
 
 	public void add(Vector2d v) {

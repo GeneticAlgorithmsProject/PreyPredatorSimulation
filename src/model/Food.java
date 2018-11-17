@@ -19,10 +19,7 @@ public class Food extends Population{
 			ind.update(dt);		
 	
 		if(population.size() < count) {
-			double x = rnd.nextDouble()*width;
-			double y = rnd.nextDouble()*height;
-			Individual ind = new Individual(x,y);
-			population.add(ind);
+			population.add(new Individual(Math.min(width, height)));
 		}	
 	}
 	

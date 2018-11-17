@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import model.Food;
 import model.Individual;
 import model.Population;
@@ -20,6 +21,7 @@ public class Simulation {
 	private int foodCount, preyCount, predatorCount;
 
 	private Pane pane;
+	private Circle circle;
 
 	private Light.Spot light;
 	public static Lighting lighting;
@@ -49,9 +51,9 @@ public class Simulation {
 		this.timer = timer;
 		width = pane.getWidth();
 		height = pane.getHeight();
-		foodCount = 10;
-		preyCount = 5;
-		predatorCount = 2;
+		foodCount = 50;
+		preyCount = 20;
+		predatorCount = 5;
 
 		generation = 0;
 		generationTime = 3.;
@@ -74,7 +76,13 @@ public class Simulation {
 		predatorChart.getData().clear();
 		predatorChart.getData().add(predatorBest);
 		predatorChart.getData().add(predatorAverage);
-
+		
+		preyBest.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: blue;");
+		preyAverage.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: grey;");
+		predatorBest.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: red;");
+		predatorAverage.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: grey;");
+		
+		circle = new Circle(width/2,height/2,Math.min(width,height)/2);
 	}
 
 	public void init() {
@@ -116,8 +124,8 @@ public class Simulation {
 				move(dt);
 				update(dt);
 				draw();
-				double time = (now - startTime) / 1.0e9;
 				addData(dt);
+				double time = (now - startTime) / 1.0e9;
 				timer(time);
 			}
 		}.start();
@@ -144,7 +152,7 @@ public class Simulation {
 	}
 
 	private void reset() {
-		this.pane.getChildren().clear();
+		pane.getChildren().clear();
 	}
 
 	private void draw() {
@@ -154,6 +162,7 @@ public class Simulation {
 			pane.getChildren().add(ind.getCircle());
 		for (Individual ind : predators.getPopulation())
 			pane.getChildren().add(ind.getCircle());
+		pane.getChildren().add(circle);
 	}
 
 	private void move(double dt) {
@@ -162,6 +171,12 @@ public class Simulation {
 	}
 
 	private void update(double dt) {
+		width = pane.getWidth();
+		height = pane.getHeight();
+		circle.setCenterX(width/2);
+		circle.setCenterY(height/2);
+		circle.setRadius(Math.min(width,height)/2);
+		circle.setOpacity(0.05);
 		food.update(dt);
 		preys.update(dt);
 		predators.update(dt);

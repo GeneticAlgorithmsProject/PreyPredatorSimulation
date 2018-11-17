@@ -49,6 +49,18 @@ public class Individual {
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
 	}
+	
+	public Individual(double R) {
+		gene = new Gene();
+		age = 0.;
+		health = 1.;
+		maxHealth = health;
+		addHealth = 0.0001;
+		pos = new Vector2d(R);
+		circle = new Circle(pos.x, pos.y, gene.getSize());
+		color = new Color(0, 1, 0, 1);
+		dirFood = new Vector2d();
+	}
 
 	public void update(double dt) {
 		circle.setCenterX(pos.x);

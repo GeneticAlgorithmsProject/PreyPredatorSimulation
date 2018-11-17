@@ -30,7 +30,7 @@ public class Population {
 
 	public void init() {
 		for (int i = 0; i < count; ++i) {
-			Individual ind = new Individual(width * rnd.nextDouble(), height * rnd.nextDouble());
+			Individual ind = new Individual(Math.max(width, height));
 			population.add(ind);
 		}
 	}

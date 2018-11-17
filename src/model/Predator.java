@@ -19,6 +19,13 @@ public class Predator extends Individual{
 		speed = 1./Simulation.DT;
 		color = new Color(1, 0, 0, 1);	
 	}
+	
+	public Predator(double R) {
+		super(R);
+		dirFood = new Vector2d();
+		speed = 1. / Simulation.DT;
+		color = new Color(1, 0, 0, 1);
+	}
 
 	@Override
 	public void move(double dt) {
