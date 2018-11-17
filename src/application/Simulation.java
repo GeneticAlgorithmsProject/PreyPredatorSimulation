@@ -27,6 +27,7 @@ public class Simulation {
 
 	public static double DT = 10;
 	public static double width, height;
+	public static double timeMultiplier;
 
 	private TextField timer;
 
@@ -98,7 +99,7 @@ public class Simulation {
 	public void animate() {
 		new AnimationTimer() {
 			long startTime = -1, currTime = -1;
-			double time = -1;
+			double time = 0;
 
 			private void check(long now) {
 				if (pause()) {
@@ -120,12 +121,13 @@ public class Simulation {
 				long deltaNanos = now - currTime;
 				currTime = now;
 				double dt = deltaNanos / 1.0e9;
+				dt *= timeMultiplier;
 				check(now);
 				reset();
 				move(dt);
 				update(dt);
 				draw();
-				time = (now - startTime) / 1.0e9;
+				time += dt;
 				timer(time);
 			}
 		}.start();
@@ -212,5 +214,8 @@ public class Simulation {
 	public Population getPredators() {
 		return predators;
 	}
-
+	
+	public void setTimeMultiplier(double timeMultiplier) {
+		this.timeMultiplier = timeMultiplier;
+	}
 }

@@ -14,7 +14,9 @@ public class Individual {
 	protected double age;
 	protected double health, maxHealth;
 	protected double addHealth;
+	protected double primaryAddHealth;
 	protected double speed;
+	protected double primarySpeed;
 
 	protected Vector2d dirFood;
 
@@ -32,7 +34,8 @@ public class Individual {
 		age = 0.;
 		health = 1.;
 		maxHealth = health;
-		addHealth = 0.0001;
+		primaryAddHealth = 0.0001;
+		primarySpeed = 1;
 		pos = new Vector2d();
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
@@ -44,7 +47,8 @@ public class Individual {
 		age = 0.;
 		health = 1.;
 		maxHealth = health;
-		addHealth = 0.0001;
+		primaryAddHealth = 0.0001;
+		primarySpeed = 1;
 		pos = new Vector2d(x, y);
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
@@ -56,7 +60,8 @@ public class Individual {
 		age = 0.;
 		health = 1.;
 		maxHealth = health;
-		addHealth = 0.0001;
+		primaryAddHealth = 0.0001;
+		primarySpeed = 1;
 		pos = new Vector2d(R);
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
@@ -64,6 +69,8 @@ public class Individual {
 	}
 
 	public void update(double dt) {
+		speed = primarySpeed*Simulation.timeMultiplier;
+		addHealth = primaryAddHealth*Simulation.timeMultiplier;
 		circle.setCenterX(pos.x);
 		circle.setCenterY(pos.y);
 		circle.setFill(color);

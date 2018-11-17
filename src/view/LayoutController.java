@@ -6,6 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import application.Simulation;
@@ -24,6 +25,8 @@ public class LayoutController {
 	private LineChart<Number, Number> predatorChart;
 	@FXML
 	private TextField timer;
+	@FXML
+	private Slider timeMultiplier;
 	
 	private Simulation simulation;
 	
@@ -31,12 +34,14 @@ public class LayoutController {
 	@FXML
 	public void initialize() {
 		initCharts();
+		initSliders();
 	}
 
 	@FXML
 	private void handleButtonAction(ActionEvent event) {
 		simulation = new Simulation(pane, preyChart, predatorChart, timer);
 		simulation.init();
+		Simulation.timeMultiplier = timeMultiplier.getValue();
 		simulation.animate();
 	}
 	
@@ -62,6 +67,12 @@ public class LayoutController {
 		axisY.setAutoRanging(true);
 		axisY.setAnimated(true);
 		axisY.setLabel("Lifespan");
+	}
+	
+	private void initSliders() {
+		timeMultiplier.valueProperty().addListener((observable, oldValue, newValue) -> {
+			Simulation.timeMultiplier = timeMultiplier.getValue();
+		});
 	}
 
 }
