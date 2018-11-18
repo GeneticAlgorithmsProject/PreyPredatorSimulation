@@ -37,12 +37,10 @@ public class Prey extends Individual {
 	@Override
 	public void move(double dt) {
 		dirFood = Vector2d.normedDiff(prey.getPos(), pos);
-		
-		dirEscape.mult(gene.getDirEscapeMult());
 		dirFood.mult(gene.getDirFoodMult());
+		dirEscape.mult(gene.getDirEscapeMult());
 		Vector2d dir = Vector2d.add(dirFood, dirEscape);
 		dir.norm();
-		
 		if(Vector2d.dist(pos, prey.getPos()) > gene.getNoiseR())
 			oscillate(dir, dt);
 		dir.mult(speed);

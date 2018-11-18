@@ -27,13 +27,18 @@ public class LayoutController {
 	private TextField timer;
 	@FXML
 	private Slider timeMultiplier;
+	@FXML
+	private Slider foodCount;
+	@FXML
+	private Slider preyCount;
+	@FXML
+	private Slider predatorCount;
 	
 	private Simulation simulation;
 	
 
 	@FXML
 	public void initialize() {
-		initCharts();
 		initSliders();
 	}
 
@@ -44,34 +49,19 @@ public class LayoutController {
 		Simulation.timeMultiplier = timeMultiplier.getValue();
 		simulation.animate();
 	}
-	
-	private void initCharts() {
-		NumberAxis axisX = (NumberAxis)preyChart.getXAxis();
-		axisX.setLabel("Generation");
-		axisX.setAutoRanging(true);
-		axisX.setAnimated(true);
-		axisX.setForceZeroInRange(true);
 		
-		NumberAxis axisY = (NumberAxis)preyChart.getYAxis();	
-		axisY.setAutoRanging(true);
-		axisY.setAnimated(true);
-		axisY.setLabel("Lifespan");
-	
-		axisX = (NumberAxis)predatorChart.getXAxis();
-		axisX.setLabel("Generation");
-		axisX.setAutoRanging(true);
-		axisX.setAnimated(true);
-		axisX.setForceZeroInRange(true);
-		
-		axisY = (NumberAxis)predatorChart.getYAxis();	
-		axisY.setAutoRanging(true);
-		axisY.setAnimated(true);
-		axisY.setLabel("Lifespan");
-	}
-	
 	private void initSliders() {
 		timeMultiplier.valueProperty().addListener((observable, oldValue, newValue) -> {
 			Simulation.timeMultiplier = timeMultiplier.getValue();
+		});
+		foodCount.valueProperty().addListener((observable, oldValue, newValue) -> {
+			Simulation.foodCount = (int)foodCount.getValue();
+		});
+		preyCount.valueProperty().addListener((observable, oldValue, newValue) -> {
+			Simulation.preyCount = (int)preyCount.getValue();
+		});
+		predatorCount.valueProperty().addListener((observable, oldValue, newValue) -> {
+			Simulation.predatorCount = (int)predatorCount.getValue();
 		});
 	}
 

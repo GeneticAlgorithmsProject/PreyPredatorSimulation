@@ -141,4 +141,12 @@ public class Population {
 	public void setAdversary(Population predators) {
 
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setPopulation(List<Individual> population) {
+		this.population = population;
+	}
 }

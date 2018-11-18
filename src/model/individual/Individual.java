@@ -35,7 +35,7 @@ public class Individual {
 		health = 1.;
 		maxHealth = health;
 		primaryAddHealth = 0.0001;
-		primarySpeed = 1;
+		primarySpeed = 1./gene.getSize();
 		pos = new Vector2d();
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
@@ -48,7 +48,7 @@ public class Individual {
 		health = 1.;
 		maxHealth = health;
 		primaryAddHealth = 0.0001;
-		primarySpeed = 1;
+		primarySpeed = 1/gene.getSize();
 		pos = new Vector2d(x, y);
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);
@@ -61,7 +61,7 @@ public class Individual {
 		health = 1.;
 		maxHealth = health;
 		primaryAddHealth = 0.0001;
-		primarySpeed = 1;
+		primarySpeed = 1/gene.getSize();
 		pos = new Vector2d(R);
 		circle = new Circle(pos.x, pos.y, gene.getSize());
 		color = new Color(0, 1, 0, 1);

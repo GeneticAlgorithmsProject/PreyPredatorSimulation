@@ -1,5 +1,6 @@
 package application;
 
+import ga.GeneticAlgorithm;
 import javafx.animation.AnimationTimer;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -15,7 +16,7 @@ import model.population.Preys;
 public class Simulation {
 
 	private Population food, preys, predators;
-	private int foodCount, preyCount, predatorCount;
+	public static int foodCount, preyCount, predatorCount;
 
 	private Pane pane;
 	private Circle circle;
@@ -98,8 +99,11 @@ public class Simulation {
 					timer(time = 0);
 					join();
 					addData();
+					GeneticAlgorithm ga = new GeneticAlgorithm(2, 1, 0.01);
+					ga.createNewGeneration(preys);
+					ga.createNewGeneration(predators);
 					init();
-					// GA
+					
 				}
 			}
 
@@ -178,17 +182,5 @@ public class Simulation {
 	private boolean pause() {
 		return food.getPopulation().size() < 1 || preys.getPopulation().size() < 1
 				|| predators.getPopulation().size() < 1;
-	}
-
-	public Population getFood() {
-		return food;
-	}
-
-	public Population getPreys() {
-		return preys;
-	}
-
-	public Population getPredators() {
-		return predators;
 	}
 }
