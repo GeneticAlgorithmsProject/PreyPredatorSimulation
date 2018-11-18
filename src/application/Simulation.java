@@ -104,7 +104,7 @@ public class Simulation {
 			private void check(long now) {
 				if (pause()) {
 					startTime = now;
-					timer.setText(String.valueOf(0));
+					timer(time = 0);
 					join();
 					addData();
 					init();
@@ -120,8 +120,7 @@ public class Simulation {
 				}
 				long deltaNanos = now - currTime;
 				currTime = now;
-				double dt = deltaNanos / 1.0e9;
-				dt *= timeMultiplier;
+				double dt = deltaNanos / 1.0e9 * timeMultiplier;;
 				check(now);
 				reset();
 				move(dt);
@@ -134,7 +133,7 @@ public class Simulation {
 	}
 
 	private void timer(double time) {
-		timer.setText(String.valueOf(time));
+		timer.setText(String.format("t=%.2fs", time));
 	}
 
 	private void addData() {
