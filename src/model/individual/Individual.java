@@ -74,7 +74,6 @@ public class Individual {
 		circle.setCenterX(pos.x);
 		circle.setCenterY(pos.y);
 		circle.setFill(color);
-		circle.setEffect(Simulation.lighting);
 		circle.setRadius(gene.getSize());
 		circle.setOpacity(health / maxHealth);
 		decrementHealth(dt);
