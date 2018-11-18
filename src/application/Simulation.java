@@ -31,21 +31,17 @@ public class Simulation {
 
 	private TextField timer;
 
-	private LineChart<Number, Number> preyChart;
 	private XYChart.Series<Number, Number> preyBest;
 	private XYChart.Series<Number, Number> preyAverage;
 
-	private LineChart<Number, Number> predatorChart;
 	private XYChart.Series<Number, Number> predatorBest;
 	private XYChart.Series<Number, Number> predatorAverage;
 
 	private int generation;
-	
+
 	public Simulation(Pane pane, LineChart<Number, Number> preyChart, LineChart<Number, Number> predatorChart,
 			TextField timer) {
 		this.pane = pane;
-		this.preyChart = preyChart;
-		this.predatorChart = predatorChart;
 		this.timer = timer;
 		width = pane.getWidth();
 		height = pane.getHeight();
@@ -54,7 +50,7 @@ public class Simulation {
 		predatorCount = 25;
 
 		generation = 0;
-		
+
 		preyBest = new XYChart.Series<>();
 		preyBest.setName("best");
 		preyAverage = new XYChart.Series<>();
@@ -72,13 +68,13 @@ public class Simulation {
 		predatorChart.getData().clear();
 		predatorChart.getData().add(predatorBest);
 		predatorChart.getData().add(predatorAverage);
-		
+
 		preyBest.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: blue;");
 		preyAverage.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: grey;");
 		predatorBest.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: red;");
 		predatorAverage.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: grey;");
-		
-		circle = new Circle(width/2,height/2,Math.min(width,height)/2);
+
+		circle = new Circle(width / 2, height / 2, Math.min(width, height) / 2);
 	}
 
 	public void init() {
@@ -108,7 +104,7 @@ public class Simulation {
 					join();
 					addData();
 					init();
-					//GA
+					// GA
 				}
 			}
 
@@ -120,7 +116,8 @@ public class Simulation {
 				}
 				long deltaNanos = now - currTime;
 				currTime = now;
-				double dt = deltaNanos / 1.0e9 * timeMultiplier;;
+				double dt = deltaNanos / 1.0e9 * timeMultiplier;
+				;
 				check(now);
 				reset();
 				move(dt);
@@ -143,7 +140,7 @@ public class Simulation {
 		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation, predators.getAverageAge()));
 		generation++;
 	}
-	
+
 	private void join() {
 		predators.joinIndLists();
 		preys.joinIndLists();
@@ -171,9 +168,9 @@ public class Simulation {
 	private void update(double dt) {
 		width = pane.getWidth();
 		height = pane.getHeight();
-		circle.setCenterX(width/2);
-		circle.setCenterY(height/2);
-		circle.setRadius(Math.min(width,height)/2);
+		circle.setCenterX(width / 2);
+		circle.setCenterY(height / 2);
+		circle.setRadius(Math.min(width, height) / 2);
 		circle.setOpacity(0.05);
 		food.update(dt);
 		preys.update(dt);
@@ -188,20 +185,6 @@ public class Simulation {
 				|| predators.getPopulation().size() < 1;
 	}
 
-	private void initLighting() {
-		light = new Light.Spot();
-		light.setX(0);
-		light.setY(0);
-		light.setZ(100);
-		light.setPointsAtX(width);
-		light.setPointsAtY(height);
-		light.setPointsAtZ(-50);
-		light.setSpecularExponent(5.);
-		lighting = new Lighting();
-		lighting.setLight(light);
-		lighting.setSurfaceScale(1.);
-	}
-
 	public Population getFood() {
 		return food;
 	}
@@ -212,9 +195,5 @@ public class Simulation {
 
 	public Population getPredators() {
 		return predators;
-	}
-	
-	public void setTimeMultiplier(double timeMultiplier) {
-		this.timeMultiplier = timeMultiplier;
 	}
 }
