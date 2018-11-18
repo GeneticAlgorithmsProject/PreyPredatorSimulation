@@ -1,73 +1,75 @@
 package ga;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Gene {
 
-	private double dirEscapeMult;
-
-	private double dirFoodMult;
-	private double noiseA;
-	private double noiseF;
-	private double noiseR;
-	private double size;
+	private Map<String, Double> gene;
+	public final String[] keys = { "dirEscapeMult", "dirFoodMult", "noiseA", "noiseF", "noiseR", "size" };
 
 	public Gene() {
 		Random rnd = new Random();
-		dirFoodMult = 1.;
-		dirEscapeMult = 10;
-		noiseA = (1 + rnd.nextDouble()) * 5;
-		noiseF = (1 + rnd.nextDouble()) * 0.01;
-		noiseR = (1 + rnd.nextDouble()) * 30;
-		size = (1 + rnd.nextDouble()) * 2;
+		gene = new HashMap<>();
+		gene.put(keys[0], rnd.nextDouble());
+		gene.put(keys[1], (1 + rnd.nextDouble()) * 5);
+		gene.put(keys[2], (1 + rnd.nextDouble()) * 5);
+		gene.put(keys[3], (1 + rnd.nextDouble()) * 0.01);
+		gene.put(keys[4], (1 + rnd.nextDouble()) * 30);
+		gene.put(keys[5], (1 + rnd.nextDouble()) * 2);
+	}
+
+	public Map<String, Double> getGene() {
+		return gene;
 	}
 
 	public double getDirEscapeMult() {
-		return dirEscapeMult;
+		return gene.get(keys[0]);
 	}
 
 	public void setDirEscapeMult(double dirEscapeMult) {
-		this.dirEscapeMult = dirEscapeMult;
+		gene.put(keys[0], dirEscapeMult);
 	}
 
 	public double getDirFoodMult() {
-		return dirFoodMult;
+		return gene.get(keys[1]);
 	}
 
 	public void setDirFoodMult(double dirFoodMult) {
-		this.dirFoodMult = dirFoodMult;
+		gene.put(keys[1], dirFoodMult);
 	}
 
 	public double getNoiseA() {
-		return noiseA;
+		return gene.get(keys[2]);
 	}
 
 	public void setNoiseA(double noiseA) {
-		this.noiseA = noiseA;
+		gene.put(keys[2], noiseA);
 	}
 
 	public double getNoiseF() {
-		return noiseF;
+		return gene.get(keys[3]);
 	}
 
 	public void setNoiseF(double noiseF) {
-		this.noiseF = noiseF;
+		gene.put(keys[3], noiseF);
 	}
 
 	public double getNoiseR() {
-		return noiseR;
+		return gene.get(keys[4]);
 	}
 
 	public void setNoiseR(double noiseR) {
-		this.noiseR = noiseR;
+		gene.put(keys[4], noiseR);
 	}
 
 	public double getSize() {
-		return size;
+		return gene.get(keys[5]);
 	}
 
 	public void setSize(double size) {
-		this.size = size;
+		gene.put(keys[5], size);
 	}
 
 }
