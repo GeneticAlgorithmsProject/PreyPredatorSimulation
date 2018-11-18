@@ -7,7 +7,7 @@ import java.util.Random;
 public class Gene {
 
 	private Map<String, Double> gene;
-	public final String[] keys = { "dirEscapeMult", "dirFoodMult", "noiseA", "noiseF", "noiseR", "size" };
+	public static final String[] keys = { "dirEscapeMult", "dirFoodMult", "noiseA", "noiseF", "noiseR", "size" };
 
 	public Gene() {
 		Random rnd = new Random();
@@ -71,5 +71,4 @@ public class Gene {
 	public void setSize(double size) {
 		gene.put(keys[5], size);
 	}
-
 }

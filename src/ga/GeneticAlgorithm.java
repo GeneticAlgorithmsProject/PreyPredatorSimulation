@@ -1,16 +1,16 @@
 package ga;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.Set;
+
+import application.Simulation;
+
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import model.individual.Individual;
+import model.population.Population;
 
 public class GeneticAlgorithm {
 
@@ -20,7 +20,7 @@ public class GeneticAlgorithm {
 
 	private Random rnd;
 
-	private Map<Integer, Double> fitness;
+	private List<Double> fitness;
 
 	public GeneticAlgorithm(int numberOfBest, double selectivePressure, double mutationRate) {
 		this.numberOfBest = numberOfBest;
@@ -29,113 +29,73 @@ public class GeneticAlgorithm {
 		rnd = new Random();
 	}
 
-	public void createNewGeneration(HashMap<Integer, Individual> population) {
-		this.setFitness(population);
-		HashMap<Integer, Individual> parents = this.selectParents(population);
-		HashMap<Integer, Individual> newGeneration = this.newGeneration(parents, population.size());
+	public void createNewGeneration(Population population) {
+		setFitness(population);
+		createChildren(population, selectParents(population));
+		mutate(population);
 	}
 
-	private void setFitness(HashMap<Integer, Individual> population) {
-		int size = population.size();
-		fitness = new HashMap<>();
-		System.out.println("Fitness:");
+	private void setFitness(Population population) {
+		int size = population.getPopulation().size();
+		fitness = new LinkedList<>();
 		for (int i = 0; i < size; ++i) {
-			fitness.put(i, population.get(i).getHealth() * selectivePressure);
-			System.out.println(fitness.get(i));
+			fitness.add(i, population.getPopulation().get(i).getAge() * selectivePressure);
 		}
 	}
 
-	private HashMap<Integer, Individual> newGeneration(HashMap<Integer, Individual> parents, int size) {
-		HashMap<Integer, Individual> newGeneration = new HashMap<>();
-//		int pSize = parents.size();
-//		int ch = 0;
-//		while (newGeneration.size() != size) {
-//			List<List<Double>> geneI1 = parents.get(this.rnd.nextInt(pSize)).getGene();
-//			List<List<Double>> geneI2 = parents.get(this.rnd.nextInt(pSize)).getGene();
-//			if (geneI1.size() != geneI2.size()) {
-//				System.err.printf("Number of gene components doesn't match: g1.size=%d, g2.size=%d\n",geneI1.size(), geneI2.size());
-//				break;
-//			}
-//			int count = geneI1.size();
-//			List<List<Double>> geneCh1 = new ArrayList<>();
-//			List<List<Double>> geneCh2 = new ArrayList<>();
-//			for (int i = 0; i < count; ++i) {
-//				if (geneI1.get(i).size() == 0 || geneI2.get(i).size() == 0
-//						|| geneI2.get(i).size() != geneI1.get(i).size()) {
-//					System.err.printf("Gene size error, g1.size=%d, g2.size=%d\n", geneI1.get(i).size(),
-//							geneI2.get(i).size());
-//					break;
-//				}
-//				int cP = rnd.nextInt(geneI1.get(i).size());
-//				List<Double> genePart11 = geneI1.get(i).subList(0, cP);
-//				List<Double> genePart12 = geneI2.get(i).subList(0, cP);
-//				List<Double> genePart21 = geneI1.get(i).subList(cP, geneI1.get(i).size() - 1);
-//				List<Double> genePart22 = geneI2.get(i).subList(cP, geneI2.get(i).size() - 1);
-//
-//				List<Double> crossGene1 = new ArrayList<>();
-//				List<Double> crossGene2 = new ArrayList<>();
-//				crossGene1.addAll(genePart11);
-//				crossGene1.addAll(genePart22);
-//				crossGene2.addAll(genePart12);
-//				crossGene2.addAll(genePart21);
-//				geneCh1.add(i,crossGene1);
-//				geneCh2.add(i, crossGene2);
-//			}
-//			Individual child1 = new Individual();
-//			child1.setGene(geneCh1);
-//			newGeneration.put(ch, child1);
-//			ch++;
-//
-//			Individual child2 = new Individual();
-//			child2.setGene(geneCh2);
-//			newGeneration.put(ch, child2);
-//			ch++;
-//		}
-//		Set<Entry<Integer, Individual>> entrySet = newGeneration.entrySet();
-//		for (Entry<Integer, Individual> entry : entrySet)
-//			System.out.println(entry.getKey() + " : " + entry.getValue().getHealth());
-//
-		return newGeneration;
-	}
-
-	private void mutate(HashMap<Integer, Individual> population) {
-		Set<Entry<Integer, Individual>> entrySet = population.entrySet();
-		for (Entry<Integer, Individual> entry : entrySet) {
-//			entry.getValue().getNoiseCoefficients();
-		}
+	private void mutate(Population population) {
 
 	}
 
-	private HashMap<Integer, Individual> selectParents(HashMap<Integer, Individual> population) {
-		HashMap<Integer, Individual> parents = new HashMap<>();
-		HashMap<Integer, Individual> best = this.elitism(population);
-		int size = population.size() / 2 - this.numberOfBest;
-		HashMap<Integer, Individual> roulette = this.rouletteSelect(population, size);
+	private void createChildren(Population population, List<Individual> parents) {
+		List<Individual> newGeneration = new LinkedList<>();
+		while (newGeneration.size() != population.getCount()) {
+			Individual ind = new Individual(Math.min(Simulation.width, Simulation.height));
+			Gene gene = new Gene();
 
-		int index = 0;
-		Set<Entry<Integer, Individual>> entrySet = roulette.entrySet();
-		for (Entry<Integer, Individual> entry : entrySet) {
-			parents.put(index, entry.getValue());
-			index++;
-		}
+			int parent1index = rnd.nextInt(parents.size()-1);
+			int parent2index = rnd.nextInt(parents.size()-1);
+			while (parent1index == parent2index)
+				parent1index = rnd.nextInt(parents.size());
 
-		entrySet = best.entrySet();
-		for (Entry<Integer, Individual> entry : entrySet) {
-			parents.put(index, entry.getValue());
-			index++;
+			Gene newGene = crossover(parents.get(parent1index).getGene(),parents.get(parent2index).getGene());
+			ind.setGene(newGene);
+			newGeneration.add(ind);
 		}
-		System.out.println("Parents:");
-		entrySet = parents.entrySet();
-		for (Entry<Integer, Individual> entry : entrySet)
-			System.out.println(entry.getKey() + " : " + entry.getValue().getHealth());
+		population.setPopulation(newGeneration);
+	}
+
+	private Gene crossover(Gene gene1, Gene gene2) {
+		Gene gene = new Gene();
+		if(gene1.getGene().size() != gene2.getGene().size()) {
+			System.err.println("Wrong gene sizes");
+			return gene;
+		}
+		int size = gene1.getGene().size();
+		for(int g = 0; g < size; g++) {
+			double alpha = rnd.nextDouble();
+			double min = Math.min(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
+			double max = Math.max(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
+			double range = max - min;
+			double newValue = range * (1 + 2*alpha) * rnd.nextDouble();
+			gene.getGene().put(Gene.keys[g], newValue);
+		}
+		return gene;
+	}
+
+	private List<Individual> selectParents(Population population) {
+		List<Individual> parents = new LinkedList<>();
+		for (Individual ind : elitism(population))
+			parents.add(ind);
+		for (Individual ind : rouletteSelect(population, population.getPopulation().size() / 2 - numberOfBest))
+			parents.add(ind);
+//		for(Individual ind : parents)
+//			System.out.println(population.getName() + " " + ind.getAge());
 		return parents;
 	}
 
 	private int roulette() {
-		double max = 0.f;
-		for (Double f : fitness.values()) {
-			max += f;
-		}
+		double max = Collections.max(fitness);
 		double pick = this.rnd.nextDouble() * max;
 		double current = 0.f;
 		for (int i = 0; i < fitness.size(); ++i) {
@@ -146,53 +106,45 @@ public class GeneticAlgorithm {
 		return -1;
 	}
 
-	private HashMap<Integer, Individual> rouletteSelect(HashMap<Integer, Individual> population, int size) {
-		HashMap<Integer, Individual> selected = new HashMap<>();
+	private List<Individual> rouletteSelect(Population population, int size) {
+		List<Individual> selected = new LinkedList<>();
 		for (int i = 0; i < size; ++i) {
-			int key = roulette();
-			if (key < 0) {
-				System.out.println("Oops");
-				break;
+			int index = roulette();
+			if (index < 0) {
+				System.err.println("Shieeet");
+				continue;
 			}
-			selected.put(key, population.get(key));
+			selected.add(population.getPopulation().get(index));
 		}
 		return selected;
 	}
 
-	private HashMap<Integer, Individual> elitism(HashMap<Integer, Individual> population) {
-		HashMap<Integer, Individual> best = new HashMap<>();
-		for (int b = 0; b < this.numberOfBest; ++b) {
-			double currentFittest = 0;
-			int currentKey = 0;
-			Set<Entry<Integer, Double>> entrySet = this.fitness.entrySet();
-			for (Entry<Integer, Double> entry : entrySet) {
-				if (entry.getValue() > currentFittest && best.get(entry.getKey()) == null) {
-					currentFittest = entry.getValue();
-					currentKey = entry.getKey();
+	private List<Individual> elitism(Population population) {
+		List<Individual> best = new LinkedList<>();
+		for (int b = 0; b < numberOfBest; ++b) {
+			double currentFitness = 0;
+			int currentIndex = 0;
+			for (int f = 0; f < fitness.size(); f++) {
+				if (fitness.get(f) > currentFitness && !best.contains(population.getPopulation().get(f))) {
+					currentFitness = fitness.get(f);
+					currentIndex = f;
 				}
 			}
-			best.put(currentKey, population.get(currentKey));
+			best.add(population.getPopulation().get(currentIndex));
 		}
-		System.out.println("Best");
-		Set<Entry<Integer, Individual>> entrySet = best.entrySet();
-		for (Entry<Integer, Individual> entry : entrySet)
-			System.out.println(entry.getKey() + " : " + entry.getValue().getHealth());
+//		for (Individual ind : best)
+//			System.out.println(population.getName() + " " + ind.getAge());
 		return best;
 	}
 
-	public void sortPopulation(ArrayList<Individual> population) {
-		ArrayList<Individual> sortedPopulation = population;
+	public void sortPopulation(LinkedList<Individual> population) {
+		LinkedList<Individual> sortedPopulation = population;
 		Collections.sort(sortedPopulation, new Comparator<Individual>() {
 			@Override
 			public int compare(final Individual lhs, Individual rhs) {
-				// TODO return 1 if rhs should be before lhs
-				// return -1 if lhs should be before rhs
-				// return 0 otherwise
-				return lhs.getHealth() < rhs.getHealth() ? -1 : rhs.getHealth() == lhs.getHealth() ? 0 : 1;
-
+				return lhs.getAge() < rhs.getAge() ? -1 : rhs.getAge() == lhs.getAge() ? 0 : 1;
 			}
 		});
-
 	}
 
 }
