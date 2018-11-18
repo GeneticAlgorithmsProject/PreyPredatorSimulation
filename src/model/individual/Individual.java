@@ -23,6 +23,8 @@ public class Individual {
 	protected Random rnd = new Random();
 
 	protected Circle circle;
+	protected Circle sight;
+	
 	protected Color color;
 
 	protected Gene gene;
@@ -38,6 +40,7 @@ public class Individual {
 		primarySpeed = 1./gene.getSize();
 		pos = new Vector2d();
 		circle = new Circle(pos.x, pos.y, gene.getSize());
+		sight = new Circle(pos.x, pos.y, gene.getSight());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
 	}
@@ -51,6 +54,7 @@ public class Individual {
 		primarySpeed = 1/gene.getSize();
 		pos = new Vector2d(x, y);
 		circle = new Circle(pos.x, pos.y, gene.getSize());
+		sight = new Circle(pos.x, pos.y, gene.getSight());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
 	}
@@ -64,6 +68,7 @@ public class Individual {
 		primarySpeed = 1/gene.getSize();
 		pos = new Vector2d(R);
 		circle = new Circle(pos.x, pos.y, gene.getSize());
+		sight = new Circle(pos.x, pos.y, gene.getSight());
 		color = new Color(0, 1, 0, 1);
 		dirFood = new Vector2d();
 	}
@@ -76,6 +81,13 @@ public class Individual {
 		circle.setFill(color);
 		circle.setRadius(gene.getSize());
 		circle.setOpacity(health / maxHealth);
+		
+		sight.setCenterX(pos.x);
+		sight.setCenterY(pos.y);
+		sight.setFill(color);
+		sight.setRadius(gene.getSight());
+		sight.setOpacity(0.2 * health / maxHealth);
+		
 		decrementHealth(dt);
 		if(isDead())
 			return;
@@ -87,7 +99,7 @@ public class Individual {
 	}
 
 	public void decrementHealth(double dt) {
-		health -= addHealth;
+		health -= addHealth * 2;
 	}
 
 	public void incrementHealth() {
@@ -136,6 +148,14 @@ public class Individual {
 
 	public void setCircle(Circle circle) {
 		this.circle = circle;
+	}
+
+	public Circle getSight() {
+		return sight;
+	}
+
+	public void setSight(Circle sight) {
+		this.sight = sight;
 	}
 
 	public Vector2d getDirFood() {

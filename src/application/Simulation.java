@@ -149,10 +149,14 @@ public class Simulation {
 	private void draw() {
 		for (Individual ind : food.getPopulation())
 			pane.getChildren().add(ind.getCircle());
-		for (Individual ind : preys.getPopulation())
+		for (Individual ind : preys.getPopulation()) {
 			pane.getChildren().add(ind.getCircle());
-		for (Individual ind : predators.getPopulation())
+			pane.getChildren().add(ind.getSight());
+		}
+		for (Individual ind : predators.getPopulation()) {
 			pane.getChildren().add(ind.getCircle());
+			pane.getChildren().add(ind.getSight());
+		}
 		pane.getChildren().add(circle);
 	}
 

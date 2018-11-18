@@ -35,12 +35,6 @@ public class Population {
 			population.add(new Individual(Math.min(width, height)));
 	}
 
-	public void initPositions() {
-		Random rnd = new Random();
-		for (int i = 0; i < count; ++i)
-			population.get(i).setPos(new Vector2d(rnd.nextDouble() * width, rnd.nextDouble() * height));
-	}
-
 	public void move(double dt) {
 		for (Individual ind : population)
 			ind.move(dt);
@@ -110,6 +104,7 @@ public class Population {
 
 	public void joinIndLists() {
 		population.addAll(dead);
+		dead.clear();
 	}
 
 	protected void boundaryConditions() {
@@ -141,7 +136,7 @@ public class Population {
 	public void setAdversary(Population predators) {
 
 	}
-	
+
 	public String getName() {
 		return name;
 	}

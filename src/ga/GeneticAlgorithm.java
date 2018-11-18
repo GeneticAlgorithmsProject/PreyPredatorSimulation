@@ -77,7 +77,7 @@ public class GeneticAlgorithm {
 			double min = Math.min(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
 			double max = Math.max(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
 			double range = max - min;
-			double newValue = range * (1 + 2*alpha) * rnd.nextDouble();
+			double newValue = min - alpha + rnd.nextDouble()*(range + alpha);
 			gene.getGene().put(Gene.keys[g], newValue);
 		}
 		return gene;

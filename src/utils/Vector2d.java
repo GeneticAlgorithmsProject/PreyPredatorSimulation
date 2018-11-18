@@ -85,7 +85,9 @@ public class Vector2d {
 	public static double dirY(Vector2d v1, Vector2d v2) {
 		return (v1.y - v2.y) / Math.abs(v1.y - v2.y);
 	}
-
+	public static Vector2d diff(Vector2d v1, Vector2d v2) {
+		return new Vector2d(v1.x - v2.x, v1.y - v2.y);
+	}
 	public static Vector2d normedDiff(Vector2d v1, Vector2d v2) {
 		return new Vector2d(dirX(v1, v2), dirY(v1, v2));
 	}
@@ -97,4 +99,5 @@ public class Vector2d {
 	public static Vector2d PerpendicularCounterClockwise(Vector2d v) {
 		return new Vector2d(-v.y, v.x);
 	}
+
 }

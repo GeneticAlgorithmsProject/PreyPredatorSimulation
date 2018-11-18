@@ -25,8 +25,8 @@ public class Predator extends Individual{
 
 	@Override
 	public void move(double dt) {
-		dirFood = Vector2d.normedDiff(prey.getPos(), pos);
-		
+		dirFood = Vector2d.diff(prey.getPos(), pos);
+		dirFood.norm();
 		dirFood.mult(speed);
 		pos.add(dirFood);
 	}

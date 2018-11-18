@@ -40,18 +40,17 @@ public class Preys extends Population{
 	}
 	
 	private void calculatePredatorsField() {
-		for (int p = 0; p < population.size(); p++) {
-			Prey ind = (Prey) population.get(p);
-			double dirX = 0., dirY = 0.;
+		for (Individual ind : population) {
 			int size = adversary.getPopulation().size();
 			Vector2d dir = new Vector2d();
 			for (int i = 0; i < size; ++i) {
 				Individual adv = adversary.getPopulation().get(i);
-				Vector2d ndiff = Vector2d.normedDiff(adv.getPos(), ind.getPos());
-				ndiff.div(size);
-				dir.add(ndiff);
+				if(Vector2d.dist(adv.getPos(), ind.getPos()) < ind.getGene().getSight()) {
+					dir.add(Vector2d.diff(ind.getPos(),adv.getPos()));			
+				}
 			}
-			ind.setDirEscape(new Vector2d(dirX, dirY));
+			Prey pr = (Prey)ind;
+			pr.setDirEscape(dir);
 		}
 	}	
 }

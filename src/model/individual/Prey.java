@@ -9,7 +9,7 @@ public class Prey extends Individual {
 
 	// auxiliary variables for changing direction of prey
 	private double fDir, fA;
-
+	
 	public Prey() {
 		super();
 		dirEscape = new Vector2d();
@@ -39,23 +39,33 @@ public class Prey extends Individual {
 		dirFood = Vector2d.normedDiff(prey.getPos(), pos);
 		dirFood.mult(gene.getDirFoodMult());
 		dirEscape.mult(gene.getDirEscapeMult());
+		
 		Vector2d dir = Vector2d.add(dirFood, dirEscape);
+		oscillate(dir);
+		hunger(dir);
 		dir.norm();
-		if(Vector2d.dist(pos, prey.getPos()) > gene.getNoiseR())
-			oscillate(dir, dt);
 		dir.mult(speed);
 		pos.add(dir);
 	}
 
-	private void oscillate(Vector2d v, double dt) {
+	private void oscillate(Vector2d v) {
+		if(Vector2d.dist(pos, prey.getPos()) < gene.getSight())
+			return;
+		
 		Vector2d v_t = Vector2d.PerpendicularClockwise(v);
 		v_t.norm();
 		v_t.mult(fA);
-		if (Math.abs(fA) >= gene.getNoiseA()) {
+		if (Math.abs(fA) >= gene.getNoiseA())
 			fDir *= -1;
-		}
 		fA += fDir * gene.getNoiseA() * gene.getNoiseF();
 		v.add(v_t);
+	}
+	
+	private void hunger(Vector2d v) {
+		if(health > gene.getHungerLevel())
+			return;
+		
+		v.add(dirFood.multV(gene.getHungerMult()));
 	}
 
 	public Vector2d getDirEscape() {
