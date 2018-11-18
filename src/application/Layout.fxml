@@ -34,10 +34,10 @@
                                        <children>
                                           <LineChart fx:id="preyChart" prefHeight="232.0" prefWidth="261.0" title="Preys" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <xAxis>
-                                              <NumberAxis label="Generation" animated="true" autoRanging="true" side="BOTTOM" />
+                                              <NumberAxis animated="true" autoRanging="true" label="Generation" side="BOTTOM" />
                                             </xAxis>
                                             <yAxis>
-                                              <NumberAxis label="Age" animated="true" autoRanging="true" side="LEFT" />
+                                              <NumberAxis animated="true" autoRanging="true" label="Age" side="LEFT" />
                                             </yAxis>
                                           </LineChart>
                                        </children>
@@ -46,10 +46,10 @@
                                        <children>
                                           <LineChart fx:id="predatorChart" prefHeight="231.0" prefWidth="261.0" title="Predators" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <xAxis>
-                                              <NumberAxis label="Generation" animated="true" autoRanging="true" side="BOTTOM" />
+                                              <NumberAxis animated="true" autoRanging="true" label="Generation" side="BOTTOM" />
                                             </xAxis>
                                             <yAxis>
-                                              <NumberAxis label="Age" animated="true" autoRanging="true" side="LEFT" />
+                                              <NumberAxis animated="true" autoRanging="true" label="Age" side="LEFT" />
                                             </yAxis>
                                           </LineChart>
                                        </children>
@@ -60,7 +60,7 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <GridPane prefHeight="195.0" prefWidth="323.0">
+                              <GridPane prefHeight="299.0" prefWidth="323.0">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

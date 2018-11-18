@@ -16,7 +16,7 @@ import model.population.Preys;
 public class Simulation {
 
 	private Population food, preys, predators;
-	public static int foodCount, preyCount, predatorCount;
+	public static int foodCount = 50, preyCount = 20, predatorCount = 10;
 
 	private Pane pane;
 	private Circle circle;
@@ -41,10 +41,7 @@ public class Simulation {
 		this.timer = timer;
 		width = pane.getWidth();
 		height = pane.getHeight();
-		foodCount = 50;
-		preyCount = 20;
-		predatorCount = 25;
-
+	
 		generation = 0;
 
 		preyBest = new XYChart.Series<>();
