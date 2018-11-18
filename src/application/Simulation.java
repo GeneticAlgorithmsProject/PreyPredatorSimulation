@@ -4,8 +4,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import model.individual.Individual;
@@ -21,9 +19,6 @@ public class Simulation {
 
 	private Pane pane;
 	private Circle circle;
-
-	private Light.Spot light;
-	public static Lighting lighting;
 
 	public static double DT = 10;
 	public static double width, height;
