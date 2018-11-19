@@ -11,7 +11,7 @@ public class PredatorPopulation extends Population {
 
 	public PredatorPopulation(int count) {
 		super(count);
-		name = "Predator";
+		name = "PredatorPopulation";
 	}
 	
 	public void initPositions() {

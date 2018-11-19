@@ -13,7 +13,7 @@ public class PreyPopulation extends Population {
 
 	public PreyPopulation(int count) {
 		super(count);
-		name = "Prey";
+		name = "PreyPopulation";
 	}
 
 	public void initPositions() {

@@ -2,13 +2,21 @@ package model.population;
 
 import application.Simulation;
 import javafx.scene.layout.Pane;
+import model.individual.Food;
 import model.individual.Individual;
+import model.individual.Predator;
 
 public class FoodPopulation extends Population{
 	
 	public FoodPopulation(int count) {
 		super(count);
-		name = "Food";
+		name = "FoodPopulation";
+	}
+	
+	@Override
+	public void init() {
+		for (int i = 0; i < count; ++i)
+			population.add(new Food(Math.min(Simulation.width, Simulation.height)));
 	}
 	
 	@Override
@@ -19,7 +27,7 @@ public class FoodPopulation extends Population{
 	@Override
 	public void updateSpecial(double dt) {
 		if(population.size() < count) {
-			population.add(new Individual(Math.min(Simulation.width, Simulation.height)));
+			population.add(new Food(Math.min(Simulation.width, Simulation.height)));
 		}	
 	}
 	

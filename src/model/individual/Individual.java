@@ -24,7 +24,7 @@ public class Individual extends Fenotype implements Live {
 		pos = new Vector2d();
 		shape = new Circle(pos.x, pos.y, getSizeR());
 		sight = new Circle(pos.x, pos.y, getSightR());
-		color = new Color(0, 1, 0, 1);
+		color = new Color(0, 0, 0, 1);
 	}
 
 	public Individual(double x, double y) {
@@ -37,7 +37,7 @@ public class Individual extends Fenotype implements Live {
 		pos = new Vector2d(x, y);
 		shape = new Circle(pos.x, pos.y, getSizeR());
 		sight = new Circle(pos.x, pos.y, getSightR());
-		color = new Color(0, 1, 0, 1);
+		color = new Color(0, 0, 0, 1);
 	}
 
 	public Individual(double R) {
@@ -50,7 +50,7 @@ public class Individual extends Fenotype implements Live {
 		pos = new Vector2d(R);
 		shape = new Circle(pos.x, pos.y, getSizeR());
 		sight = new Circle(pos.x, pos.y, getSightR());
-		color = new Color(0, 1, 0, 1);
+		color = new Color(0, 0, 0, 1);
 	}
 	
 	@Override

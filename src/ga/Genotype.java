@@ -5,7 +5,7 @@ import java.util.Random;
 public class Genotype {
 
 	protected double[] genotype;
-	enum Gene {
+	protected enum Gene {
 	    dEscM, dGoM, nA, nF, hM, hL, sightR, sizeR 
 	}
 
