@@ -4,9 +4,9 @@ import application.Simulation;
 import javafx.scene.layout.Pane;
 import model.individual.Individual;
 
-public class Food extends Population{
+public class FoodPopulation extends Population{
 	
-	public Food(int count) {
+	public FoodPopulation(int count) {
 		super(count);
 		name = "Food";
 	}

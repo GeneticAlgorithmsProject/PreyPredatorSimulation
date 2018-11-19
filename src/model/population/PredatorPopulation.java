@@ -7,9 +7,9 @@ import model.individual.Individual;
 import model.individual.Predator;
 import utils.Vector2d;
 
-public class Predators extends Population {
+public class PredatorPopulation extends Population {
 
-	public Predators(int count) {
+	public PredatorPopulation(int count) {
 		super(count);
 		name = "Predator";
 	}

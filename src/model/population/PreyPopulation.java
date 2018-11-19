@@ -7,11 +7,11 @@ import model.individual.Individual;
 import model.individual.Prey;
 import utils.Vector2d;
 
-public class Preys extends Population {
+public class PreyPopulation extends Population {
 
 	Population adversary;
 
-	public Preys(int count) {
+	public PreyPopulation(int count) {
 		super(count);
 		name = "Prey";
 	}

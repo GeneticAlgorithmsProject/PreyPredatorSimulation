@@ -7,10 +7,10 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import model.population.Food;
+import model.population.FoodPopulation;
 import model.population.Population;
-import model.population.Predators;
-import model.population.Preys;
+import model.population.PredatorPopulation;
+import model.population.PreyPopulation;
 
 public class Simulation {
 
@@ -68,9 +68,9 @@ public class Simulation {
 	}
 
 	public void init() {
-		food = new Food(foodCount);
-		preys = new Preys(preyCount);
-		predators = new Predators(predatorCount);
+		food = new FoodPopulation(foodCount);
+		preys = new PreyPopulation(preyCount);
+		predators = new PredatorPopulation(predatorCount);
 
 		food.init();
 
