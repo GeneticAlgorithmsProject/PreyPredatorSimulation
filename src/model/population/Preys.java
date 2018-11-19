@@ -1,7 +1,11 @@
 package model.population;
 
+import java.util.Random;
+
 import application.Simulation;
+import model.individual.Individual;
 import model.individual.Prey;
+import utils.Vector2d;
 
 public class Preys extends Population {
 
@@ -10,6 +14,13 @@ public class Preys extends Population {
 	public Preys(int count) {
 		super(count);
 		name = "Prey";
+	}
+
+	public void initPositions() {
+		Random rnd = new Random();
+		for (Individual ind : population)
+			ind.setPos(new Vector2d(Simulation.width * (1 - rnd.nextDouble() / 8),
+					Simulation.height * (1 - rnd.nextDouble() / 8)));
 	}
 
 	@Override

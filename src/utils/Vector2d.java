@@ -94,17 +94,7 @@ public class Vector2d {
 	}
 
 	public static double dist(Vector2d v1, Vector2d v2) {
-		if (Simulation.closed)
-			return distLocal(v1, v2);
-		else {
-			if(distLocal(v1,v2) > Math.min(Simulation.width, Simulation.height)) {
-				
-				
-			}
-			
-			
-			return distLocal(v1, v2);
-		}
+		return distLocal(v1, v2);
 	}
 
 	public static double distX(Vector2d v1, Vector2d v2) {

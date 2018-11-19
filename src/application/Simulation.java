@@ -101,6 +101,7 @@ public class Simulation {
 //					ga.createNewGeneration(preys);
 //					ga.createNewGeneration(predators);
 					init();
+					initPositions();
 				}
 			}
 
@@ -165,6 +166,12 @@ public class Simulation {
 		food.updateSpecial(dt);
 		preys.updateSpecial(dt);
 		predators.updateSpecial(dt);
+	}
+	
+	public void initPositions() {
+		food.initPositions();
+		preys.initPositions();
+		predators.initPositions();
 	}
 
 	private boolean pause() {

@@ -46,6 +46,7 @@ public class LayoutController {
 	private void handleButtonAction(ActionEvent event) {
 		simulation = new Simulation(pane, preyChart, predatorChart, timer);
 		simulation.init();
+		simulation.initPositions();
 		Simulation.timeMultiplier = timeMultiplier.getValue();
 		simulation.animate();
 	}

@@ -1,6 +1,7 @@
 package model.population;
 
 import java.util.List;
+import java.util.Random;
 import java.util.LinkedList;
 
 import application.Simulation;
@@ -26,6 +27,12 @@ public class Population implements Live{
 		this.count = count;
 		name = "Default";
 	}
+	
+	public void initPositions() {
+		Random rnd = new Random();
+		for(Individual ind : population) 
+			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width, rnd.nextDouble()*Simulation.height));
+	}	
 
 	public void init() {
 		for (int i = 0; i < count; ++i)

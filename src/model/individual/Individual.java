@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import model.individual.Fenotype.Move;
 import utils.Vector2d;
 
 public class Individual extends Fenotype implements Live {
