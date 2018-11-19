@@ -7,7 +7,7 @@ public class Genotype {
 	protected double[] genotype;
 
 	protected enum Gene {
-		DESCM, DGOM, OSCA, OSCF, HEAM, HEAL, SIGA, SIZA, DRANM
+		DESCM, DGOM, OSCA, OSCF, HEAM, HEAL, SIGA, SIZA, DRANM, DRANA
 	}
 
 	public Genotype() {
@@ -31,6 +31,8 @@ public class Genotype {
 		genotype[Gene.HEAL.ordinal()] = rnd.nextDouble();
 //		Probability of changing direction when in random walk
 		genotype[Gene.DRANM.ordinal()] = (1 + rnd.nextDouble()) * 0.1;
+//		Random walk leap
+		genotype[Gene.DRANA.ordinal()] = (0.5 + rnd.nextDouble()) * 1000;	
 	}
 
 	public double[] getGenotype() {
@@ -71,5 +73,9 @@ public class Genotype {
 
 	public double getDRanM() {
 		return genotype[Gene.DRANM.ordinal()];
+	}
+	
+	public double getDRanA() {
+		return genotype[Gene.DRANA.ordinal()];
 	}
 }

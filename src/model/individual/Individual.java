@@ -121,7 +121,7 @@ public class Individual extends Fenotype implements Live {
 		if (rnd.nextDouble() < getDRanM()) {
 			dir = Vector2d.RandomDir();
 			dir.norm();
-			dir.mult(speed*dt*1000);
+			dir.mult(speed*dt*getDRanA());
 			pos.add(dir);
 		}
 		dir.reset();
