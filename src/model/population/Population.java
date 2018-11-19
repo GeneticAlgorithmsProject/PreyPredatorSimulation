@@ -10,12 +10,12 @@ import model.individual.Individual;
 import model.individual.Live;
 import utils.Vector2d;
 
-public class Population implements Live{
+public class Population{
 
 	protected List<Individual> population;
 	protected List<Individual> dead;
-	protected Population adversary;
-	protected Population prey;
+	protected Population run;
+	protected Population goal;
 
 	protected int count;
 
@@ -39,13 +39,10 @@ public class Population implements Live{
 			population.add(new Individual(Math.min(Simulation.width, Simulation.height)));
 	}
 
-	@Override
 	public void move(double dt) {
-		for (Individual ind : population)
-			ind.move(dt);
+		moveInds(dt);
 	}
 
-	@Override
 	public void die(double dt) {
 		
 	}
@@ -74,41 +71,38 @@ public class Population implements Live{
 		return maxAge;
 	}
 
-	protected void findPrey() {
+	protected void findGoal() {
 		for (Individual ind : population) {
 			double minDistance = Double.MAX_VALUE;
 			int index = 0;
-			for (int i = 0; i < prey.getSize(); ++i) {
-				Individual pr = prey.get(i);
+			for (int i = 0; i < goal.getSize(); ++i) {
+				Individual pr = goal.get(i);
 				double dist = Vector2d.dist(ind.getPos(), pr.getPos());
 				if (dist < minDistance) {
 					minDistance = dist;
 					index = i;
 				}
 			}
-			if (prey.getSize() < 1)
+			if (goal.getSize() < 1)
 				return;
-			ind.setGoal(prey.get(index));
+			ind.setGoal(goal.get(index));
 		}
 	}
 
-	protected void eat() {
-//		for (Individual ind : population)
-//			for (Individual pr : prey.getPopulation())
-//				if (Math.abs(ind.getPos().x - pr.getPos().x) < pr.getGenotype().getSize()
-//						&& Math.abs(ind.getPos().y - pr.getPos().y) < pr.getGenotype().getSize()) {
-//					ind.incrementHealth();
-//					pr.death();
-//				}
+	protected void eat(double dt) {
+		for (Individual ind : population)
+			for (Individual pr : goal.getPopulation())
+				if (ind.overlaps(pr)) {
+					System.out.println("death" + pr);
+					ind.incrementHealth(dt);
+					pr.death();
+				}
 	}
 
 	protected void death() {
-		for (int i = 0; i < population.size(); ++i) {
-			Individual ind = population.get(i);
-			if (ind.isDead()) {
+		for (Individual ind : population)
+			if (ind.isDead())
 				dead.add(ind);
-			}
-		}
 		population.removeAll(dead);
 	}
 
@@ -142,8 +136,8 @@ public class Population implements Live{
 		return population.size();
 	}
 
-	public void setPrey(Population prey) {
-		this.prey = prey;
+	public void setGoal(Population goal) {
+		this.goal = goal;
 	}
 
 	public int getCount() {
@@ -160,6 +154,10 @@ public class Population implements Live{
 
 	public void setPopulation(List<Individual> population) {
 		this.population = population;
+	}
+	
+	public List<Individual> getPopulation(){
+		return population;
 	}
 	
 	

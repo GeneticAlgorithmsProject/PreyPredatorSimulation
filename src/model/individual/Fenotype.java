@@ -1,6 +1,5 @@
 package model.individual;
 
-import ga.Genotype;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import utils.Vector2d;

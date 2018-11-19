@@ -129,4 +129,9 @@ public class Vector2d {
 		return new Vector2d(-v.y, v.x);
 	}
 
+	public static Vector2d GetRandomDir() {
+		Random rnd = new Random();
+		return new Vector2d(-1 + 2 * rnd.nextDouble(), -1 + 2 * rnd.nextDouble());
+	}
+
 }

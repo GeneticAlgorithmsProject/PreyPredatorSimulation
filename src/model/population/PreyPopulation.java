@@ -31,15 +31,15 @@ public class PreyPopulation extends Population {
 
 	@Override
 	public void move(double dt) {
-//		findPrey();
+		findGoal();
 //		calculatePredatorsField();
-//		boundaryConditions();
-//		moveInds(dt);
+		boundaryConditions();
+		moveInds(dt);
 	}
 
 	@Override
 	public void updateSpecial(double dt) {
-		eat();
+		eat(dt);
 		death();
 	}
 

@@ -1,6 +1,7 @@
 package model.individual;
 
 import java.util.Random;
+import java.util.List;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -9,10 +10,14 @@ import utils.Vector2d;
 public class Individual extends Fenotype implements Live {
 
 	protected Vector2d pos;
+	protected Vector2d dir;
 
 	protected Random rnd = new Random();
 
 	protected Individual goal;
+	protected List<Individual> run;
+	
+	protected String name;
 
 	public Individual() {
 		super();
@@ -22,9 +27,11 @@ public class Individual extends Fenotype implements Live {
 		fA = 0.;
 		maxHealth = health;
 		pos = new Vector2d();
-		shape = new Circle(pos.x, pos.y, getSizeR());
-		sight = new Circle(pos.x, pos.y, getSightR());
+		dir = new Vector2d(rnd.nextDouble(),rnd.nextDouble());
+		shape = new Circle(pos.x, pos.y, getSizA());
+		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
+		name = "Individual";
 	}
 
 	public Individual(double x, double y) {
@@ -35,9 +42,11 @@ public class Individual extends Fenotype implements Live {
 		fA = 0.;
 		maxHealth = health;
 		pos = new Vector2d(x, y);
-		shape = new Circle(pos.x, pos.y, getSizeR());
-		sight = new Circle(pos.x, pos.y, getSightR());
+		dir = new Vector2d(rnd.nextDouble(),rnd.nextDouble());
+		shape = new Circle(pos.x, pos.y, getSizA());
+		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
+		name = "Individual";
 	}
 
 	public Individual(double R) {
@@ -48,9 +57,11 @@ public class Individual extends Fenotype implements Live {
 		fA = 0.;
 		maxHealth = health;
 		pos = new Vector2d(R);
-		shape = new Circle(pos.x, pos.y, getSizeR());
-		sight = new Circle(pos.x, pos.y, getSightR());
+		dir = new Vector2d(rnd.nextDouble(),rnd.nextDouble());
+		shape = new Circle(pos.x, pos.y, getSizA());
+		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
+		name = "Individual";
 	}
 	
 	@Override
@@ -67,13 +78,13 @@ public class Individual extends Fenotype implements Live {
 		shape.setCenterX(pos.x);
 		shape.setCenterY(pos.y);
 		shape.setFill(color);
-		shape.setRadius(getSizeR());
+		shape.setRadius(getSizA());
 		shape.setOpacity(health / maxHealth);
 
 		sight.setCenterX(pos.x);
 		sight.setCenterY(pos.y);
 		sight.setFill(color);
-		sight.setRadius(getSightR());
+		sight.setRadius(getSigA());
 		sight.setOpacity(0.2 * health / maxHealth);
 
 		decrementHealth(dt);
@@ -85,35 +96,49 @@ public class Individual extends Fenotype implements Live {
 	}
 
 	protected void oscillate(Vector2d v) {
-		if (Vector2d.dist(pos, pos) < getSightR())
+		if (Vector2d.dist(pos, pos) < getSigA())
 			return;
 
 		Vector2d v_t = Vector2d.PerpendicularClockwise(v);
 		v_t.norm();
 		v_t.mult(fA);
-		if (Math.abs(fA) >= getNoiseA())
+		if (Math.abs(fA) >= getOscA())
 			fDir *= -1;
-		fA += fDir * getNoiseA() * getNoiseF();
+		fA += fDir * getOscA() * getOscF();
 		v.add(v_t);
 	}
 
 	protected void hunger(Vector2d v) {
-		if (health > getHungerLevel())
+		if (health > getHeaL())
 			return;
 
-		v.add(movement[Move.dGo.ordinal()].multV(getHungerMult()));
+		v.add(movement[Move.dGo.ordinal()].multV(getHeaM()));
 	}
 
 	protected void randomWalk(double dt) {
-
+		if(rnd.nextDouble() < getDRanM() && !runToGoal()) 
+			dir = Vector2d.GetRandomDir();
+	}
+	
+	protected boolean runToGoal() {
+		return Vector2d.dist(pos, goal.getPos()) < getSigA();
+	}
+	
+	protected boolean runAway() {
+		return false;
+	}
+	
+	public boolean overlaps(Individual ind) {
+		return Math.abs(pos.x - ind.getPos().x) < getSizA() + ind.getSizA()
+		&& Math.abs(pos.y - ind.getPos().y) < getSizA() + ind.getSizA();
 	}
 
 	public void decrementHealth(double dt) {
-		health -= incrementHealth * dt / 2;
+		health -= incrementHealth * dt / 20;
 	}
 
 	public void incrementHealth(double dt) {
-		health += incrementHealth * dt;
+		health += incrementHealth * dt * 10;
 	}
 
 	public Vector2d getPos() {

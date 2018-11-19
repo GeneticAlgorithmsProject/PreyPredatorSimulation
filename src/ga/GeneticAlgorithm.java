@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import model.individual.Genotype;
 import model.individual.Individual;
 import model.individual.Predator;
 import model.individual.Prey;

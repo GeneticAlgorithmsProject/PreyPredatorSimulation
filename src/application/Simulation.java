@@ -6,7 +6,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import model.population.FoodPopulation;
 import model.population.Population;
 import model.population.PredatorPopulation;
@@ -14,7 +13,12 @@ import model.population.PreyPopulation;
 
 public class Simulation {
 
-	private Population food, preys, predators;
+	private Population[] populations;
+
+	enum PopulationType {
+		Food, Prey, Predator
+	}
+
 	public static int foodCount = 50, preyCount = 20, predatorCount = 10;
 
 	private Pane pane;
@@ -40,7 +44,7 @@ public class Simulation {
 		this.timer = timer;
 		width = pane.getWidth();
 		height = pane.getHeight();
-	
+
 		generation = 0;
 
 		preyBest = new XYChart.Series<>();
@@ -68,18 +72,17 @@ public class Simulation {
 	}
 
 	public void init() {
-		food = new FoodPopulation(foodCount);
-		preys = new PreyPopulation(preyCount);
-		predators = new PredatorPopulation(predatorCount);
+		populations = new Population[PopulationType.values().length];
 
-		food.init();
+		populations[PopulationType.Food.ordinal()] = new FoodPopulation(foodCount);
+		populations[PopulationType.Predator.ordinal()] = new PredatorPopulation(predatorCount);
+		populations[PopulationType.Prey.ordinal()] = new PreyPopulation(preyCount);
 
-		preys.init();
-		preys.setPrey(food);
-//		preys.setAdversary(predators);
+		for (Population p : populations)
+			p.init();
 
-		predators.init();
-		predators.setPrey(preys);
+		populations[PopulationType.Prey.ordinal()].setGoal(populations[PopulationType.Food.ordinal()]);
+		populations[PopulationType.Predator.ordinal()].setGoal(populations[PopulationType.Prey.ordinal()]);
 	}
 
 	public void animate() {
@@ -125,49 +128,47 @@ public class Simulation {
 	}
 
 	private void addData() {
-		preyBest.getData().add(new XYChart.Data<Number, Number>(generation, preys.getMaxAge()));
-		preyAverage.getData().add(new XYChart.Data<Number, Number>(generation, preys.getAverageAge()));
-		predatorBest.getData().add(new XYChart.Data<Number, Number>(generation, predators.getMaxAge()));
-		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation, predators.getAverageAge()));
+		preyBest.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Prey.ordinal()].getMaxAge()));
+		preyAverage.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Prey.ordinal()].getAverageAge()));
+		predatorBest.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Predator.ordinal()].getMaxAge()));
+		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Predator.ordinal()].getAverageAge()));
 		generation++;
 	}
 
 	private void join() {
-		predators.joinIndLists();
-		preys.joinIndLists();
+		for(Population p : populations)
+			p.joinIndLists();
 	}
 
 	private void draw() {
 		pane.getChildren().clear();
-		food.drawOn(pane);
-		preys.drawOn(pane);
-		predators.drawOn(pane);
+		for (Population p : populations)
+			p.drawOn(pane);
 	}
 
 	private void move(double dt) {
-		predators.move(dt);
-		preys.move(dt);
+		for (Population p : populations)
+			p.move(dt);
 	}
 
 	private void update(double dt) {
 		width = pane.getWidth();
 		height = pane.getHeight();
-		food.update(dt);
-		preys.update(dt);
-		predators.update(dt);
-		food.updateSpecial(dt);
-		preys.updateSpecial(dt);
-		predators.updateSpecial(dt);
+		for(Population p : populations) {
+			p.update(dt);
+			p.updateSpecial(dt);
+		}
 	}
-	
+
 	public void initPositions() {
-		food.initPositions();
-		preys.initPositions();
-		predators.initPositions();
+		for(Population p : populations)
+			p.initPositions();
 	}
 
 	private boolean pause() {
-		return food.getSize() < 1 || preys.getSize() < 1
-				|| predators.getSize() < 1;
+		for(Population p : populations)
+			if(p.getSize() < 1)
+				return true;
+		return false; 
 	}
 }

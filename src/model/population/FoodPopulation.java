@@ -26,6 +26,7 @@ public class FoodPopulation extends Population{
 		
 	@Override
 	public void updateSpecial(double dt) {
+		death();
 		if(population.size() < count) {
 			population.add(new Food(Math.min(Simulation.width, Simulation.height)));
 		}	
