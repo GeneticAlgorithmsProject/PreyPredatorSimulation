@@ -29,7 +29,6 @@ public class PreyPopulation extends Population {
 
 	@Override
 	public void move(double dt) {
-		System.out.println(name + " " + population.get(0).getPos().x + " " + population.get(0).getPos().y);
 		findGoal();
 		calculatePredatorsField();
 		moveInds(dt);
