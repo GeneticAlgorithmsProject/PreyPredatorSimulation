@@ -30,9 +30,4 @@ public class Food extends Individual implements Live{
 		
 	}
 
-	@Override
-	public void die(double dt) {
-		
-	}
-
 }

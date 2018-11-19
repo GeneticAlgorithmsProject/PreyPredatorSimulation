@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import application.Simulation;
+import model.Simulation;
 
 public class LayoutController {
 
@@ -34,7 +34,6 @@ public class LayoutController {
 	private Slider predatorCount;
 	
 	private Simulation simulation;
-	
 
 	@FXML
 	public void initialize() {

@@ -5,8 +5,9 @@ import java.util.Random;
 public class Genotype {
 
 	protected double[] genotype;
+
 	protected enum Gene {
-	    DESCM, DGOM, OSCA, OSCF, HEAM, HEAL, SIGA, SIZA, DRANM
+		DESCM, DGOM, OSCA, OSCF, HEAM, HEAL, SIGA, SIZA, DRANM
 	}
 
 	public Genotype() {
@@ -21,7 +22,7 @@ public class Genotype {
 //		Oscillations fractional increment
 		genotype[Gene.OSCF.ordinal()] = (1 + rnd.nextDouble()) * 0.01;
 //		Sight radius
-		genotype[Gene.SIGA.ordinal()]  = (1 + rnd.nextDouble()) * 50;
+		genotype[Gene.SIGA.ordinal()] = (1 + rnd.nextDouble()) * 50;
 //		Size radius
 		genotype[Gene.SIZA.ordinal()] = (1 + rnd.nextDouble()) * 2;
 //		Goal vector multiplier when hungry
@@ -29,7 +30,7 @@ public class Genotype {
 //		Hunger level
 		genotype[Gene.HEAL.ordinal()] = rnd.nextDouble();
 //		Probability of changing direction when in random walk
-		genotype[Gene.DRANM.ordinal()] = (1 + rnd.nextDouble()) * 0.5;
+		genotype[Gene.DRANM.ordinal()] = (1 + rnd.nextDouble()) * 0.1;
 	}
 
 	public double[] getGenotype() {
@@ -59,18 +60,16 @@ public class Genotype {
 	public double getSizA() {
 		return genotype[Gene.SIZA.ordinal()];
 	}
-	
+
 	public double getHeaM() {
 		return genotype[Gene.HEAM.ordinal()];
 	}
-	
+
 	public double getHeaL() {
 		return genotype[Gene.HEAL.ordinal()];
 	}
-	
+
 	public double getDRanM() {
 		return genotype[Gene.DRANM.ordinal()];
 	}
-	
-	
 }

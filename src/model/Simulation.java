@@ -1,4 +1,4 @@
-package application;
+package model;
 
 import ga.GeneticAlgorithm;
 import javafx.animation.AnimationTimer;
@@ -25,8 +25,8 @@ public class Simulation {
 
 	public static double DT = 10;
 	public static double width, height;
-	public static double timeMultiplier;
-	public static boolean closed = false;
+	public static double timeMultiplier, speedMultiplier = 1000;
+	public static boolean closed = true;
 
 	private TextField timer;
 
@@ -83,6 +83,8 @@ public class Simulation {
 
 		populations[PopulationType.Prey.ordinal()].setGoal(populations[PopulationType.Food.ordinal()]);
 		populations[PopulationType.Predator.ordinal()].setGoal(populations[PopulationType.Prey.ordinal()]);
+		
+		populations[PopulationType.Prey.ordinal()].setRun(populations[PopulationType.Predator.ordinal()]);
 	}
 
 	public void animate() {
@@ -96,7 +98,7 @@ public class Simulation {
 					timer(time = 0);
 					join();
 					addData();
-//					GeneticAlgorithm ga = new GeneticAlgorithm(2, 1, 0.01);
+					GeneticAlgorithm ga = new GeneticAlgorithm(2, 1, 0.01);
 //					ga.createNewGeneration(preys);
 //					ga.createNewGeneration(predators);
 					init();

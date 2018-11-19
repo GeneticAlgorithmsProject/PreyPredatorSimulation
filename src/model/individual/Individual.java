@@ -1,6 +1,7 @@
 package model.individual;
 
 import java.util.Random;
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.scene.paint.Color;
@@ -16,7 +17,7 @@ public class Individual extends Fenotype implements Live {
 
 	protected Individual goal;
 	protected List<Individual> run;
-	
+
 	protected String name;
 
 	public Individual() {
@@ -27,10 +28,11 @@ public class Individual extends Fenotype implements Live {
 		fA = 0.;
 		maxHealth = health;
 		pos = new Vector2d();
-		dir = new Vector2d(rnd.nextDouble(),rnd.nextDouble());
+		dir = Vector2d.RandomDir();
 		shape = new Circle(pos.x, pos.y, getSizA());
 		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
+		run = new LinkedList<>();
 		name = "Individual";
 	}
 
@@ -42,10 +44,11 @@ public class Individual extends Fenotype implements Live {
 		fA = 0.;
 		maxHealth = health;
 		pos = new Vector2d(x, y);
-		dir = new Vector2d(rnd.nextDouble(),rnd.nextDouble());
+		dir = Vector2d.RandomDir();
 		shape = new Circle(pos.x, pos.y, getSizA());
 		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
+		run = new LinkedList<>();
 		name = "Individual";
 	}
 
@@ -57,21 +60,17 @@ public class Individual extends Fenotype implements Live {
 		fA = 0.;
 		maxHealth = health;
 		pos = new Vector2d(R);
-		dir = new Vector2d(rnd.nextDouble(),rnd.nextDouble());
+		dir = Vector2d.RandomDir();
 		shape = new Circle(pos.x, pos.y, getSizA());
 		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
+		run = new LinkedList<>();
 		name = "Individual";
-	}
-	
-	@Override
-	public void move(double dt) {
-		
 	}
 
 	@Override
-	public void die(double dt) {
-		
+	public void move(double dt) {
+
 	}
 
 	public void update(double dt) {
@@ -88,6 +87,7 @@ public class Individual extends Fenotype implements Live {
 		sight.setOpacity(0.2 * health / maxHealth);
 
 		decrementHealth(dt);
+		run.clear();
 
 		if (isDead())
 			return;
@@ -95,46 +95,75 @@ public class Individual extends Fenotype implements Live {
 		age += dt;
 	}
 
-	protected void oscillate(Vector2d v) {
-		if (Vector2d.dist(pos, pos) < getSigA())
+	protected void oscillate() {
+		if (goalInSight())
 			return;
 
-		Vector2d v_t = Vector2d.PerpendicularClockwise(v);
+		Vector2d v_t = Vector2d.PerpendicularClockwise(dir);
 		v_t.norm();
-		v_t.mult(fA);
 		if (Math.abs(fA) >= getOscA())
 			fDir *= -1;
 		fA += fDir * getOscA() * getOscF();
-		v.add(v_t);
+		v_t.mult(fA);
+		dir.add(v_t);
 	}
 
 	protected void hunger(Vector2d v) {
 		if (health > getHeaL())
 			return;
-
 		v.add(movement[Move.dGo.ordinal()].multV(getHeaM()));
 	}
 
 	protected void randomWalk(double dt) {
-		if(rnd.nextDouble() < getDRanM() && !runToGoal()) 
-			dir = Vector2d.GetRandomDir();
+		if(goalInSight() || runInSight())
+			return;
+		
+		if (rnd.nextDouble() < getDRanM()) {
+			dir = Vector2d.RandomDir();
+			dir.norm();
+			dir.mult(speed*dt*1000);
+			pos.add(dir);
+		}
+		dir.reset();
 	}
 	
-	protected boolean runToGoal() {
+	protected boolean runInSight() {
+		return run.size() > 0;
+	}
+	
+	protected void runAway() {
+		if(!runInSight())
+			return;
+		movement[Move.dEsc.ordinal()].reset();
+		for(Individual ind : run) {
+			movement[Move.dEsc.ordinal()].add(Vector2d.diff(ind.getPos(), pos));
+		}
+		movement[Move.dEsc.ordinal()].div(run.size());
+		movement[Move.dEsc.ordinal()].mult(getDEscM());
+		dir.add(movement[Move.dEsc.ordinal()]);
+	}
+
+	protected boolean goalInSight() {
 		return Vector2d.dist(pos, goal.getPos()) < getSigA();
 	}
-	
-	protected boolean runAway() {
-		return false;
+
+	protected void moveToGoal() {
+		if (!goalInSight())
+			return;
+		movement[Move.dGo.ordinal()].reset();
+		movement[Move.dGo.ordinal()].add(Vector2d.diff(goal.getPos(), pos));
+		movement[Move.dGo.ordinal()].norm();
+		movement[Move.dGo.ordinal()].mult(getDGoM());
+		dir.add(movement[Move.dGo.ordinal()]);
 	}
-	
+
 	public boolean overlaps(Individual ind) {
 		return Math.abs(pos.x - ind.getPos().x) < getSizA() + ind.getSizA()
-		&& Math.abs(pos.y - ind.getPos().y) < getSizA() + ind.getSizA();
+				&& Math.abs(pos.y - ind.getPos().y) < getSizA() + ind.getSizA();
 	}
 
 	public void decrementHealth(double dt) {
-		health -= incrementHealth * dt / 20;
+		health -= incrementHealth * dt / 40;
 	}
 
 	public void incrementHealth(double dt) {
@@ -207,6 +236,10 @@ public class Individual extends Fenotype implements Live {
 
 	public void setGoal(Individual prey) {
 		this.goal = prey;
+	}
+
+	public void addRun(Individual ind) {
+		run.add(ind);
 	}
 
 }

@@ -1,7 +1,6 @@
 package model.individual;
 
 import javafx.scene.paint.Color;
-import utils.Vector2d;
 
 public class Prey extends Individual implements Live{
 
@@ -25,23 +24,13 @@ public class Prey extends Individual implements Live{
 
 	@Override
 	public void move(double dt) {
-		movement[Move.dGo.ordinal()] = Vector2d.normedDiff(goal.getPos(), pos);
-		movement[Move.dGo.ordinal()].mult(getDGoM());
-		dir.add(movement[Move.dGo.ordinal()]);
-//		movement[Move.dEsc.ordinal()] .mult(getDEscM());
-//		
-//		Vector2d dir = Vector2d.add(movement[Move.dGo.ordinal()] , movement[Move.dEsc.ordinal()] );
-//		oscillate(dir);
-//		hunger(dir);
-		dir.norm();
 		randomWalk(dt);
-		dir.mult(speed*dt*100);
+//		oscillate();
+//		moveToGoal();
+//		runAway();
+//		dir.norm();
+		dir.mult(speed*dt);
 		pos.add(dir);
-	}
-	
-	@Override
-	public void die(double dt) {
-		
 	}
 	
 }

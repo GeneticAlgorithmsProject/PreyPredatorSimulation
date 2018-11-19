@@ -2,14 +2,12 @@ package model.population;
 
 import java.util.Random;
 
-import application.Simulation;
+import model.Simulation;
 import model.individual.Individual;
 import model.individual.Prey;
 import utils.Vector2d;
 
 public class PreyPopulation extends Population {
-
-	Population adversary;
 
 	public PreyPopulation(int count) {
 		super(count);
@@ -19,8 +17,8 @@ public class PreyPopulation extends Population {
 	public void initPositions() {
 		Random rnd = new Random();
 		for (Individual ind : population)
-			ind.setPos(new Vector2d(Simulation.width * (1 - rnd.nextDouble() / 8),
-					Simulation.height * (1 - rnd.nextDouble() / 8)));
+			ind.setPos(new Vector2d(Simulation.width * (1 - rnd.nextDouble() / 3),
+					Simulation.height * (1 - rnd.nextDouble() / 3)));
 	}
 
 	@Override
@@ -31,10 +29,11 @@ public class PreyPopulation extends Population {
 
 	@Override
 	public void move(double dt) {
+		System.out.println(name + " " + population.get(0).getPos().x + " " + population.get(0).getPos().y);
 		findGoal();
-//		calculatePredatorsField();
-		boundaryConditions();
+		calculatePredatorsField();
 		moveInds(dt);
+		boundaryConditions();
 	}
 
 	@Override
@@ -43,22 +42,13 @@ public class PreyPopulation extends Population {
 		death();
 	}
 
-	public void setAdversary(Population adversary) {
-		this.adversary = adversary;
-	}
-
 	private void calculatePredatorsField() {
-//		for (int p = 0; p < population.size(); p++) {
-//			Prey ind = (Prey) population.get(p);
-//			int size = adversary.getPopulation().size();
-//			Vector2d dir = new Vector2d();
-//			for (int i = 0; i < size; ++i) {
-//				Individual adv = adversary.getPopulation().get(i);
-//				if (Vector2d.dist(adv.getPos(), ind.getPos()) < ind.getGene().getSight()) {
-//					dir.add(Vector2d.normedDiff(ind.getPos(), adv.getPos()));
-//				}
-//			}
-//			ind.setDirEscape(dir);
-//		}
+		for (Individual ind : population) {
+			for (Individual r : run.getPopulation()) {
+				if (Vector2d.dist(r.getPos(), ind.getPos()) < ind.getSigA()) {
+					ind.addRun(r);
+				}
+			}
+		}
 	}
 }

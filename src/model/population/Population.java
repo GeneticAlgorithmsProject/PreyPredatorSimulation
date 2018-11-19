@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.LinkedList;
 
-import application.Simulation;
 import javafx.scene.layout.Pane;
+import model.Simulation;
 import model.individual.Individual;
-import model.individual.Live;
 import utils.Vector2d;
 
-public class Population{
+public class Population {
 
 	protected List<Individual> population;
 	protected List<Individual> dead;
@@ -27,12 +26,12 @@ public class Population{
 		this.count = count;
 		name = "Default";
 	}
-	
+
 	public void initPositions() {
 		Random rnd = new Random();
-		for(Individual ind : population) 
-			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width, rnd.nextDouble()*Simulation.height));
-	}	
+		for (Individual ind : population)
+			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width, rnd.nextDouble() * Simulation.height));
+	}
 
 	public void init() {
 		for (int i = 0; i < count; ++i)
@@ -44,9 +43,9 @@ public class Population{
 	}
 
 	public void die(double dt) {
-		
+
 	}
-	
+
 	public void update(double dt) {
 		for (Individual ind : population)
 			ind.update(dt);
@@ -93,7 +92,6 @@ public class Population{
 		for (Individual ind : population)
 			for (Individual pr : goal.getPopulation())
 				if (ind.overlaps(pr)) {
-					System.out.println("death" + pr);
 					ind.incrementHealth(dt);
 					pr.death();
 				}
@@ -110,9 +108,9 @@ public class Population{
 		population.addAll(dead);
 		dead.clear();
 	}
-	
+
 	public void drawOn(Pane pane) {
-		for(Individual ind : population) {
+		for (Individual ind : population) {
 			pane.getChildren().add(ind.getShape());
 			pane.getChildren().add(ind.getSight());
 		}
@@ -127,17 +125,21 @@ public class Population{
 		for (Individual ind : population)
 			ind.move(dt);
 	}
-	
+
 	public Individual get(int index) {
 		return population.get(index);
 	}
-	
+
 	public int getSize() {
 		return population.size();
 	}
 
 	public void setGoal(Population goal) {
 		this.goal = goal;
+	}
+
+	public void setRun(Population run) {
+		this.run = run;
 	}
 
 	public int getCount() {
@@ -155,10 +157,9 @@ public class Population{
 	public void setPopulation(List<Individual> population) {
 		this.population = population;
 	}
-	
-	public List<Individual> getPopulation(){
+
+	public List<Individual> getPopulation() {
 		return population;
 	}
-	
-	
+
 }

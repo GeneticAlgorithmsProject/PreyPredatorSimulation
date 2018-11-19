@@ -2,13 +2,11 @@ package ga;
 
 import java.util.Collections;
 import java.util.Random;
-
-import application.Simulation;
-
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import model.Simulation;
 import model.individual.Genotype;
 import model.individual.Individual;
 import model.individual.Predator;

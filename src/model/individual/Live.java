@@ -4,8 +4,6 @@ public interface Live {
 
 	public void move(double dt);
 	
-	public void die(double dt);
-	
 	public void update(double dt);
 	
 }

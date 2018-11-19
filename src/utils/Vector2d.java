@@ -2,7 +2,7 @@ package utils;
 
 import java.util.Random;
 
-import application.Simulation;
+import model.Simulation;
 
 public class Vector2d {
 
@@ -24,6 +24,11 @@ public class Vector2d {
 		double r = R / 2 * Math.sqrt(rnd.nextDouble());
 		x = r * Math.cos(a) + R / 2;
 		y = r * Math.sin(a) + R / 2;
+	}
+	
+	public void reset() {
+		x = 0;
+		y = 0;
 	}
 
 	public void add(Vector2d v) {
@@ -129,9 +134,22 @@ public class Vector2d {
 		return new Vector2d(-v.y, v.x);
 	}
 
-	public static Vector2d GetRandomDir() {
+	public static Vector2d RandomDir() {
 		Random rnd = new Random();
 		return new Vector2d(-1 + 2 * rnd.nextDouble(), -1 + 2 * rnd.nextDouble());
+	}
+	
+	//doesn't work
+	public static Vector2d BiasedDir(Vector2d pos) {
+		Random rnd = new Random();
+		Vector2d dir = new Vector2d();
+		dir.x = (Simulation.width/2 - pos.x)/Math.abs((Simulation.width/2 - pos.x));
+		dir.y = (Simulation.height/2 - pos.y)/Math.abs((Simulation.height/2 - pos.y));
+		dir.norm();
+		dir.x += -1 + 2*rnd.nextDouble();
+		dir.y += -1 + 2*rnd.nextDouble();
+		dir.norm();
+		return dir;
 	}
 
 }

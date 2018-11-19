@@ -2,7 +2,7 @@ package model.population;
 
 import java.util.Random;
 
-import application.Simulation;
+import model.Simulation;
 import model.individual.Individual;
 import model.individual.Predator;
 import utils.Vector2d;
@@ -13,11 +13,11 @@ public class PredatorPopulation extends Population {
 		super(count);
 		name = "PredatorPopulation";
 	}
-	
+
 	public void initPositions() {
 		Random rnd = new Random();
-		for(Individual ind : population) 
-			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width/8, rnd.nextDouble()*Simulation.height/8));
+		for (Individual ind : population)
+			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width / 3, rnd.nextDouble() * Simulation.height / 3));
 	}
 
 	@Override
@@ -30,8 +30,8 @@ public class PredatorPopulation extends Population {
 	public void move(double dt) {
 		boundaryConditions();
 		findGoal();
-		boundaryConditions();
 		moveInds(dt);
+		boundaryConditions();
 	}
 
 	@Override
