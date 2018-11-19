@@ -7,7 +7,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import model.individual.Individual;
 import model.population.Food;
 import model.population.Population;
 import model.population.Predators;
@@ -19,7 +18,6 @@ public class Simulation {
 	public static int foodCount = 50, preyCount = 20, predatorCount = 10;
 
 	private Pane pane;
-	private Circle circle;
 
 	public static double DT = 10;
 	public static double width, height;
@@ -67,8 +65,6 @@ public class Simulation {
 		preyAverage.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: grey;");
 		predatorBest.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: red;");
 		predatorAverage.getNode().setStyle("-fx-stroke-width: 1; -fx-stroke: grey;");
-
-		circle = new Circle(width / 2, height / 2, Math.min(width, height) / 2);
 	}
 
 	public void init() {
@@ -143,9 +139,9 @@ public class Simulation {
 
 	private void draw() {
 		pane.getChildren().clear();
+		food.drawOn(pane);
 		preys.drawOn(pane);
 		predators.drawOn(pane);
-		pane.getChildren().add(circle);
 	}
 
 	private void move(double dt) {
@@ -156,10 +152,6 @@ public class Simulation {
 	private void update(double dt) {
 		width = pane.getWidth();
 		height = pane.getHeight();
-		circle.setCenterX(width / 2);
-		circle.setCenterY(height / 2);
-		circle.setRadius(Math.min(width, height) / 2);
-		circle.setOpacity(0.05);
 		food.update(dt);
 		preys.update(dt);
 		predators.update(dt);

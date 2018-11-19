@@ -52,6 +52,16 @@ public class Individual extends Fenotype implements Live {
 		sight = new Circle(pos.x, pos.y, getSightR());
 		color = new Color(0, 1, 0, 1);
 	}
+	
+	@Override
+	public void move(double dt) {
+		
+	}
+
+	@Override
+	public void die(double dt) {
+		
+	}
 
 	public void update(double dt) {
 		shape.setCenterX(pos.x);
@@ -95,16 +105,6 @@ public class Individual extends Fenotype implements Live {
 	}
 
 	protected void randomWalk(double dt) {
-
-	}
-
-	@Override
-	public void move(double dt) {
-
-	}
-
-	@Override
-	public void die(double dt) {
 
 	}
 
