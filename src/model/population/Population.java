@@ -1,15 +1,15 @@
 package model.population;
 
 import java.util.List;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Random;
 
+import application.Simulation;
 import javafx.scene.layout.Pane;
 import model.individual.Individual;
+import model.individual.Live;
 import utils.Vector2d;
 
-public class Population {
+public class Population implements Live{
 
 	protected List<Individual> population;
 	protected List<Individual> dead;
@@ -17,29 +17,32 @@ public class Population {
 	protected Population prey;
 
 	protected int count;
-	protected double width, height;
 
 	protected String name;
 
-	public Population(int count, Pane pane) {
+	public Population(int count) {
 		population = new LinkedList<>();
 		dead = new LinkedList<>();
 		this.count = count;
-		width = pane.getWidth();
-		height = pane.getHeight();
 		name = "Default";
 	}
 
 	public void init() {
 		for (int i = 0; i < count; ++i)
-			population.add(new Individual(Math.min(width, height)));
+			population.add(new Individual(Math.min(Simulation.width, Simulation.height)));
 	}
 
+	@Override
 	public void move(double dt) {
 		for (Individual ind : population)
 			ind.move(dt);
 	}
 
+	@Override
+	public void die(double dt) {
+		
+	}
+	
 	public void update(double dt) {
 		for (Individual ind : population)
 			ind.update(dt);
@@ -68,28 +71,28 @@ public class Population {
 		for (Individual ind : population) {
 			double minDistance = Double.MAX_VALUE;
 			int index = 0;
-			for (int i = 0; i < prey.getPopulation().size(); ++i) {
-				Individual pr = prey.getPopulation().get(i);
+			for (int i = 0; i < prey.getSize(); ++i) {
+				Individual pr = prey.get(i);
 				double dist = Vector2d.dist(ind.getPos(), pr.getPos());
 				if (dist < minDistance) {
 					minDistance = dist;
 					index = i;
 				}
 			}
-			if (prey.getPopulation().size() < 1)
+			if (prey.getSize() < 1)
 				return;
-			ind.setPrey(prey.getPopulation().get(index));
+			ind.setGoal(prey.get(index));
 		}
 	}
 
 	protected void eat() {
-		for (Individual ind : population)
-			for (Individual pr : prey.getPopulation())
-				if (Math.abs(ind.getPos().x - pr.getPos().x) < pr.getGene().getSize()
-						&& Math.abs(ind.getPos().y - pr.getPos().y) < pr.getGene().getSize()) {
-					ind.incrementHealth();
-					pr.death();
-				}
+//		for (Individual ind : population)
+//			for (Individual pr : prey.getPopulation())
+//				if (Math.abs(ind.getPos().x - pr.getPos().x) < pr.getGenotype().getSize()
+//						&& Math.abs(ind.getPos().y - pr.getPos().y) < pr.getGenotype().getSize()) {
+//					ind.incrementHealth();
+//					pr.death();
+//				}
 	}
 
 	protected void death() {
@@ -106,23 +109,34 @@ public class Population {
 		population.addAll(dead);
 		dead.clear();
 	}
+	
+	public void drawOn(Pane pane) {
+		for(Individual ind : population) {
+			pane.getChildren().add(ind.getShape());
+			pane.getChildren().add(ind.getSight());
+		}
+	}
 
 	protected void boundaryConditions() {
 		for (Individual ind : population)
-			ind.getPos().fit(0, 0, width, height);
+			ind.getPos().fit();
 	}
 
 	protected void moveInds(double dt) {
 		for (Individual ind : population)
 			ind.move(dt);
 	}
+	
+	public Individual get(int index) {
+		return population.get(index);
+	}
+	
+	public int getSize() {
+		return population.size();
+	}
 
 	public void setPrey(Population prey) {
 		this.prey = prey;
-	}
-
-	public List<Individual> getPopulation() {
-		return population;
 	}
 
 	public int getCount() {
@@ -133,10 +147,6 @@ public class Population {
 		this.count = count;
 	}
 
-	public void setAdversary(Population predators) {
-
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -144,4 +154,6 @@ public class Population {
 	public void setPopulation(List<Individual> population) {
 		this.population = population;
 	}
+	
+	
 }

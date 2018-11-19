@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.individual.Individual;
+import model.individual.Predator;
+import model.individual.Prey;
 import model.population.Population;
 
 public class GeneticAlgorithm {
@@ -36,10 +38,10 @@ public class GeneticAlgorithm {
 	}
 
 	private void setFitness(Population population) {
-		int size = population.getPopulation().size();
+		int size = population.getSize();
 		fitness = new LinkedList<>();
 		for (int i = 0; i < size; ++i) {
-			fitness.add(i, population.getPopulation().get(i).getAge() * selectivePressure);
+			fitness.add(i, population.get(i).getAge() * selectivePressure);
 		}
 	}
 
@@ -49,37 +51,39 @@ public class GeneticAlgorithm {
 
 	private void createChildren(Population population, List<Individual> parents) {
 		List<Individual> newGeneration = new LinkedList<>();
-		while (newGeneration.size() != population.getCount()) {
-			Individual ind = new Individual(Math.min(Simulation.width, Simulation.height));
-			Gene gene = new Gene();
-
-			int parent1index = rnd.nextInt(parents.size()-1);
-			int parent2index = rnd.nextInt(parents.size()-1);
-			while (parent1index == parent2index)
-				parent1index = rnd.nextInt(parents.size());
-
-			Gene newGene = crossover(parents.get(parent1index).getGene(),parents.get(parent2index).getGene());
-			ind.setGene(newGene);
-			newGeneration.add(ind);
+		double R = Math.min(Simulation.width, Simulation.height);
+		for(int i = 0; i < population.getCount(); i++) {
+//			Individual ind = new Individual(R);
+//			if(population.getName().equals("Predator"))
+//				ind = new Predator(R);
+//			else if(population.getName().equals("Prey"))
+//				ind = new Prey(R);
+//			int parent1index = rnd.nextInt(parents.size()-1);
+//			int parent2index = rnd.nextInt(parents.size()-1);
+//			while (parent1index == parent2index)
+//				parent1index = rnd.nextInt(parents.size());
+//			Gene newGene = crossover(parents.get(parent1index).getGene(),parents.get(parent2index).getGene());
+//			ind.setGene(newGene);
+//			newGeneration.add(ind);
 		}
 		population.setPopulation(newGeneration);
 	}
 
-	private Gene crossover(Gene gene1, Gene gene2) {
-		Gene gene = new Gene();
-		if(gene1.getGene().size() != gene2.getGene().size()) {
-			System.err.println("Wrong gene sizes");
-			return gene;
-		}
-		int size = gene1.getGene().size();
-		for(int g = 0; g < size; g++) {
-			double alpha = rnd.nextDouble();
-			double min = Math.min(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
-			double max = Math.max(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
-			double range = max - min;
-			double newValue = min - alpha + rnd.nextDouble()*(range + alpha);
-			gene.getGene().put(Gene.keys[g], newValue);
-		}
+	private Genotype crossover(Genotype gene1, Genotype gene2) {
+		Genotype gene = new Genotype();
+//		if(gene1.getGene().size() != gene2.getGene().size()) {
+//			System.err.println("Wrong gene sizes");
+//			return gene;
+//		}
+//		int size = gene1.getGene().size();
+//		for(int g = 0; g < size; g++) {
+//			double alpha = rnd.nextDouble();
+//			double min = Math.min(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
+//			double max = Math.max(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
+//			double range = max - min;
+//			double newValue = min - alpha + rnd.nextDouble()*(range + alpha);
+//			gene.getGene().put(Gene.keys[g], newValue);
+//		}
 		return gene;
 	}
 
@@ -87,7 +91,7 @@ public class GeneticAlgorithm {
 		List<Individual> parents = new LinkedList<>();
 		for (Individual ind : elitism(population))
 			parents.add(ind);
-		for (Individual ind : rouletteSelect(population, population.getPopulation().size() / 2 - numberOfBest))
+		for (Individual ind : rouletteSelect(population, population.getSize() / 2 - numberOfBest))
 			parents.add(ind);
 //		for(Individual ind : parents)
 //			System.out.println(population.getName() + " " + ind.getAge());
@@ -114,7 +118,7 @@ public class GeneticAlgorithm {
 				System.err.println("Shieeet");
 				continue;
 			}
-			selected.add(population.getPopulation().get(index));
+			selected.add(population.get(index));
 		}
 		return selected;
 	}
@@ -125,12 +129,12 @@ public class GeneticAlgorithm {
 			double currentFitness = 0;
 			int currentIndex = 0;
 			for (int f = 0; f < fitness.size(); f++) {
-				if (fitness.get(f) > currentFitness && !best.contains(population.getPopulation().get(f))) {
+				if (fitness.get(f) > currentFitness && !best.contains(population.get(f))) {
 					currentFitness = fitness.get(f);
 					currentIndex = f;
 				}
 			}
-			best.add(population.getPopulation().get(currentIndex));
+			best.add(population.get(currentIndex));
 		}
 //		for (Individual ind : best)
 //			System.out.println(population.getName() + " " + ind.getAge());

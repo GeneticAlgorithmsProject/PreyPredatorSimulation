@@ -2,108 +2,119 @@ package model.individual;
 
 import java.util.Random;
 
-import application.Simulation;
-import ga.Gene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import model.individual.Fenotype.Move;
 import utils.Vector2d;
 
-public class Individual {
+public class Individual extends Fenotype implements Live {
+
 	protected Vector2d pos;
-
-	protected double age;
-	protected double health, maxHealth;
-	protected double addHealth;
-	protected double primaryAddHealth;
-	protected double speed;
-	protected double primarySpeed;
-
-	protected Vector2d dirFood;
 
 	protected Random rnd = new Random();
 
-	protected Circle circle;
-	protected Circle sight;
-	
-	protected Color color;
-
-	protected Gene gene;
-
-	protected Individual prey;
+	protected Individual goal;
 
 	public Individual() {
-		gene = new Gene();
+		super();
 		age = 0.;
 		health = 1.;
+		fDir = 1.;
+		fA = 0.;
 		maxHealth = health;
-		primaryAddHealth = 0.0001;
-		primarySpeed = 1./gene.getSize();
 		pos = new Vector2d();
-		circle = new Circle(pos.x, pos.y, gene.getSize());
-		sight = new Circle(pos.x, pos.y, gene.getSight());
+		shape = new Circle(pos.x, pos.y, getSizeR());
+		sight = new Circle(pos.x, pos.y, getSightR());
 		color = new Color(0, 1, 0, 1);
-		dirFood = new Vector2d();
 	}
 
 	public Individual(double x, double y) {
-		gene = new Gene();
+		super();
 		age = 0.;
 		health = 1.;
+		fDir = 1.;
+		fA = 0.;
 		maxHealth = health;
-		primaryAddHealth = 0.0001;
-		primarySpeed = 1/gene.getSize();
 		pos = new Vector2d(x, y);
-		circle = new Circle(pos.x, pos.y, gene.getSize());
-		sight = new Circle(pos.x, pos.y, gene.getSight());
+		shape = new Circle(pos.x, pos.y, getSizeR());
+		sight = new Circle(pos.x, pos.y, getSightR());
 		color = new Color(0, 1, 0, 1);
-		dirFood = new Vector2d();
 	}
-	
+
 	public Individual(double R) {
-		gene = new Gene();
+		super();
 		age = 0.;
 		health = 1.;
+		fDir = 1.;
+		fA = 0.;
 		maxHealth = health;
-		primaryAddHealth = 0.0001;
-		primarySpeed = 1/gene.getSize();
 		pos = new Vector2d(R);
-		circle = new Circle(pos.x, pos.y, gene.getSize());
-		sight = new Circle(pos.x, pos.y, gene.getSight());
+		shape = new Circle(pos.x, pos.y, getSizeR());
+		sight = new Circle(pos.x, pos.y, getSightR());
 		color = new Color(0, 1, 0, 1);
-		dirFood = new Vector2d();
 	}
 
 	public void update(double dt) {
-		speed = primarySpeed*Simulation.timeMultiplier;
-		addHealth = primaryAddHealth*Simulation.timeMultiplier;
-		circle.setCenterX(pos.x);
-		circle.setCenterY(pos.y);
-		circle.setFill(color);
-		circle.setRadius(gene.getSize());
-		circle.setOpacity(health / maxHealth);
-		
+		shape.setCenterX(pos.x);
+		shape.setCenterY(pos.y);
+		shape.setFill(color);
+		shape.setRadius(getSizeR());
+		shape.setOpacity(health / maxHealth);
+
 		sight.setCenterX(pos.x);
 		sight.setCenterY(pos.y);
 		sight.setFill(color);
-		sight.setRadius(gene.getSight());
+		sight.setRadius(getSightR());
 		sight.setOpacity(0.2 * health / maxHealth);
-		
+
 		decrementHealth(dt);
-		if(isDead())
+
+		if (isDead())
 			return;
+
 		age += dt;
 	}
 
+	protected void oscillate(Vector2d v) {
+		if (Vector2d.dist(pos, pos) < getSightR())
+			return;
+
+		Vector2d v_t = Vector2d.PerpendicularClockwise(v);
+		v_t.norm();
+		v_t.mult(fA);
+		if (Math.abs(fA) >= getNoiseA())
+			fDir *= -1;
+		fA += fDir * getNoiseA() * getNoiseF();
+		v.add(v_t);
+	}
+
+	protected void hunger(Vector2d v) {
+		if (health > getHungerLevel())
+			return;
+
+		v.add(movement[Move.dGo.ordinal()].multV(getHungerMult()));
+	}
+
+	protected void randomWalk(double dt) {
+
+	}
+
+	@Override
 	public void move(double dt) {
-		
+
+	}
+
+	@Override
+	public void die(double dt) {
+
 	}
 
 	public void decrementHealth(double dt) {
-		health -= addHealth * 2;
+		health -= incrementHealth * dt / 2;
 	}
 
-	public void incrementHealth() {
-		health += addHealth;
+	public void incrementHealth(double dt) {
+		health += incrementHealth * dt;
 	}
 
 	public Vector2d getPos() {
@@ -117,7 +128,7 @@ public class Individual {
 	public double getAge() {
 		return age;
 	}
-	
+
 	public void setAge(double age) {
 		this.age = age;
 	}
@@ -125,11 +136,11 @@ public class Individual {
 	public double getHealth() {
 		return health;
 	}
-	
+
 	public void death() {
 		health = 0;
 	}
-	
+
 	public boolean isDead() {
 		return health <= 0;
 	}
@@ -142,12 +153,12 @@ public class Individual {
 		this.maxHealth = maxHealth;
 	}
 
-	public Circle getCircle() {
-		return circle;
+	public Circle getShape() {
+		return shape;
 	}
 
-	public void setCircle(Circle circle) {
-		this.circle = circle;
+	public void setShape(Circle shape) {
+		this.shape = shape;
 	}
 
 	public Circle getSight() {
@@ -158,28 +169,20 @@ public class Individual {
 		this.sight = sight;
 	}
 
-	public Vector2d getDirFood() {
-		return dirFood;
+	public double[] getGenome() {
+		return genotype;
 	}
 
-	public void setDirFood(Vector2d dirFood) {
-		this.dirFood = dirFood;
+	public void setGene(double[] genotype) {
+		this.genotype = genotype;
 	}
 
-	public Gene getGene() {
-		return gene;
+	public Individual getGoal() {
+		return goal;
 	}
 
-	public void setGene(Gene gene) {
-		this.gene = gene;
-	}
-
-	public Individual getPrey() {
-		return prey;
-	}
-
-	public void setPrey(Individual prey) {
-		this.prey = prey;
+	public void setGoal(Individual prey) {
+		this.goal = prey;
 	}
 
 }

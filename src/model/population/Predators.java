@@ -1,19 +1,19 @@
 package model.population;
 
-import javafx.scene.layout.Pane;
+import application.Simulation;
 import model.individual.Predator;
 
 public class Predators extends Population {
 
-	public Predators(int count, Pane pane) {
-		super(count, pane);
+	public Predators(int count) {
+		super(count);
 		name = "Predator";
 	}
 
 	@Override
 	public void init() {
 		for (int i = 0; i < count; ++i)
-			population.add(new Predator(Math.min(width, height)));
+			population.add(new Predator(Math.min(Simulation.width, Simulation.height)));
 	}
 
 	@Override

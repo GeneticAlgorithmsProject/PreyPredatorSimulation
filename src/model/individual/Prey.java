@@ -3,77 +3,41 @@ package model.individual;
 import javafx.scene.paint.Color;
 import utils.Vector2d;
 
-public class Prey extends Individual {
+public class Prey extends Individual implements Live{
 
-	private Vector2d dirEscape;
-
-	// auxiliary variables for changing direction of prey
-	private double fDir, fA;
-	
 	public Prey() {
 		super();
-		dirEscape = new Vector2d();
 		color = new Color(0, 0, 1, 1);
-		fDir = 1.;
-		fA = 0.;
 	}
 
 	public Prey(double x, double y) {
 		super(x, y);
-		dirEscape = new Vector2d();
 		color = new Color(0, 0, 1, 1);
-		fDir = 1.;
-		fA = 0.;
 	}
 	
 	public Prey(double R) {
 		super(R);
-		dirEscape = new Vector2d();
 		color = new Color(0, 0, 1, 1);
-		fDir = 1.;
-		fA = 0.;	
 	}
 
 	@Override
 	public void move(double dt) {
-		dirFood = Vector2d.normedDiff(prey.getPos(), pos);
-		dirFood.mult(gene.getDirFoodMult());
-		dirEscape.mult(gene.getDirEscapeMult());
+		movement[Move.dGo.ordinal()] = Vector2d.normedDiff(goal.getPos(), pos);
+		movement[Move.dGo.ordinal()].mult(getDirGoMult());
+		movement[Move.dEsc.ordinal()] .mult(getDirEscapeMult());
 		
-		Vector2d dir = Vector2d.add(dirFood, dirEscape);
+		Vector2d dir = Vector2d.add(movement[Move.dGo.ordinal()] , movement[Move.dEsc.ordinal()] );
 		oscillate(dir);
 		hunger(dir);
 		dir.norm();
 		dir.mult(speed);
 		pos.add(dir);
 	}
-
-	private void oscillate(Vector2d v) {
-		if(Vector2d.dist(pos, prey.getPos()) < gene.getSight())
-			return;
+	
+	@Override
+	public void die(double dt) {
+		// TODO Auto-generated method stub
 		
-		Vector2d v_t = Vector2d.PerpendicularClockwise(v);
-		v_t.norm();
-		v_t.mult(fA);
-		if (Math.abs(fA) >= gene.getNoiseA())
-			fDir *= -1;
-		fA += fDir * gene.getNoiseA() * gene.getNoiseF();
-		v.add(v_t);
 	}
 	
-	private void hunger(Vector2d v) {
-		if(health > gene.getHungerLevel())
-			return;
-		
-		v.add(dirFood.multV(gene.getHungerMult()));
-	}
-
-	public Vector2d getDirEscape() {
-		return dirEscape;
-	}
-
-	public void setDirEscape(Vector2d dirEscape) {
-		this.dirEscape = dirEscape;
-	}
-
 }

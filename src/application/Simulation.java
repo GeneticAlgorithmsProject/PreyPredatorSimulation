@@ -24,6 +24,7 @@ public class Simulation {
 	public static double DT = 10;
 	public static double width, height;
 	public static double timeMultiplier;
+	public static boolean closed = false;
 
 	private TextField timer;
 
@@ -71,15 +72,15 @@ public class Simulation {
 	}
 
 	public void init() {
-		food = new Food(foodCount, pane);
-		preys = new Preys(preyCount, pane);
-		predators = new Predators(predatorCount, pane);
+		food = new Food(foodCount);
+		preys = new Preys(preyCount);
+		predators = new Predators(predatorCount);
 
 		food.init();
 
 		preys.init();
 		preys.setPrey(food);
-		preys.setAdversary(predators);
+//		preys.setAdversary(predators);
 
 		predators.init();
 		predators.setPrey(preys);
@@ -96,11 +97,10 @@ public class Simulation {
 					timer(time = 0);
 					join();
 					addData();
-					GeneticAlgorithm ga = new GeneticAlgorithm(2, 1, 0.01);
-					ga.createNewGeneration(preys);
-					ga.createNewGeneration(predators);
+//					GeneticAlgorithm ga = new GeneticAlgorithm(2, 1, 0.01);
+//					ga.createNewGeneration(preys);
+//					ga.createNewGeneration(predators);
 					init();
-					
 				}
 			}
 
@@ -113,9 +113,7 @@ public class Simulation {
 				long deltaNanos = now - currTime;
 				currTime = now;
 				double dt = deltaNanos / 1.0e9 * timeMultiplier;
-				;
 				check(now);
-				reset();
 				move(dt);
 				update(dt);
 				draw();
@@ -142,21 +140,10 @@ public class Simulation {
 		preys.joinIndLists();
 	}
 
-	private void reset() {
-		pane.getChildren().clear();
-	}
-
 	private void draw() {
-		for (Individual ind : food.getPopulation())
-			pane.getChildren().add(ind.getCircle());
-		for (Individual ind : preys.getPopulation()) {
-			pane.getChildren().add(ind.getCircle());
-			pane.getChildren().add(ind.getSight());
-		}
-		for (Individual ind : predators.getPopulation()) {
-			pane.getChildren().add(ind.getCircle());
-			pane.getChildren().add(ind.getSight());
-		}
+		pane.getChildren().clear();
+		preys.drawOn(pane);
+		predators.drawOn(pane);
 		pane.getChildren().add(circle);
 	}
 
@@ -181,7 +168,7 @@ public class Simulation {
 	}
 
 	private boolean pause() {
-		return food.getPopulation().size() < 1 || preys.getPopulation().size() < 1
-				|| predators.getPopulation().size() < 1;
+		return food.getSize() < 1 || preys.getSize() < 1
+				|| predators.getSize() < 1;
 	}
 }
