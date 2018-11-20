@@ -20,8 +20,6 @@ public class Individual extends Fenotype implements Live {
 
 	protected String name;
 
-	private static double decrementHealthMult = 1. / 40; // 1/400
-
 	public Individual() {
 		super();
 		age = 0.;
@@ -122,7 +120,7 @@ public class Individual extends Fenotype implements Live {
 
 		movement[Move.dEsc.ordinal()].reset();
 		for (Individual r : run) {
-			movement[Move.dEsc.ordinal()].add(Vector2d.diff(pos,r.getPos()));
+			movement[Move.dEsc.ordinal()].add(Vector2d.diff(pos, r.getPos()));
 		}
 
 		movement[Move.dEsc.ordinal()].div(run.size());
@@ -185,22 +183,21 @@ public class Individual extends Fenotype implements Live {
 	}
 
 	public void decrementHealth(double dt) {
-		health -= incrementHealth * dt * decrementHealthMult;
+		health -= decrementHealth * dt;
 	}
 
 	public void incrementHealth(double dt) {
-		health += incrementHealth * dt;
+		health += incrementHealth;
 	}
-	
+
 	public void setVecDir(double dt) {
 		dirVec.setStartX(pos.x);
 		dirVec.setStartY(pos.y);
-		dirVec.setEndX(pos.x + dir.x * speed * 10);
-		dirVec.setEndY(pos.y + dir.y * speed * 10);
-		dirVec.setStrokeWidth(getSizA()/2);
+		dirVec.setEndX(pos.x + dir.x * speed * 5);
+		dirVec.setEndY(pos.y + dir.y * speed * 5);
+		dirVec.setStrokeWidth(getSizA() / 2);
 		dirVec.setStroke(color);
 	}
-
 
 	private void setShape() {
 		shape.setCenterX(pos.x);

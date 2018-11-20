@@ -28,7 +28,7 @@ public class Predator extends Individual implements Live{
 		randomWalk(dt);
 		moveToGoal(dt);
 		boundaryConditions();
-		pos.add(Vector2d.mult(dir, speed * dt * 10));
+		pos.add(Vector2d.mult(dir, speed * dt));
 	}
 
 }

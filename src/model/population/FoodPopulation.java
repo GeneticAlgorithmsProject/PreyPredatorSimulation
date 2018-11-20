@@ -1,5 +1,7 @@
 package model.population;
 
+import java.util.Random;
+
 import model.Simulation;
 import model.individual.Food;
 
@@ -25,9 +27,10 @@ public class FoodPopulation extends Population {
 	public void updateSpecial(double dt) {
 		dead.clear();
 		death();
-		if (population.size() < count) {
-			population.add(new Food(Math.min(Simulation.width, Simulation.height)));
-		}
+		Random rnd = new Random();
+		if (population.size() < count)
+			if (rnd.nextDouble() < 0.5)
+				population.add(new Food(Math.min(Simulation.width, Simulation.height)));
 	}
 
 }

@@ -52,37 +52,37 @@ public class GeneticAlgorithm {
 		List<Individual> newGeneration = new LinkedList<>();
 		double R = Math.min(Simulation.width, Simulation.height);
 		for(int i = 0; i < population.getCount(); i++) {
-//			Individual ind = new Individual(R);
-//			if(population.getName().equals("Predator"))
-//				ind = new Predator(R);
-//			else if(population.getName().equals("Prey"))
-//				ind = new Prey(R);
-//			int parent1index = rnd.nextInt(parents.size()-1);
-//			int parent2index = rnd.nextInt(parents.size()-1);
-//			while (parent1index == parent2index)
-//				parent1index = rnd.nextInt(parents.size());
-//			Gene newGene = crossover(parents.get(parent1index).getGene(),parents.get(parent2index).getGene());
-//			ind.setGene(newGene);
-//			newGeneration.add(ind);
+			Individual ind = new Individual(R);
+			if(population.getName().equals("PredatorPopulation"))
+				ind = new Predator(R);
+			else if(population.getName().equals("PreyPopulation"))
+				ind = new Prey(R);
+			int parent1index = rnd.nextInt(parents.size()-1);
+			int parent2index = rnd.nextInt(parents.size()-1);
+			while (parent1index == parent2index)
+				parent1index = rnd.nextInt(parents.size());
+			double[] newGene = crossover(parents.get(parent1index),parents.get(parent2index));
+			ind.setGenotype(newGene);
+			newGeneration.add(ind);
 		}
 		population.setPopulation(newGeneration);
 	}
 
-	private Genotype crossover(Genotype gene1, Genotype gene2) {
-		Genotype gene = new Genotype();
-//		if(gene1.getGene().size() != gene2.getGene().size()) {
-//			System.err.println("Wrong gene sizes");
-//			return gene;
-//		}
-//		int size = gene1.getGene().size();
-//		for(int g = 0; g < size; g++) {
-//			double alpha = rnd.nextDouble();
-//			double min = Math.min(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
-//			double max = Math.max(gene1.getGene().get(Gene.keys[g]), gene2.getGene().get(Gene.keys[g]));
-//			double range = max - min;
-//			double newValue = min - alpha + rnd.nextDouble()*(range + alpha);
-//			gene.getGene().put(Gene.keys[g], newValue);
-//		}
+	private double[] crossover(Individual ind1, Individual ind2) {
+		if(ind1.getGenotype().length != ind2.getGenotype().length) {
+			System.err.println("Wrong gene sizes");
+			return null;
+		}
+		int size = ind1.getGenotype().length;
+		double[] gene = new double[size];
+		for(int g = 0; g < size; g++) {
+			double alpha = rnd.nextDouble();
+			double min = Math.min(ind1.getGenotype()[g], ind2.getGenotype()[g]);
+			double max = Math.max(ind1.getGenotype()[g], ind2.getGenotype()[g]);
+			double range = max - min;
+			double newValue = min - alpha + rnd.nextDouble()*(range + alpha);
+			gene[g] = newValue;
+		}
 		return gene;
 	}
 

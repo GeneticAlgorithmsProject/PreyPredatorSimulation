@@ -29,7 +29,7 @@ public class Prey extends Individual implements Live {
 		moveToGoal(dt);
 		runAway(dt);
 		boundaryConditions();
-		pos.add(Vector2d.mult(dir, speed * dt * 10));
+		pos.add(Vector2d.mult(dir, speed * dt));
 	}
 
 }

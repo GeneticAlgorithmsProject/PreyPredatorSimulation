@@ -12,7 +12,7 @@ public class Fenotype extends Genotype{
 	protected Circle sight;
 	
 	protected double age;
-	protected double health, maxHealth, incrementHealth;
+	protected double health, maxHealth, incrementHealth, decrementHealth;
 	protected double speed;
 	
 	protected double fDir, fA;
@@ -35,7 +35,8 @@ public class Fenotype extends Genotype{
 		age = 0;
 		health = 1;
 		maxHealth = 1;
-		incrementHealth = 0.1;
+		incrementHealth = 0.2;
+		decrementHealth = 0.05;
 		speed = 1;
 	}
 	

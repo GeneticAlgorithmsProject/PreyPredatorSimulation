@@ -25,7 +25,7 @@ public class Simulation {
 
 	public static double DT = 10;
 	public static double width, height;
-	public static double timeMultiplier, speedMultiplier = 10;
+	public static double timeMultiplier, speedMultiplier = 20;
 	public static boolean closed = true;
 
 	private TextField timer;
@@ -99,9 +99,9 @@ public class Simulation {
 					join();
 					addData();
 					GeneticAlgorithm ga = new GeneticAlgorithm(2, 1, 0.01);
-//					ga.createNewGeneration(preys);
-//					ga.createNewGeneration(predators);
-					init();
+					ga.createNewGeneration(populations[PopulationType.Prey.ordinal()]);
+					ga.createNewGeneration(populations[PopulationType.Predator.ordinal()]);
+//					init();
 					initPositions();
 				}
 			}
@@ -169,9 +169,9 @@ public class Simulation {
 	}
 
 	private boolean pause() {
-		for(Population p : populations)
-			if(p.getSize() < 1)
-				return true;
-		return false; 
+		boolean pause = true;
+		for(int i = 1; i < populations.length; i++)
+				pause = pause && populations[i].getSize() < 1;
+		return pause; 
 	}
 }

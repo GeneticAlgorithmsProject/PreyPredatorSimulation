@@ -17,7 +17,7 @@ public class PredatorPopulation extends Population {
 	public void initPositions() {
 		Random rnd = new Random();
 		for (Individual ind : population)
-			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width / 3, rnd.nextDouble() * Simulation.height / 3));
+			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width / 2, rnd.nextDouble() * Simulation.height / 2));
 	}
 
 	@Override

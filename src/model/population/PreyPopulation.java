@@ -17,8 +17,8 @@ public class PreyPopulation extends Population {
 	public void initPositions() {
 		Random rnd = new Random();
 		for (Individual ind : population)
-			ind.setPos(new Vector2d(Simulation.width * (1 - rnd.nextDouble() / 3),
-					Simulation.height * (1 - rnd.nextDouble() / 3)));
+			ind.setPos(new Vector2d(Simulation.width * (1 - rnd.nextDouble() / 2),
+					Simulation.height * (1 - rnd.nextDouble() / 2)));
 	}
 
 	@Override

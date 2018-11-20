@@ -39,6 +39,10 @@ public class Genotype {
 		return genotype;
 	}
 
+	public void setGenotype(double[] genotype) {
+		this.genotype = genotype;
+	}
+
 	public double getDEscM() {
 		return genotype[Gene.DESCM.ordinal()];
 	}
