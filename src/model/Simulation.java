@@ -25,7 +25,7 @@ public class Simulation {
 
 	public static double DT = 10;
 	public static double width, height;
-	public static double timeMultiplier, speedMultiplier = 100;
+	public static double timeMultiplier, speedMultiplier = 10;
 	public static boolean closed = true;
 
 	private TextField timer;
