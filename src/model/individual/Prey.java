@@ -1,8 +1,9 @@
 package model.individual;
 
 import javafx.scene.paint.Color;
+import utils.Vector2d;
 
-public class Prey extends Individual implements Live{
+public class Prey extends Individual implements Live {
 
 	public Prey() {
 		super();
@@ -15,7 +16,7 @@ public class Prey extends Individual implements Live{
 		color = new Color(0, 0, 1, 1);
 		name = "Prey";
 	}
-	
+
 	public Prey(double R) {
 		super(R);
 		color = new Color(0, 0, 1, 1);
@@ -25,12 +26,10 @@ public class Prey extends Individual implements Live{
 	@Override
 	public void move(double dt) {
 		randomWalk(dt);
-//		oscillate();
-//		moveToGoal();
-//		runAway();
-//		dir.norm();
-		dir.mult(speed*dt);
-		pos.add(dir);
+		moveToGoal(dt);
+		runAway(dt);
+		boundaryConditions();
+		pos.add(Vector2d.mult(dir, speed * dt * 10));
 	}
-	
+
 }

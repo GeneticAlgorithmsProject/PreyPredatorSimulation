@@ -1,6 +1,7 @@
 package model.individual;
 
 import javafx.scene.paint.Color;
+import utils.Vector2d;
 
 public class Predator extends Individual implements Live{
 
@@ -25,12 +26,9 @@ public class Predator extends Individual implements Live{
 	@Override
 	public void move(double dt) {	
 		randomWalk(dt);
-//		oscillate();
-//		moveToGoal();
-//		hunger(dir);
-//		dir.norm();
-		dir.mult(speed*dt);
-		pos.add(dir);
+		moveToGoal(dt);
+		boundaryConditions();
+		pos.add(Vector2d.mult(dir, speed * dt * 10));
 	}
 
 }

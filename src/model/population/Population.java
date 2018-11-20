@@ -113,12 +113,8 @@ public class Population {
 		for (Individual ind : population) {
 			pane.getChildren().add(ind.getShape());
 			pane.getChildren().add(ind.getSight());
+			pane.getChildren().add(ind.getDirVec());
 		}
-	}
-
-	protected void boundaryConditions() {
-		for (Individual ind : population)
-			ind.getPos().fit();
 	}
 
 	protected void moveInds(double dt) {

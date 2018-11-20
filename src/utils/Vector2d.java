@@ -25,7 +25,7 @@ public class Vector2d {
 		x = r * Math.cos(a) + R / 2;
 		y = r * Math.sin(a) + R / 2;
 	}
-	
+
 	public void reset() {
 		x = 0;
 		y = 0;
@@ -56,38 +56,16 @@ public class Vector2d {
 
 	public void norm() {
 		double len = length();
+		if (Double.isNaN(len) || Double.isInfinite(len) || len < Double.MIN_VALUE) {
+			x = 0;
+			y = 0;
+		}
 		x /= len;
 		y /= len;
 	}
 
 	public Vector2d multV(double a) {
 		return new Vector2d(x * a, y * a);
-	}
-
-	public void fit() {
-		if (Simulation.closed) {
-			if (x > Simulation.width) {
-				x = Simulation.width;
-			} else if (x < 0) {
-				x = 0;
-			}
-			if (y > Simulation.height) {
-				y = Simulation.height;
-			} else if (y < 0) {
-				y = 0;
-			}
-		} else {
-			if (x > Simulation.width) {
-				x = Simulation.width;
-			} else if (x < 0) {
-				x = 0;
-			}
-			if (y > Simulation.height) {
-				y = Simulation.height;
-			} else if (y < 0) {
-				y = 0;
-			}
-		}
 	}
 
 	public static Vector2d add(Vector2d v1, Vector2d v2) {
@@ -118,6 +96,10 @@ public class Vector2d {
 		return (v1.y - v2.y) / Math.abs(v1.y - v2.y);
 	}
 
+	public static Vector2d mult(Vector2d v, double a) {
+		return new Vector2d(v.x * a, v.y * a);
+	}
+
 	public static Vector2d diff(Vector2d v1, Vector2d v2) {
 		return new Vector2d(v1.x - v2.x, v1.y - v2.y);
 	}
@@ -138,16 +120,16 @@ public class Vector2d {
 		Random rnd = new Random();
 		return new Vector2d(-1 + 2 * rnd.nextDouble(), -1 + 2 * rnd.nextDouble());
 	}
-	
-	//doesn't work
+
+	// doesn't work
 	public static Vector2d BiasedDir(Vector2d pos) {
 		Random rnd = new Random();
 		Vector2d dir = new Vector2d();
-		dir.x = (Simulation.width/2 - pos.x)/Math.abs((Simulation.width/2 - pos.x));
-		dir.y = (Simulation.height/2 - pos.y)/Math.abs((Simulation.height/2 - pos.y));
+		dir.x = (Simulation.width / 2 - pos.x) / Math.abs((Simulation.width / 2 - pos.x));
+		dir.y = (Simulation.height / 2 - pos.y) / Math.abs((Simulation.height / 2 - pos.y));
 		dir.norm();
-		dir.x += -1 + 2*rnd.nextDouble();
-		dir.y += -1 + 2*rnd.nextDouble();
+		dir.x += -1 + 2 * rnd.nextDouble();
+		dir.y += -1 + 2 * rnd.nextDouble();
 		dir.norm();
 		return dir;
 	}

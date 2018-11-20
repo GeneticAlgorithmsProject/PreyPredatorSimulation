@@ -1,24 +1,26 @@
 package model.individual;
 
-import java.util.Random;
 import java.util.LinkedList;
 import java.util.List;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import model.Simulation;
 import utils.Vector2d;
 
 public class Individual extends Fenotype implements Live {
 
 	protected Vector2d pos;
 	protected Vector2d dir;
-
-	protected Random rnd = new Random();
+	protected Line dirVec;
 
 	protected Individual goal;
 	protected List<Individual> run;
 
 	protected String name;
+
+	private static double decrementHealthMult = 1. / 40; // 1/400
 
 	public Individual() {
 		super();
@@ -33,6 +35,7 @@ public class Individual extends Fenotype implements Live {
 		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
 		run = new LinkedList<>();
+		dirVec = new Line();
 		name = "Individual";
 	}
 
@@ -49,6 +52,7 @@ public class Individual extends Fenotype implements Live {
 		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
 		run = new LinkedList<>();
+		dirVec = new Line();
 		name = "Individual";
 	}
 
@@ -65,6 +69,7 @@ public class Individual extends Fenotype implements Live {
 		sight = new Circle(pos.x, pos.y, getSigA());
 		color = new Color(0, 0, 0, 1);
 		run = new LinkedList<>();
+		dirVec = new Line();
 		name = "Individual";
 	}
 
@@ -73,19 +78,11 @@ public class Individual extends Fenotype implements Live {
 
 	}
 
+	@Override
 	public void update(double dt) {
-		shape.setCenterX(pos.x);
-		shape.setCenterY(pos.y);
-		shape.setFill(color);
-		shape.setRadius(getSizA());
-		shape.setOpacity(health / maxHealth);
-
-		sight.setCenterX(pos.x);
-		sight.setCenterY(pos.y);
-		sight.setFill(color);
-		sight.setRadius(getSigA());
-		sight.setOpacity(0.2 * health / maxHealth);
-
+		setShape();
+		setSight();
+		setVecDir(dt);
 		decrementHealth(dt);
 		run.clear();
 
@@ -108,53 +105,78 @@ public class Individual extends Fenotype implements Live {
 		dir.add(v_t);
 	}
 
-	protected void hunger(Vector2d v) {
-		if (health > getHeaL())
-			return;
-		v.add(movement[Move.dGo.ordinal()].multV(getHeaM()));
-	}
-
 	protected void randomWalk(double dt) {
-		if(goalInSight() || runInSight())
+		if (goalInSight() || runInSight())
 			return;
-		
+
 		if (rnd.nextDouble() < getDRanM()) {
 			dir = Vector2d.RandomDir();
 			dir.norm();
-			dir.mult(speed*dt*getDRanA());
-			pos.add(dir);
+			dir.mult(getDRanA());
 		}
-		dir.reset();
 	}
-	
+
+	protected void runAway(double dt) {
+		if (!runInSight())
+			return;
+
+		movement[Move.dEsc.ordinal()].reset();
+		for (Individual r : run) {
+			movement[Move.dEsc.ordinal()].add(Vector2d.diff(pos,r.getPos()));
+		}
+
+		movement[Move.dEsc.ordinal()].div(run.size());
+		movement[Move.dEsc.ordinal()].norm();
+		movement[Move.dEsc.ordinal()].mult(getDEscM() * dt * speed);
+		dir.add(movement[Move.dEsc.ordinal()]);
+	}
+
+	protected void moveToGoal(double dt) {
+		if (!goalInSight())
+			return;
+
+		movement[Move.dGo.ordinal()].reset();
+		movement[Move.dGo.ordinal()].add(Vector2d.diff(goal.getPos(), pos));
+		movement[Move.dGo.ordinal()].norm();
+		movement[Move.dGo.ordinal()].mult(getDGoM() * dt * speed);
+		dir.add(movement[Move.dGo.ordinal()]);
+	}
+
+	protected void hunger() {
+		if (health > getHeaL())
+			return;
+		dir.add(movement[Move.dGo.ordinal()].multV(getHeaM()));
+	}
+
+	public void boundaryConditions() {
+		if (Simulation.closed) {
+			if (pos.x >= Simulation.width - getSizA()) {
+				pos.x = Simulation.width - getSizA();
+				dir.x *= -1;
+			} else if (pos.x <= getSizA()) {
+				pos.x = getSizA();
+				dir.x *= -1;
+			}
+			if (pos.y >= Simulation.height - getSizA()) {
+				pos.y = Simulation.height - getSizA();
+				dir.y *= -1;
+			} else if (pos.y <= getSizA()) {
+				pos.y = getSizA();
+				dir.y *= -1;
+			}
+		}
+	}
+
+	protected void bounce() {
+
+	}
+
 	protected boolean runInSight() {
 		return run.size() > 0;
-	}
-	
-	protected void runAway() {
-		if(!runInSight())
-			return;
-		movement[Move.dEsc.ordinal()].reset();
-		for(Individual ind : run) {
-			movement[Move.dEsc.ordinal()].add(Vector2d.diff(ind.getPos(), pos));
-		}
-		movement[Move.dEsc.ordinal()].div(run.size());
-		movement[Move.dEsc.ordinal()].mult(getDEscM());
-		dir.add(movement[Move.dEsc.ordinal()]);
 	}
 
 	protected boolean goalInSight() {
 		return Vector2d.dist(pos, goal.getPos()) < getSigA();
-	}
-
-	protected void moveToGoal() {
-		if (!goalInSight())
-			return;
-		movement[Move.dGo.ordinal()].reset();
-		movement[Move.dGo.ordinal()].add(Vector2d.diff(goal.getPos(), pos));
-		movement[Move.dGo.ordinal()].norm();
-		movement[Move.dGo.ordinal()].mult(getDGoM());
-		dir.add(movement[Move.dGo.ordinal()]);
 	}
 
 	public boolean overlaps(Individual ind) {
@@ -163,11 +185,37 @@ public class Individual extends Fenotype implements Live {
 	}
 
 	public void decrementHealth(double dt) {
-		health -= incrementHealth * dt / 40;
+		health -= incrementHealth * dt * decrementHealthMult;
 	}
 
 	public void incrementHealth(double dt) {
-		health += incrementHealth * dt * 10;
+		health += incrementHealth * dt;
+	}
+	
+	public void setVecDir(double dt) {
+		dirVec.setStartX(pos.x);
+		dirVec.setStartY(pos.y);
+		dirVec.setEndX(pos.x + dir.x * speed * 10);
+		dirVec.setEndY(pos.y + dir.y * speed * 10);
+		dirVec.setStrokeWidth(getSizA()/2);
+		dirVec.setStroke(color);
+	}
+
+
+	private void setShape() {
+		shape.setCenterX(pos.x);
+		shape.setCenterY(pos.y);
+		shape.setFill(color);
+		shape.setRadius(getSizA());
+		shape.setOpacity(health / maxHealth);
+	}
+
+	private void setSight() {
+		sight.setCenterX(pos.x);
+		sight.setCenterY(pos.y);
+		sight.setFill(color);
+		sight.setRadius(getSigA());
+		sight.setOpacity(0.2 * health / maxHealth);
 	}
 
 	public Vector2d getPos() {
@@ -242,4 +290,7 @@ public class Individual extends Fenotype implements Live {
 		run.add(ind);
 	}
 
+	public Line getDirVec() {
+		return dirVec;
+	}
 }

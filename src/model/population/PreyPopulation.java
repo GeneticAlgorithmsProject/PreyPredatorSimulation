@@ -32,7 +32,6 @@ public class PreyPopulation extends Population {
 		findGoal();
 		calculatePredatorsField();
 		moveInds(dt);
-		boundaryConditions();
 	}
 
 	@Override

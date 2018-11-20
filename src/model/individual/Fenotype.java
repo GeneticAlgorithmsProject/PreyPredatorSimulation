@@ -35,7 +35,7 @@ public class Fenotype extends Genotype{
 		age = 0;
 		health = 1;
 		maxHealth = 1;
-		incrementHealth = 1;
+		incrementHealth = 0.1;
 		speed = 1;
 	}
 	

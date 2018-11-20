@@ -25,7 +25,7 @@ public class Simulation {
 
 	public static double DT = 10;
 	public static double width, height;
-	public static double timeMultiplier, speedMultiplier = 1000;
+	public static double timeMultiplier, speedMultiplier = 100;
 	public static boolean closed = true;
 
 	private TextField timer;
@@ -115,11 +115,12 @@ public class Simulation {
 				long deltaNanos = now - currTime;
 				currTime = now;
 				double dt = deltaNanos / 1.0e9 * timeMultiplier;
-				check(now);
-				move(dt);
-				update(dt);
-				draw();
 				time += dt;
+				
+				check(now);
+				update(dt);
+				move(dt*Simulation.speedMultiplier);
+				draw();
 				timer(time);
 			}
 		}.start();

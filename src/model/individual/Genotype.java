@@ -5,13 +5,13 @@ import java.util.Random;
 public class Genotype {
 
 	protected double[] genotype;
-
+	protected static Random rnd = new Random();
+	
 	protected enum Gene {
 		DESCM, DGOM, OSCA, OSCF, HEAM, HEAL, SIGA, SIZA, DRANM, DRANA
 	}
 
 	public Genotype() {
-		Random rnd = new Random();
 		genotype = new double[Gene.values().length];
 //		Escape vector multiplier 
 		genotype[Gene.DESCM.ordinal()] = rnd.nextDouble();
@@ -30,9 +30,9 @@ public class Genotype {
 //		Hunger level
 		genotype[Gene.HEAL.ordinal()] = rnd.nextDouble();
 //		Probability of changing direction when in random walk
-		genotype[Gene.DRANM.ordinal()] = (1 + rnd.nextDouble()) * 0.1;
+		genotype[Gene.DRANM.ordinal()] = (1 + rnd.nextDouble()) * 0.01;
 //		Random walk leap
-		genotype[Gene.DRANA.ordinal()] = (0.5 + rnd.nextDouble()) * 1000;	
+		genotype[Gene.DRANA.ordinal()] = (1 - rnd.nextDouble());	
 	}
 
 	public double[] getGenotype() {

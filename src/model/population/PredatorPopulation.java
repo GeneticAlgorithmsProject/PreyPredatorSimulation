@@ -28,10 +28,8 @@ public class PredatorPopulation extends Population {
 
 	@Override
 	public void move(double dt) {
-		boundaryConditions();
 		findGoal();
 		moveInds(dt);
-		boundaryConditions();
 	}
 
 	@Override
