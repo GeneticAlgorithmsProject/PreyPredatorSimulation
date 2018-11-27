@@ -4,6 +4,8 @@ import java.util.Random;
 
 import model.Simulation;
 import model.individual.Food;
+import model.individual.Individual;
+import utils.Vector2d;
 
 public class FoodPopulation extends Population {
 
@@ -25,11 +27,11 @@ public class FoodPopulation extends Population {
 
 	@Override
 	public void updateSpecial(double dt) {
-		dead.clear();
 		death();
+		dead.clear();
 		Random rnd = new Random();
 		if (population.size() < count)
-			if (rnd.nextDouble() < 0.5)
+			if (rnd.nextDouble() < 0.1)
 				population.add(new Food(Math.min(Simulation.width, Simulation.height)));
 	}
 

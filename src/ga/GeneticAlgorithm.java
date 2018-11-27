@@ -51,17 +51,17 @@ public class GeneticAlgorithm {
 	private void createChildren(Population population, List<Individual> parents) {
 		List<Individual> newGeneration = new LinkedList<>();
 		double R = Math.min(Simulation.width, Simulation.height);
-		for(int i = 0; i < population.getCount(); i++) {
+		for (int i = 0; i < population.getCount(); i++) {
 			Individual ind = new Individual(R);
-			if(population.getName().equals("PredatorPopulation"))
+			if (population.getName().equals("PredatorPopulation"))
 				ind = new Predator(R);
-			else if(population.getName().equals("PreyPopulation"))
+			else if (population.getName().equals("PreyPopulation"))
 				ind = new Prey(R);
-			int parent1index = rnd.nextInt(parents.size()-1);
-			int parent2index = rnd.nextInt(parents.size()-1);
+			int parent1index = rnd.nextInt(parents.size() - 1);
+			int parent2index = rnd.nextInt(parents.size() - 1);
 			while (parent1index == parent2index)
 				parent1index = rnd.nextInt(parents.size());
-			double[] newGene = crossover(parents.get(parent1index),parents.get(parent2index));
+			double[] newGene = crossover(parents.get(parent1index), parents.get(parent2index));
 			ind.setGenotype(newGene);
 			newGeneration.add(ind);
 		}
@@ -69,18 +69,22 @@ public class GeneticAlgorithm {
 	}
 
 	private double[] crossover(Individual ind1, Individual ind2) {
-		if(ind1.getGenotype().length != ind2.getGenotype().length) {
+		if (ind1.getGenotype().length != ind2.getGenotype().length) {
 			System.err.println("Wrong gene sizes");
 			return null;
 		}
 		int size = ind1.getGenotype().length;
 		double[] gene = new double[size];
-		for(int g = 0; g < size; g++) {
-			double alpha = rnd.nextDouble();
+		for (int g = 0; g < size; g++) {
 			double min = Math.min(ind1.getGenotype()[g], ind2.getGenotype()[g]);
 			double max = Math.max(ind1.getGenotype()[g], ind2.getGenotype()[g]);
 			double range = max - min;
-			double newValue = min - alpha + rnd.nextDouble()*(range + alpha);
+			double alpha = rnd.nextDouble();
+			double newValue = min - alpha + rnd.nextDouble() * (range + alpha);
+			if (newValue > 1)
+				newValue = 1;
+			else if(newValue < 0)
+				newValue = 0;
 			gene[g] = newValue;
 		}
 		return gene;

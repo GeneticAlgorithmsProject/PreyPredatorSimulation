@@ -25,7 +25,7 @@ public class Simulation {
 
 	public static double DT = 10;
 	public static double width, height;
-	public static double timeMultiplier, speedMultiplier = 20;
+	public static double timeMultiplier, speedMultiplier = 50;
 	public static boolean closed = true;
 
 	private TextField timer;
@@ -83,7 +83,7 @@ public class Simulation {
 
 		populations[PopulationType.Prey.ordinal()].setGoal(populations[PopulationType.Food.ordinal()]);
 		populations[PopulationType.Predator.ordinal()].setGoal(populations[PopulationType.Prey.ordinal()]);
-		
+
 		populations[PopulationType.Prey.ordinal()].setRun(populations[PopulationType.Predator.ordinal()]);
 	}
 
@@ -102,7 +102,7 @@ public class Simulation {
 					ga.createNewGeneration(populations[PopulationType.Prey.ordinal()]);
 					ga.createNewGeneration(populations[PopulationType.Predator.ordinal()]);
 //					init();
-					initPositions();
+					resetPopulations();
 				}
 			}
 
@@ -116,10 +116,10 @@ public class Simulation {
 				currTime = now;
 				double dt = deltaNanos / 1.0e9 * timeMultiplier;
 				time += dt;
-				
+
 				check(now);
 				update(dt);
-				move(dt*Simulation.speedMultiplier);
+				move(dt * Simulation.speedMultiplier);
 				draw();
 				timer(time);
 			}
@@ -131,15 +131,19 @@ public class Simulation {
 	}
 
 	private void addData() {
-		preyBest.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Prey.ordinal()].getMaxAge()));
-		preyAverage.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Prey.ordinal()].getAverageAge()));
-		predatorBest.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Predator.ordinal()].getMaxAge()));
-		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation, populations[PopulationType.Predator.ordinal()].getAverageAge()));
+		preyBest.getData().add(
+				new XYChart.Data<Number, Number>(generation, populations[PopulationType.Prey.ordinal()].getMaxAge()));
+		preyAverage.getData().add(new XYChart.Data<Number, Number>(generation,
+				populations[PopulationType.Prey.ordinal()].getAverageAge()));
+		predatorBest.getData().add(new XYChart.Data<Number, Number>(generation,
+				populations[PopulationType.Predator.ordinal()].getMaxAge()));
+		predatorAverage.getData().add(new XYChart.Data<Number, Number>(generation,
+				populations[PopulationType.Predator.ordinal()].getAverageAge()));
 		generation++;
 	}
 
 	private void join() {
-		for(Population p : populations)
+		for (Population p : populations)
 			p.joinIndLists();
 	}
 
@@ -157,21 +161,21 @@ public class Simulation {
 	private void update(double dt) {
 		width = pane.getWidth();
 		height = pane.getHeight();
-		for(Population p : populations) {
+		for (Population p : populations) {
 			p.update(dt);
 			p.updateSpecial(dt);
 		}
 	}
 
-	public void initPositions() {
-		for(Population p : populations)
-			p.initPositions();
+	public void resetPopulations() {
+		for (Population p : populations)
+			p.reset();
 	}
 
 	private boolean pause() {
-		boolean pause = true;
-		for(int i = 1; i < populations.length; i++)
-				pause = pause && populations[i].getSize() < 1;
-		return pause; 
+		for (int i = 1; i < populations.length; i++)
+			if (populations[i].getSize() < 1)
+				return true;
+		return false;
 	}
 }

@@ -15,7 +15,7 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LayoutController">
   <children>
-      <SplitPane dividerPositions="0.7" prefHeight="800.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.9" prefHeight="800.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane>
                <children>
@@ -77,12 +77,12 @@
                                 </rowConstraints>
                                  <children>
                                     <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleButtonAction" text="Reset" />
-                                    <Slider fx:id="foodCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="50" GridPane.rowIndex="1" />
-                                    <Slider fx:id="preyCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="20" GridPane.rowIndex="2" />
+                                    <Slider fx:id="foodCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="20" GridPane.rowIndex="1" />
+                                    <Slider fx:id="preyCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="25" GridPane.rowIndex="2" />
                                     <Slider fx:id="predatorCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="10" GridPane.rowIndex="3" />
                                     <Slider GridPane.rowIndex="4" />
                                     <Slider GridPane.rowIndex="5" />
-                                    <Slider fx:id="timeMultiplier" blockIncrement="0.1" max="1." min="0." showTickLabels="true" showTickMarks="true" value="1" GridPane.rowIndex="6" />
+                                    <Slider fx:id="timeMultiplier" blockIncrement="0.1" max="10." min="0." showTickLabels="true" showTickMarks="true" value="1" GridPane.rowIndex="6" />
                                     <TextField fx:id="timer" GridPane.rowIndex="7" />
                                     <Label text="Time Multiplier" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     <Label text="Food count" GridPane.columnIndex="1" GridPane.rowIndex="1" />

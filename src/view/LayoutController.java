@@ -43,9 +43,11 @@ public class LayoutController {
 	@FXML
 	private void handleButtonAction(ActionEvent event) {
 		simulation = new Simulation(pane, preyChart, predatorChart, timer);
-		simulation.init();
-		simulation.initPositions();
 		Simulation.timeMultiplier = timeMultiplier.getValue();
+		Simulation.width = pane.getWidth();
+		Simulation.height = pane.getHeight();
+		simulation.init();
+		simulation.resetPopulations();
 		simulation.animate();
 	}
 		

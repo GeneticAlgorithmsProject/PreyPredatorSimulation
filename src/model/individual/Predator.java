@@ -27,7 +27,9 @@ public class Predator extends Individual implements Live{
 	public void move(double dt) {	
 		randomWalk(dt);
 		moveToGoal(dt);
+		hunger(dt);
 		boundaryConditions();
+		dir.norm();
 		pos.add(Vector2d.mult(dir, speed * dt));
 	}
 

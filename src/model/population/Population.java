@@ -27,10 +27,12 @@ public class Population {
 		name = "Default";
 	}
 
-	public void initPositions() {
+	public void reset() {
 		Random rnd = new Random();
-		for (Individual ind : population)
+		for (Individual ind : population) {
 			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width, rnd.nextDouble() * Simulation.height));
+			ind.maxHealth();
+		}
 	}
 
 	public void init() {

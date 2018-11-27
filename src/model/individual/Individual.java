@@ -104,7 +104,7 @@ public class Individual extends Fenotype implements Live {
 	}
 
 	protected void randomWalk(double dt) {
-		if (goalInSight() || runInSight())
+		if (goalInSight() || runInSight() || hungry())
 			return;
 
 		if (rnd.nextDouble() < getDRanM()) {
@@ -130,7 +130,7 @@ public class Individual extends Fenotype implements Live {
 	}
 
 	protected void moveToGoal(double dt) {
-		if (!goalInSight())
+		if (!goalInSight() || !hungry())
 			return;
 
 		movement[Move.dGo.ordinal()].reset();
@@ -140,10 +140,11 @@ public class Individual extends Fenotype implements Live {
 		dir.add(movement[Move.dGo.ordinal()]);
 	}
 
-	protected void hunger() {
-		if (health > getHeaL())
+	protected void hunger(double dt) {
+		if(!criticallyHungry())
 			return;
-		dir.add(movement[Move.dGo.ordinal()].multV(getHeaM()));
+		movement[Move.dGo.ordinal()].multV(getHecM() * dt * speed);
+		dir.add(movement[Move.dGo.ordinal()]);
 	}
 
 	public void boundaryConditions() {
@@ -169,11 +170,11 @@ public class Individual extends Fenotype implements Live {
 
 	}
 
-	protected boolean runInSight() {
+	private boolean runInSight() {
 		return run.size() > 0;
 	}
 
-	protected boolean goalInSight() {
+	private boolean goalInSight() {
 		return Vector2d.dist(pos, goal.getPos()) < getSigA();
 	}
 
@@ -182,24 +183,25 @@ public class Individual extends Fenotype implements Live {
 				&& Math.abs(pos.y - ind.getPos().y) < getSizA() + ind.getSizA();
 	}
 
-	public void decrementHealth(double dt) {
-		health -= decrementHealth * dt;
+	private boolean hungry() {
+		return health < getHeaL();
 	}
-
-	public void incrementHealth(double dt) {
-		health += incrementHealth;
+	
+	private boolean criticallyHungry() {
+		return health < getHecL();
 	}
 
 	public void setVecDir(double dt) {
 		dirVec.setStartX(pos.x);
 		dirVec.setStartY(pos.y);
-		dirVec.setEndX(pos.x + dir.x * speed * 5);
-		dirVec.setEndY(pos.y + dir.y * speed * 5);
-		dirVec.setStrokeWidth(getSizA() / 2);
+		dirVec.setEndX(pos.x + dir.x * getSigA());
+		dirVec.setEndY(pos.y + dir.y * getSigA());
+		dirVec.setStrokeWidth(2);
 		dirVec.setStroke(color);
+		dirVec.setOpacity(0.5 * health / maxHealth);
 	}
 
-	private void setShape() {
+	protected void setShape() {
 		shape.setCenterX(pos.x);
 		shape.setCenterY(pos.y);
 		shape.setFill(color);
@@ -242,39 +244,6 @@ public class Individual extends Fenotype implements Live {
 	public boolean isDead() {
 		return health <= 0;
 	}
-
-	public double getMaxHealth() {
-		return maxHealth;
-	}
-
-	public void setMaxHealth(double maxHealth) {
-		this.maxHealth = maxHealth;
-	}
-
-	public Circle getShape() {
-		return shape;
-	}
-
-	public void setShape(Circle shape) {
-		this.shape = shape;
-	}
-
-	public Circle getSight() {
-		return sight;
-	}
-
-	public void setSight(Circle sight) {
-		this.sight = sight;
-	}
-
-	public double[] getGenome() {
-		return genotype;
-	}
-
-	public void setGene(double[] genotype) {
-		this.genotype = genotype;
-	}
-
 	public Individual getGoal() {
 		return goal;
 	}

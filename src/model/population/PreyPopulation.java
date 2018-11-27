@@ -9,16 +9,24 @@ import utils.Vector2d;
 
 public class PreyPopulation extends Population {
 
+	private Vector2d[] initPositions;
+
 	public PreyPopulation(int count) {
 		super(count);
 		name = "PreyPopulation";
+		initPositions = new Vector2d[count];
+		Random rnd = new Random();
+		for (int i = 0; i < count; i++)
+			initPositions[i] = new Vector2d(rnd.nextDouble() * Simulation.width, rnd.nextDouble() * Simulation.height);
 	}
 
-	public void initPositions() {
-		Random rnd = new Random();
-		for (Individual ind : population)
-			ind.setPos(new Vector2d(Simulation.width * (1 - rnd.nextDouble() / 2),
-					Simulation.height * (1 - rnd.nextDouble() / 2)));
+	@Override
+	public void reset() {
+		for (int i = 0; i < count; i++) {
+			Individual ind = population.get(i);
+			ind.setPos(initPositions[i]);
+			ind.maxHealth();
+		}
 	}
 
 	@Override

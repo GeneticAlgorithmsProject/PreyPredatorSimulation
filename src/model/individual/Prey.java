@@ -28,7 +28,9 @@ public class Prey extends Individual implements Live {
 		randomWalk(dt);
 		moveToGoal(dt);
 		runAway(dt);
+		hunger(dt);
 		boundaryConditions();
+		dir.norm();
 		pos.add(Vector2d.mult(dir, speed * dt));
 	}
 
