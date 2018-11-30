@@ -3,6 +3,9 @@ package model.individual;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -52,7 +55,7 @@ public class Individual extends Fenotype implements Live {
 		run = new LinkedList<>();
 		dirVec = new Line();
 		name = "Individual";
-	}
+	    }
 
 	public Individual(double R) {
 		super();
@@ -69,6 +72,13 @@ public class Individual extends Fenotype implements Live {
 		run = new LinkedList<>();
 		dirVec = new Line();
 		name = "Individual";
+		shape.setOnMouseClicked(
+	            new EventHandler<MouseEvent>(){
+	                public void handle(MouseEvent e){
+	                    System.err.println(name);
+	                }
+	            });
+
 	}
 
 	@Override
@@ -130,7 +140,7 @@ public class Individual extends Fenotype implements Live {
 	}
 
 	protected void moveToGoal(double dt) {
-		if (!goalInSight() || !hungry())
+		if (!goalInSight() || !hungry() || !criticallyHungry())
 			return;
 
 		movement[Move.dGo.ordinal()].reset();

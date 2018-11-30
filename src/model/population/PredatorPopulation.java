@@ -3,6 +3,7 @@ package model.population;
 import java.util.Random;
 
 import model.Simulation;
+import model.individual.Food;
 import model.individual.Individual;
 import model.individual.Predator;
 import utils.Vector2d;
@@ -25,7 +26,7 @@ public class PredatorPopulation extends Population {
 		for (int i = 0; i < count; i++) {
 			Individual ind = population.get(i);
 			ind.setPos(initPositions[i]);
-			ind.maxHealth();
+			ind.reset();
 		}
 	}
 
@@ -45,6 +46,9 @@ public class PredatorPopulation extends Population {
 	public void updateSpecial(double dt) {
 		eat(dt);
 		death();
+		Random rnd = new Random();
+		if (rnd.nextDouble() < 0.01 & population.size() < count/2)
+			population.add(new Predator(rnd.nextDouble() * Simulation.width, rnd.nextDouble() * Simulation.height));
 	}
 
 }

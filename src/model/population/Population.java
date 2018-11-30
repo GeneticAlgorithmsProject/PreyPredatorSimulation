@@ -31,7 +31,7 @@ public class Population {
 		Random rnd = new Random();
 		for (Individual ind : population) {
 			ind.setPos(new Vector2d(rnd.nextDouble() * Simulation.width, rnd.nextDouble() * Simulation.height));
-			ind.maxHealth();
+			ind.reset();
 		}
 	}
 

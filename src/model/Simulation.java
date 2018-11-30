@@ -88,22 +88,22 @@ public class Simulation {
 	}
 
 	public void animate() {
+		GeneticAlgorithm ga = new GeneticAlgorithm();
+
 		new AnimationTimer() {
 			long startTime = -1, currTime = -1;
 			double time = 0;
 
 			private void check(long now) {
-				if (pause()) {
-					startTime = now;
-					timer(time = 0);
-					join();
-					addData();
-					GeneticAlgorithm ga = new GeneticAlgorithm(2, 1, 0.01);
-					ga.createNewGeneration(populations[PopulationType.Prey.ordinal()]);
-					ga.createNewGeneration(populations[PopulationType.Predator.ordinal()]);
-//					init();
-					resetPopulations();
-				}
+				if (!pauseIfAny())
+					return;
+				startTime = now;
+				timer(time = 0);
+				join();
+				addData();
+				ga.createNewGeneration(populations[PopulationType.Prey.ordinal()]);
+//				ga.createNewGeneration(populations[PopulationType.Predator.ordinal()]);
+				resetPopulations();
 			}
 
 			@Override
@@ -162,8 +162,8 @@ public class Simulation {
 		width = pane.getWidth();
 		height = pane.getHeight();
 		for (Population p : populations) {
-			p.update(dt);
 			p.updateSpecial(dt);
+			p.update(dt);
 		}
 	}
 
@@ -172,10 +172,18 @@ public class Simulation {
 			p.reset();
 	}
 
-	private boolean pause() {
+	private boolean pauseIfAny() {
 		for (int i = 1; i < populations.length; i++)
 			if (populations[i].getSize() < 1)
 				return true;
 		return false;
+	}
+
+	private boolean pauseIfPreys() {
+		return populations[PopulationType.Prey.ordinal()].getSize() < 1;
+	}
+	
+	public Population[] getPopulations() {
+		return populations;
 	}
 }

@@ -17,7 +17,7 @@ public class FoodPopulation extends Population {
 	@Override
 	public void init() {
 		for (int i = 0; i < count; ++i)
-			population.add(new Food(Math.min(Simulation.width, Simulation.height)));
+			population.add(new Food(Simulation.width, Simulation.height));
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class FoodPopulation extends Population {
 		Random rnd = new Random();
 		if (population.size() < count)
 			if (rnd.nextDouble() < 0.1)
-				population.add(new Food(Math.min(Simulation.width, Simulation.height)));
+				population.add(new Food(rnd.nextDouble() * Simulation.width, rnd.nextDouble() * Simulation.height));
 	}
 
 }

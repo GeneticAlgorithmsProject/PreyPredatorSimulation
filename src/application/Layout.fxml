@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -77,17 +78,27 @@
                                 </rowConstraints>
                                  <children>
                                     <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleButtonAction" text="Reset" />
-                                    <Slider fx:id="foodCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="20" GridPane.rowIndex="1" />
-                                    <Slider fx:id="preyCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="25" GridPane.rowIndex="2" />
-                                    <Slider fx:id="predatorCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="10" GridPane.rowIndex="3" />
-                                    <Slider GridPane.rowIndex="4" />
-                                    <Slider GridPane.rowIndex="5" />
-                                    <Slider fx:id="timeMultiplier" blockIncrement="0.1" max="10." min="0." showTickLabels="true" showTickMarks="true" value="1" GridPane.rowIndex="6" />
+                                    <Slider fx:id="foodCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="75" GridPane.rowIndex="1" />
+                                    <Slider fx:id="preyCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="100" GridPane.rowIndex="2" />
+                                    <Slider fx:id="predatorCount" blockIncrement="1" max="100." min="1." showTickLabels="true" showTickMarks="true" value="50" GridPane.rowIndex="3" />
+                                    <Slider fx:id="timeMultiplier" blockIncrement="0.1" max="20.0" min="0." showTickLabels="true" showTickMarks="true" value="1" GridPane.rowIndex="6" />
                                     <TextField fx:id="timer" GridPane.rowIndex="7" />
                                     <Label text="Time Multiplier" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                    <Label text="Food count" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Prey count" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Predator count" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Food count" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin></Label>
+                                    <Label text="Prey count" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin></Label>
+                                    <Label text="Predator count" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <GridPane.margin>
+                                          <Insets left="20.0" />
+                                       </GridPane.margin></Label>
                                  </children>
                               </GridPane>
                            </children>

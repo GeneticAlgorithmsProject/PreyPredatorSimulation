@@ -16,17 +16,17 @@ import model.population.Population;
 public class GeneticAlgorithm {
 
 	private int numberOfBest;
-	private double selectivePressure;
 	private double mutationRate;
 
+	private int generation;
 	private Random rnd;
 
 	private List<Double> fitness;
 
-	public GeneticAlgorithm(int numberOfBest, double selectivePressure, double mutationRate) {
-		this.numberOfBest = numberOfBest;
-		this.selectivePressure = selectivePressure;
-		this.mutationRate = mutationRate;
+	public GeneticAlgorithm() {
+		numberOfBest = 2;
+		generation = 0;
+		mutationRate = 0.001;
 		rnd = new Random();
 	}
 
@@ -40,7 +40,7 @@ public class GeneticAlgorithm {
 		int size = population.getSize();
 		fitness = new LinkedList<>();
 		for (int i = 0; i < size; ++i) {
-			fitness.add(i, population.get(i).getAge() * selectivePressure);
+			fitness.add(i, population.get(i).getAge() * selectivePressure());
 		}
 	}
 
@@ -81,7 +81,7 @@ public class GeneticAlgorithm {
 			double range = max - min;
 			double alpha = rnd.nextDouble();
 			double newValue = min - alpha + rnd.nextDouble() * (range + alpha);
-			if (newValue > 1)
+			if (newValue > 1)	
 				newValue = 1;
 			else if(newValue < 0)
 				newValue = 0;
@@ -139,9 +139,16 @@ public class GeneticAlgorithm {
 			}
 			best.add(population.get(currentIndex));
 		}
-//		for (Individual ind : best)
-//			System.out.println(population.getName() + " " + ind.getAge());
+		for (Individual ind : best) {
+			System.out.println(population.getName() + " " + ind.getAge());
+			ind.printGenotype();
+		}
 		return best;
+	}
+	
+	private double selectivePressure() {
+		generation++;
+		return 0.1*generation + 1.;
 	}
 
 	public void sortPopulation(LinkedList<Individual> population) {

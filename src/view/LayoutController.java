@@ -46,6 +46,9 @@ public class LayoutController {
 		Simulation.timeMultiplier = timeMultiplier.getValue();
 		Simulation.width = pane.getWidth();
 		Simulation.height = pane.getHeight();
+		Simulation.foodCount = (int)foodCount.getValue();
+		Simulation.preyCount = (int)preyCount.getValue();
+		Simulation.predatorCount = (int)predatorCount.getValue();
 		simulation.init();
 		simulation.resetPopulations();
 		simulation.animate();

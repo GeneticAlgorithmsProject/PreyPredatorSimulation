@@ -36,7 +36,7 @@ public class Fenotype extends Genotype {
 		health = 1.;
 		maxHealth = 1.;
 		incrementHealth = 0.2;
-		decrementHealth = 0.01;
+		decrementHealth = 0.002;
 		speed = 1. / getSizA();
 	}
 
@@ -58,8 +58,9 @@ public class Fenotype extends Genotype {
 			health = maxHealth;
 	}
 
-	public void maxHealth() {
+	public void reset() {
 		health = maxHealth;
+		age = 0;
 	}
 
 	public double getMaxHealth() {

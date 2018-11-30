@@ -25,7 +25,7 @@ public class PreyPopulation extends Population {
 		for (int i = 0; i < count; i++) {
 			Individual ind = population.get(i);
 			ind.setPos(initPositions[i]);
-			ind.maxHealth();
+			ind.reset();
 		}
 	}
 
