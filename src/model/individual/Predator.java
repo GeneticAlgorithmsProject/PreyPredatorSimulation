@@ -9,18 +9,21 @@ public class Predator extends Individual implements Live{
 		super();
 		color = new Color(1, 0, 0, 1);	
 		name = "Predator";
+		genotype[Gene.DGOM.ordinal()] = 1.;
 	}
 
 	public Predator(double x, double y) {
 		super(x, y);
 		color = new Color(1, 0, 0, 1);
 		name = "Predator";
+		genotype[Gene.DGOM.ordinal()] = 1.;
 	}
 	
 	public Predator(double R) {
 		super(R);
 		color = new Color(1, 0, 0, 1);
 		name = "Predator";
+		genotype[Gene.DGOM.ordinal()] = 1.;
 	}
 
 	@Override

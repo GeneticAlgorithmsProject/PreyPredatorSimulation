@@ -118,8 +118,8 @@ public class Simulation {
 				time += dt;
 
 				check(now);
-				update(dt);
 				move(dt * Simulation.speedMultiplier);
+				update(dt);
 				draw();
 				timer(time);
 			}
